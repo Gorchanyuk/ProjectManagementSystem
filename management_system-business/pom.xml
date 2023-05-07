@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>didgital.design</groupId>
+        <artifactId>management_system</artifactId>
+        <version>${revision}${changelist}</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <artifactId>management_system-business</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>management_system-entity</module>
+        <module>management_system-repository</module>
+        <module>management_system-service</module>
+    </modules>
+
+
+
+</project>
