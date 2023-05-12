@@ -1,19 +1,18 @@
-package didgital.design.entity;
+package didgital.design.dto.project;
 
-import didgital.design.common.converter.StatusProjectConverter;
 import didgital.design.common.enumerate.StatusProject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project {
-
-    private long id;
+public class ProjectDTO {
 
     private String code;
 
@@ -21,5 +20,4 @@ public class Project {
 
     private String description;
 
-    private StatusProject status;
 }

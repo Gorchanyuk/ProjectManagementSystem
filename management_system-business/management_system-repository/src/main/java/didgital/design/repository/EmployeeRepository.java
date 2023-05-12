@@ -1,4 +1,6 @@
 package didgital.design.repository;
 
-public interface EmployeeRepository {
+import didgital.design.entity.Employee;
+
+public interface EmployeeRepository extends BaseRepository<Employee>{
 }
