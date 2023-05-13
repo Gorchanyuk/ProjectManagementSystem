@@ -1,6 +1,5 @@
 package didgital.design.entity;
 
-import didgital.design.common.converter.StatusTaskConverter;
 import didgital.design.common.enumerate.StatusTask;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +12,9 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task {
+public class Task implements Entity{
 
-    private long id;
+    private Long id;
 
     private String name;
 

@@ -3,7 +3,6 @@ package didgital.design.entity;
 import didgital.design.common.enumerate.StatusEmployee;
 import lombok.*;
 
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -11,9 +10,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @ToString
 @Builder
-public class Employee implements Serializable {
+public class Employee implements Entity {
 
-    private long id;
+    private Long id;
 
     private String lastName;
 

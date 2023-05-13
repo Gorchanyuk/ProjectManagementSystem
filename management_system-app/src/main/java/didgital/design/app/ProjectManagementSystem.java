@@ -10,8 +10,8 @@ import java.util.List;
 public class ProjectManagementSystem {
     public static void main(String[] args) {
 
-        EmployeeRepositoryImpl repository = new EmployeeRepositoryImpl();
-        List<Employee> employees = new ArrayList<>();
+        EmployeeRepositoryImpl repository =
+                new EmployeeRepositoryImpl("employee.model");
 
         Employee employee1 = Employee.builder()
                 .lastName("Jonson")

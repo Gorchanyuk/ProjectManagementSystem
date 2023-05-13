@@ -1,6 +1,5 @@
 package didgital.design.entity;
 
-import didgital.design.common.converter.StatusProjectConverter;
 import didgital.design.common.enumerate.StatusProject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project {
+public class Project implements Entity {
 
-    private long id;
+    private Long id;
 
     private String code;
 

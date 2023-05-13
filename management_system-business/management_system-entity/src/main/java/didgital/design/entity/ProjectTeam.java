@@ -1,6 +1,5 @@
 package didgital.design.entity;
 
-import didgital.design.common.converter.RoleEmployeeConverter;
 import didgital.design.common.enumerate.RoleEmployee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectTeam {
+public class ProjectTeam{
 
     private Project project_id;
 
