@@ -1,6 +1,5 @@
 package didgital.design.dto.project;
 
-import didgital.design.common.enumerate.StatusProject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectOutDTO extends ProjectDTO{
+public class ProjectIdDTO {
+    //Используется для ProjectTeamDTO
 
     private long id;
-
-    private StatusProject statusProject;
 }
