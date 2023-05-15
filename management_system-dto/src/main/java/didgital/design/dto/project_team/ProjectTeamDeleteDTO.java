@@ -1,4 +1,4 @@
-package didgital.design.dto.project;
+package didgital.design.dto.project_team;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectIdDTO {
-    //Используется для ProjectTeamDTO
+public class ProjectTeamDeleteDTO {
 
-    private long id;
+    private Long projectId;
+
+    private Long employeeId;
 }
