@@ -1,8 +1,30 @@
 package didgital.design.entity;
 
-public class Employee {
+import didgital.design.common.enumerate.StatusEmployee;
+import lombok.*;
 
-    public static void entity() {
-        System.out.println("entity employee");
-    }
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
+public class Employee implements Entity {
+
+    private Long id;
+
+    private String lastName;
+
+    private String firstName;
+
+    private String surname;
+
+    private String jodTitle;
+
+    private String username;
+
+    private String email;
+
+    private StatusEmployee status;
 }

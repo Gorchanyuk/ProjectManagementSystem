@@ -1,4 +1,4 @@
-package didgital.design.entity;
+package didgital.design.dto.project;
 
 import didgital.design.common.enumerate.StatusProject;
 import lombok.AllArgsConstructor;
@@ -10,15 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project implements Entity {
+public class ProjectOutDTO extends ProjectDTO{
 
-    private Long id;
+    private long id;
 
-    private String code;
-
-    private String name;
-
-    private String description;
-
-    private StatusProject status;
+    private StatusProject statusProject;
 }

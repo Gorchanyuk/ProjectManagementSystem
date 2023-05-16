@@ -1,4 +1,4 @@
-package didgital.design.entity;
+package didgital.design.dto.project_team;
 
 import didgital.design.common.enumerate.RoleEmployee;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectTeam{
+public class ProjectTeamDTO {
 
-    private Project project_id;
+    private Long projectId;
 
-    private Employee employee_id;
+    private Long employeeId;
 
     private RoleEmployee roleEmployee;
 }

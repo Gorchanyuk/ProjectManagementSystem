@@ -12,5 +12,11 @@
 <artifactId>management_system-dto</artifactId>
 
 <dependencies>
+    <dependency>
+        <groupId>didgital.design</groupId>
+        <artifactId>management_system-common</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <scope>compile</scope>
+    </dependency>
 </dependencies>
 </project>

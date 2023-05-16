@@ -1,6 +1,7 @@
-package didgital.design.entity;
+package didgital.design.dto.task;
 
 import didgital.design.common.enumerate.StatusTask;
+import didgital.design.dto.employee.EmployeeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,15 +13,13 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task implements Entity{
-
-    private Long id;
+public class TaskDTO {
 
     private String name;
 
     private String description;
 
-    private Employee taskPerformer;
+    private EmployeeDTO taskPerformer;
 
     private int executionTime;
 
@@ -28,11 +27,10 @@ public class Task implements Entity{
 
     private StatusTask status;
 
-    private Employee author;
+//    private Employee author;
 
-    private Date dateOfCreated;
+//    private Date dateOfCreated;
 
-    private Date dateOfUpdate;
+//    private Date dateOfUpdate;
 
-    private Project project;
 }

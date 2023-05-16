@@ -1,4 +1,4 @@
-package didgital.design.converter;
+package didgital.design.common.converter;
 
 public class StatusEmployeeConverter {
 }
