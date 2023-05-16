@@ -12,7 +12,8 @@
 		<module>management-system-business</module>
 		<module>management-system-app</module>
         <module>management-system-common</module>
-    </modules>
+		<module>management-system-web</module>
+	</modules>
 
 
 	<properties>
