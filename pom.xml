@@ -5,14 +5,13 @@
 	<groupId>didgital.design</groupId>
 	<version>${revision}${changelist}</version>
 	<packaging>pom</packaging>
-	<artifactId>management_system</artifactId>
+	<artifactId>management-system</artifactId>
 
 	<modules>
-		<module>management_system-dto</module>
-		<module>management_system-exception</module>
-		<module>management_system-business</module>
-		<module>management_system-app</module>
-        <module>management_system-common</module>
+		<module>management-system-dto</module>
+		<module>management-system-business</module>
+		<module>management-system-app</module>
+        <module>management-system-common</module>
     </modules>
 
 
@@ -23,102 +22,15 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
 	</properties>
-
+<dependencyManagement>
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.26</version>
 			<scope>provided</scope>
 		</dependency>
-
 	</dependencies>
+</dependencyManagement>
 
-<!--	<build>-->
-<!--		<finalName>management_system-sample</finalName>-->
-<!--		<plugins>-->
-<!--			<plugin>-->
-<!--				<artifactId>maven-assembly-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<finalName>management_system-sample-exec</finalName>-->
-<!--					<archive>-->
-<!--						<manifest>-->
-<!--							<mainClass>didgital.design.app.ProjectManagementSystem</mainClass>-->
-<!--						</manifest>-->
-<!--					</archive>-->
-<!--					<descriptorRefs>-->
-<!--						<descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--					</descriptorRefs>-->
-<!--					<appendAssemblyId>false</appendAssemblyId>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-
-<!--		</plugins>-->
-<!--	</build>-->
-
-	<build>
-
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.3.0</version>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>didgital.design.app.ProjectManagementSystem</mainClass>
-								</manifest>
-							</archive>
-							<finalName>management_system-exec</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
-<!--	<build>-->
-<!--		<finalName>management_system-sample</finalName>-->
-<!--		<plugins>-->
-<!--			<plugin>-->
-<!--				<artifactId>maven-assembly-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<finalName>management_system-exec</finalName>-->
-<!--					<appendAssemblyId>false</appendAssemblyId>-->
-<!--					<archive>-->
-<!--						<manifest>-->
-<!--							<mainClass>didgital.design.app.ProjectManagementSystem</mainClass>-->
-<!--						</manifest>-->
-<!--					</archive>-->
-<!--					<descriptorRefs>-->
-<!--						<descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--					</descriptorRefs>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-<!--		</plugins>-->
-<!--	</build>-->
 </project>
