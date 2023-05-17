@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    image: 'management_system:latest'
+    build:
+      context: .
+
+    container_name: management_system
+    working_dir: /usr/src/myapp
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/management_system
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+
+  database:
+    container_name: database
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: management_system
+    ports:
+      - "5433:5432"
+

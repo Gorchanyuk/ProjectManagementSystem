@@ -1,46 +1,46 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<parent>
-    <groupId>didgital.design</groupId>
-    <version>${revision}${changelist}</version>
-    <artifactId>management-system</artifactId>
-</parent>
-
-<modelVersion>4.0.0</modelVersion>
-
-<artifactId>management-system-app</artifactId>
-
-<dependencies>
-    <dependency>
+    <parent>
         <groupId>didgital.design</groupId>
-        <artifactId>management-system-entity</artifactId>
-        <version>0.1-SNAPSHOT</version>
-        <scope>compile</scope>
-    </dependency>
-    <dependency>
-        <groupId>didgital.design</groupId>
-        <artifactId>management-system-repository</artifactId>
-        <version>0.1-SNAPSHOT</version>
-        <scope>compile</scope>
-    </dependency>
-</dependencies>
+        <version>${revision}${changelist}</version>
+        <artifactId>management-system</artifactId>
+    </parent>
+    <packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>management-system-app</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>didgital.design</groupId>
+            <artifactId>management-system-entity</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>didgital.design</groupId>
+            <artifactId>management-system-repository</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <build>
 
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <excludes>-->
+            <!--                        <exclude>-->
+            <!--                            <groupId>org.projectlombok</groupId>-->
+            <!--                            <artifactId>lombok</artifactId>-->
+            <!--                        </exclude>-->
+            <!--                    </excludes>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -58,10 +58,10 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>didgital.design.app.ProjectManagementSystem</mainClass>
+                                    <mainClass>didgital.design.management.system.app.ProjectManagementSystem</mainClass>
                                 </manifest>
                             </archive>
-                            <finalName>management_system-exec</finalName>
+                            <finalName>management-system-exec</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
