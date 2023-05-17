@@ -9,6 +9,6 @@ WORKDIR /usr/src/myapp
 
 EXPOSE 8080
 
-CMD  ["java", "-jar", "./management_system-app/target/management_system-exec.jar"]
+CMD  ["java", "-jar", "./management-system-app/target/management-system-exec.jar"]
 
 

@@ -1,15 +1,14 @@
 package didgital.design.management.system.entity;
 
 import didgital.design.management.system.common.enumerate.StatusProject;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Builder
 public class Project implements Entity {
 
     private Long id;
