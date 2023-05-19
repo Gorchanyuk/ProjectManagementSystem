@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>didgital.design</groupId>
+        <groupId>digital.design</groupId>
         <artifactId>management-system-business</artifactId>
         <version>${revision}${changelist}</version>
     </parent>
@@ -18,7 +18,7 @@
         </dependency>
 
         <dependency>
-            <groupId>didgital.design</groupId>
+            <groupId>digital.design</groupId>
             <artifactId>management-system-common</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
