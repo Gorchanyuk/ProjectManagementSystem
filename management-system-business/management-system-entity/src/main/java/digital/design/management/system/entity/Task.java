@@ -1,6 +1,8 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.common.enumerate.StatusTask;
+import digital.design.management.system.converter.StatusTaskConverter;
+import digital.design.management.system.enumerate.StatusTask;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,31 +10,53 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task implements Entity {
+@Table(name = "task")
+public class Task {
 
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private long id;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "performer")
     private Employee taskPerformer;
 
-    private Integer executionTime;
+    @Column(name = "execution_time", nullable = false)
+    private int executionTime;
 
+    @Column(name = "deadline", nullable = false)
     private Date deadline;
 
+    @Column(name = "status", nullable = false)
+    @Convert(converter = StatusTaskConverter.class)
     private StatusTask status;
 
+    @ManyToOne
+    @JoinColumn(name = "author", nullable = false)
     private Employee author;
 
+    @Column(name = "date_of_created", nullable = false)
     private Date dateOfCreated;
 
+    @Column(name = "date_of_update", nullable = false)
     private Date dateOfUpdate;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 }

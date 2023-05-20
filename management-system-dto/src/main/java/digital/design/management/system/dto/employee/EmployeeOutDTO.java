@@ -1,6 +1,6 @@
 package digital.design.management.system.dto.employee;
 
-import digital.design.management.system.common.enumerate.StatusEmployee;
+import digital.design.management.system.enumerate.StatusEmployee;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +13,8 @@ import lombok.Setter;
 public class EmployeeOutDTO extends EmployeeDTO {
 
     private Long id;
+
+    private String uid;
 
     private StatusEmployee status;
 

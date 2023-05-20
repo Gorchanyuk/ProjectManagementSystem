@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectTeamDeleteDTO {
 
-    private Long projectId;
+    private UUID projectUid;
 
-    private Long employeeId;
+    private UUID employeeUid;
 }

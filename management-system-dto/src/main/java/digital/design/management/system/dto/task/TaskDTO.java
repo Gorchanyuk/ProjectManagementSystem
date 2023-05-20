@@ -1,7 +1,9 @@
 package digital.design.management.system.dto.task;
 
-import digital.design.management.system.common.enumerate.StatusTask;
-import digital.design.management.system.dto.employee.EmployeeDTO;
+import digital.design.management.system.entity.Employee;
+import digital.design.management.system.entity.Project;
+import digital.design.management.system.enumerate.StatusTask;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,22 +17,27 @@ import java.util.Date;
 @NoArgsConstructor
 public class TaskDTO {
 
+    @NotBlank(message = "Поле 'Наименование задачи' не может быть пустым")
     private String name;
 
     private String description;
 
-    private EmployeeDTO taskPerformer;
+    private Employee taskPerformer;
 
-    private Integer executionTime;
+    @NotBlank(message = "Поле 'Трудозатраты' не может быть пустым")
+    private int executionTime;
 
+    @NotBlank(message = "Поле 'Крайний срок' не может быть пустым")
     private Date deadline;
 
+    @NotBlank(message = "Поле 'Статус задачи' не может быть пустым")
     private StatusTask status;
 
-//    private Employee author;
+    private Employee author;
 
-//    private Date dateOfCreated;
+    private Date dateOfCreated;
 
-//    private Date dateOfUpdate;
+    private Date dateOfUpdate;
 
+    private Project project;
 }

@@ -2,11 +2,10 @@ package digital.design.management.system.common.exception;
 
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor
-public class SuchUsernameAlreadyExistException extends RuntimeException {
+public class EntityDoesNotExistException extends RuntimeException{
 
-    public SuchUsernameAlreadyExistException(String message) {
+    public EntityDoesNotExistException(String message){
         super(message);
     }
 }

@@ -1,18 +1,23 @@
 package digital.design.management.system.dto.project;
 
-import digital.design.management.system.common.enumerate.StatusProject;
+import digital.design.management.system.enumerate.StatusProject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProjectOutDTO extends ProjectDTO{
 
     private Long id;
 
-    private StatusProject statusProject;
+    private UUID uid;
+
+    private StatusProject status;
+
 }
