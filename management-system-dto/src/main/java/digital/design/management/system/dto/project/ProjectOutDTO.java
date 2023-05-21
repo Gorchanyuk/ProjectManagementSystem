@@ -14,8 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ProjectOutDTO extends ProjectDTO{
 
-    private Long id;
-
     private UUID uid;
 
     private StatusProject status;

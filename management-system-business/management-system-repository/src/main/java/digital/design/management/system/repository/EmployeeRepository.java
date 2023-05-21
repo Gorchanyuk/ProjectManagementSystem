@@ -16,6 +16,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     Optional<Employee> findByUid(UUID uid);
 
+    Optional<Employee> findByUidAndStatus(UUID uid, StatusEmployee status);
+
     List<Employee> findAllByStatus(StatusEmployee statusEmployee);
 
     Optional<Employee> findByUsernameAndStatus(String username, StatusEmployee statusEmployee);

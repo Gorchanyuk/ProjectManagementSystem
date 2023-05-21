@@ -1,7 +1,6 @@
 package digital.design.management.system.service;
 
 
-import digital.design.management.system.common.exception.EditRemoteWorkerException;
 import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.exception.SuchUsernameAlreadyExistException;
 import digital.design.management.system.dto.employee.EmployeeDTO;
@@ -9,9 +8,11 @@ import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.enumerate.StatusEmployee;
 import digital.design.management.system.repository.EmployeeRepository;
+import digital.design.management.system.repository.ProjectTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,11 +24,17 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
+    private final ProjectTeamRepository projectTeamRepository;
 
 
-    public Employee findEmployeeByUid(UUID uid){
+     Employee findEmployeeByUid(UUID uid){
 
         return employeeRepository.findByUid(uid)
+                .orElseThrow(EntityDoesNotExistException::new);
+    }
+
+    Employee findByUid(UUID uid){
+        return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIV)
                 .orElseThrow(EntityDoesNotExistException::new);
     }
 
@@ -41,27 +48,26 @@ public class EmployeeService {
                 .toList();
     }
 
-    public EmployeeOutDTO getEmployeeById(String id) {
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(EntityDoesNotExistException::new);
+    public EmployeeOutDTO getEmployeeByUid(UUID uid) {
+        Employee employee = findByUid(uid);
 
         return modelMapper.map(employee, EmployeeOutDTO.class);
     }
 
+    @Transactional
     public EmployeeOutDTO deleteEmployee(UUID uid) {
-        Employee employee = employeeRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
+        Employee employee = findByUid(uid);
         employee.setStatus(StatusEmployee.DELETED);
         employeeRepository.save(employee);
+        //Удаляем этого сотрудника из всех проектов
+        projectTeamRepository.deleteAllByEmployeeId(employee);
 
         return modelMapper.map(employee, EmployeeOutDTO.class);
     }
 
     public EmployeeOutDTO updateEmployee(UUID uid, EmployeeDTO employeeDTO) {
-        Employee employee = employeeRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
-        if (employee.getStatus().equals(StatusEmployee.DELETED))
-            throw new EditRemoteWorkerException();
+        Employee employee = findByUid(uid);
+        //Проверка на повотряющиеся username, в случаее если это поле изменили
         if (employee.getUsername() != null && employeeDTO.getUsername() != null &&
                 !employee.getUsername().equals(employeeDTO.getUsername())
                 && employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIV).isPresent()) {

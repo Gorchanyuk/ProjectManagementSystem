@@ -12,8 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EmployeeOutDTO extends EmployeeDTO {
 
-    private Long id;
-
     private String uid;
 
     private StatusEmployee status;

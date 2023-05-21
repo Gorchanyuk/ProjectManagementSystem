@@ -1,7 +1,5 @@
 package digital.design.management.system.web.controller;
 
-
-import digital.design.management.system.common.exception.EditRemoteWorkerException;
 import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.exception.SuchUsernameAlreadyExistException;
 import digital.design.management.system.common.util.EmployeeValidator;
@@ -33,10 +31,10 @@ public class EmployeeController {
         return employeeService.getEmployees();
     }
 
-    @GetMapping("/{id}")
-    public EmployeeOutDTO getEmployeeById(@PathVariable("id") String id) {
+    @GetMapping("/{uid}")
+    public EmployeeOutDTO getEmployeeByUid(@PathVariable("uid") UUID uid) {
 
-        return employeeService.getEmployeeById(id);
+        return employeeService.getEmployeeByUid(uid);
     }
 
     @GetMapping("/search")
@@ -53,7 +51,8 @@ public class EmployeeController {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
                             .defaultMessage(e.getDefaultMessage())
-                            .field(e.getField()).build())
+                            .field(e.getField())
+                            .build())
                     .toList();
 
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
@@ -79,7 +78,8 @@ public class EmployeeController {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
                             .defaultMessage(e.getDefaultMessage())
-                            .field(e.getField()).build())
+                            .field(e.getField())
+                            .build())
                     .toList();
 
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
@@ -91,19 +91,10 @@ public class EmployeeController {
     @ExceptionHandler
     private ResponseEntity<InputDataErrorResponse> handleException(EntityDoesNotExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
-                "id",
-                "Сотрудник с таким id не найден"
+                "uid",
+                "Сотрудник с таким uid не найден"
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(EditRemoteWorkerException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "status",
-                "Попытка радактирования удаленного сотрудника"
-        );
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler

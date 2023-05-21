@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table(name = "project_team")
 @IdClass(ProjectTeamId.class)
 @NamedEntityGraph(
-        name = "project.allEmployee",
+        name = "project_employee",
         attributeNodes = {
                 @NamedAttributeNode("projectId"),
                 @NamedAttributeNode("employeeId")
@@ -42,6 +42,5 @@ public class ProjectTeam {
         projectId = project;
         employeeId = employee;
     }
-
 
 }

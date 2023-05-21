@@ -1,6 +1,8 @@
 package digital.design.management.system.service;
 
 
+import digital.design.management.system.ProjectTeamId;
+import digital.design.management.system.common.exception.EmployeeAlreadyParticipatingInProjectException;
 import digital.design.management.system.dto.project_team.ProjectTeamDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamDeleteDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamOutDTO;
@@ -8,12 +10,12 @@ import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.ProjectTeam;
 import digital.design.management.system.repository.ProjectTeamRepository;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,8 +28,8 @@ public class ProjectTeamService {
     private final ProjectService projectService;
 
 
-    public List<ProjectTeamOutDTO> getAllParty(UUID projectId) {
-        List<ProjectTeam> projectTeam = projectTeamRepository.findAllByProjectId_Uid(projectId);
+    public List<ProjectTeamOutDTO> getAllParty(UUID projectUid) {
+        List<ProjectTeam> projectTeam = projectTeamRepository.findAllByProjectId_Uid(projectUid);
         return projectTeam.stream()
                 .map(team -> modelMapper.map(team, ProjectTeamOutDTO.class))
                 .toList();
@@ -35,18 +37,27 @@ public class ProjectTeamService {
 
     public ProjectTeamOutDTO addParticipant(ProjectTeamDTO projectTeamDTO) {
         //Получаем сотрудника и проект по их uid
-        Employee employee = employeeService.findEmployeeByUid(projectTeamDTO.getEmployeeUid());
-        Project project = projectService.findProjectByUid(projectTeamDTO.getProjectUid());
-        ProjectTeam projectTeam = new ProjectTeam(project, employee,projectTeamDTO.getRoleEmployee() );
+        Employee employee = employeeService.findByUid(projectTeamDTO.getEmployeeUid());
+        Project project = projectService.findByUid(projectTeamDTO.getProjectUid());
+        ProjectTeamId id = new ProjectTeamId(project.getId(), employee.getId());
+
+        //Проверяем чтобы такой записи не было в БД;
+        Optional<ProjectTeam> projectTeamOptional = projectTeamRepository.findById(id);
+        if (projectTeamOptional.isPresent())
+            throw new EmployeeAlreadyParticipatingInProjectException();
+
+        ProjectTeam projectTeam = new ProjectTeam(project, employee, projectTeamDTO.getRoleEmployee());
         projectTeamRepository.save(projectTeam);
 
         return modelMapper.map(projectTeam, ProjectTeamOutDTO.class);
     }
 
-    public void deleteParticipant(ProjectTeamDeleteDTO projectTeamDeleteDTO) {
-        Employee employee = employeeService.findEmployeeByUid(projectTeamDeleteDTO.getEmployeeUid());
-        Project project = projectService.findProjectByUid(projectTeamDeleteDTO.getProjectUid());
+    public void deleteParticipant(ProjectTeamDeleteDTO deleteDTO) {
+        Employee employee = employeeService.findEmployeeByUid(deleteDTO.getEmployeeUid());
+        Project project = projectService.findByUid(deleteDTO.getProjectUid());
         ProjectTeam projectTeam = new ProjectTeam(project, employee);
         projectTeamRepository.delete(projectTeam);
     }
+
+
 }

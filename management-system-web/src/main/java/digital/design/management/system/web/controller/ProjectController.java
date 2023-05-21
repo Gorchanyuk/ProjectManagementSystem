@@ -44,7 +44,8 @@ public class ProjectController {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e->InputDataErrorResponse.builder()
                             .defaultMessage(e.getDefaultMessage())
-                            .field(e.getField()).build())
+                            .field(e.getField())
+                            .build())
                     .toList();
 
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
@@ -63,10 +64,12 @@ public class ProjectController {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e->InputDataErrorResponse.builder()
                             .defaultMessage(e.getDefaultMessage())
-                            .field(e.getField()).build())
+                            .field(e.getField())
+                            .build())
                     .toList();
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
+
         ProjectOutDTO projectOutDTO = projectService.updateProject(uid, projectDTO);
         return new ResponseEntity<>(projectOutDTO, HttpStatus.ACCEPTED);
     }

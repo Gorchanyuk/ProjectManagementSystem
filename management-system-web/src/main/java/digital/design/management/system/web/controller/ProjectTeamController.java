@@ -1,7 +1,8 @@
 package digital.design.management.system.web.controller;
 
+import digital.design.management.system.common.exception.EmployeeAlreadyParticipatingInProjectException;
+import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.util.InputDataErrorResponse;
-import digital.design.management.system.common.util.ProjectTeamValidator;
 import digital.design.management.system.dto.project_team.ProjectTeamDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamDeleteDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamOutDTO;
@@ -23,18 +24,16 @@ import java.util.UUID;
 public class ProjectTeamController {
 
     private final ProjectTeamService projectTeamService;
-    private final ProjectTeamValidator projectTeamValidator;
 
-    @GetMapping("/{project_id}")
-    public List<ProjectTeamOutDTO> getAllParty(@PathVariable("project_id") UUID projectId) {
-        return projectTeamService.getAllParty(projectId);
+    @GetMapping("/{project_uid}")
+    public List<ProjectTeamOutDTO> getAllParty(@PathVariable("project_uid") UUID projectUid) {
+        return projectTeamService.getAllParty(projectUid);
     }
 
     @PostMapping()
     public ResponseEntity<Object> addParticipant(@Valid @RequestBody ProjectTeamDTO team,
                                                  BindingResult bindingResult) {
-        System.out.println("twew");
-        projectTeamValidator.validate(team, bindingResult);
+
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
@@ -55,14 +54,31 @@ public class ProjectTeamController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /* HttpMessageNotReadableException - это исключение в данном случае сообщает что в качестве аргумента
-        поступил несовместимый тип, поэтому возвращаем сообщение с перечислением допустимых значений */
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(EmployeeAlreadyParticipatingInProjectException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "employeeUid",
+                "Сотрудник с таким uid уже учавствует в проекте"
+        );
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(EntityDoesNotExistException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "employeeUid или projectUid",
+                "Значение employeeUid или projectUid не найдено"
+        );
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    /* HttpMessageNotReadableException - это исключение сообщает что в качестве аргумента
+        поступил несовместимый тип, так как ошибка может быть в любом поле возвращаем базовое сообщение */
     @ExceptionHandler
     private ResponseEntity<InputDataErrorResponse> handleException(HttpMessageNotReadableException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
-                "status",
-                "Роль сотрудника должна быть представлена одним из следующих вариантов " +
-                        "PROJECT_MANAGER, ANALYST, DEVELOPER или TESTER"
+                "Ошибка возможна в любом поле",
+                e.getMessage()
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }

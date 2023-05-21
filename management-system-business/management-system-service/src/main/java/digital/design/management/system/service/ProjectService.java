@@ -22,6 +22,12 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
 
+    public Project findByUid(UUID uid) {
+
+        return projectRepository.findByUid(uid)
+                .orElseThrow(EntityDoesNotExistException::new);
+    }
+
     public List<ProjectOutDTO> getProjects() {
         List<Project> projects = projectRepository.findAll();
 
@@ -39,8 +45,8 @@ public class ProjectService {
     }
 
     public ProjectOutDTO updateProject(UUID uid, ProjectDTO projectDTO) {
-        Project project = projectRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
+        Project project = findByUid(uid);
+        //Проверка уникальности кода проекта, если его изменили
         if (!project.getCode().equals(projectDTO.getCode())
                 && projectRepository.findByCode(projectDTO.getCode()).isPresent()) {
             throw new SuchCodeProjectAlreadyExistException();
@@ -61,21 +67,18 @@ public class ProjectService {
     }
 
     public ProjectOutDTO updateStatusProject(UUID uid) {
-        Project project = projectRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
+        Project project = findByUid(uid);
 
+        //Повышаем статус проекта если это возможно,
+        //в противном случае выкидываем исключение
         if (project.getStatus().hasNextStatus())
             project.setStatus(project.getStatus().getNextSatatus());
         else
             throw new StatusProjectHasNotNextStatusException();
-        projectRepository.save(project);
 
+        projectRepository.save(project);
         return modelMapper.map(project, ProjectOutDTO.class);
     }
 
-    public Project findProjectByUid(UUID uid) {
 
-        return projectRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
-    }
 }
