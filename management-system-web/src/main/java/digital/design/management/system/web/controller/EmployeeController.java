@@ -2,7 +2,7 @@ package digital.design.management.system.web.controller;
 
 import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.exception.SuchUsernameAlreadyExistException;
-import digital.design.management.system.common.util.EmployeeValidator;
+import digital.design.management.system.validator.EmployeeValidator;
 import digital.design.management.system.common.util.InputDataErrorResponse;
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;

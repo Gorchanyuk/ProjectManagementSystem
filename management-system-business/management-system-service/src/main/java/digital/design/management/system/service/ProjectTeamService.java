@@ -53,7 +53,7 @@ public class ProjectTeamService {
     }
 
     public void deleteParticipant(ProjectTeamDeleteDTO deleteDTO) {
-        Employee employee = employeeService.findEmployeeByUid(deleteDTO.getEmployeeUid());
+        Employee employee = employeeService.findByUid(deleteDTO.getEmployeeUid());
         Project project = projectService.findByUid(deleteDTO.getProjectUid());
         ProjectTeam projectTeam = new ProjectTeam(project, employee);
         projectTeamRepository.delete(projectTeam);

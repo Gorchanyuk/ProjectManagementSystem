@@ -4,7 +4,7 @@ import digital.design.management.system.common.exception.EntityDoesNotExistExcep
 import digital.design.management.system.common.exception.StatusProjectHasNotNextStatusException;
 import digital.design.management.system.common.exception.SuchCodeProjectAlreadyExistException;
 import digital.design.management.system.common.util.InputDataErrorResponse;
-import digital.design.management.system.common.util.ProjectValidator;
+import digital.design.management.system.validator.ProjectValidator;
 import digital.design.management.system.converter.StatusProjectConverter;
 import digital.design.management.system.dto.project.ProjectDTO;
 import digital.design.management.system.dto.project.ProjectOutDTO;

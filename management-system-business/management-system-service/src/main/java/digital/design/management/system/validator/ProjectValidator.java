@@ -1,4 +1,4 @@
-package digital.design.management.system.common.util;
+package digital.design.management.system.validator;
 
 
 import digital.design.management.system.dto.project.ProjectDTO;
@@ -14,7 +14,7 @@ public class ProjectValidator implements Validator {
 
     private final ProjectRepository projectRepository;
     @Override
-    public boolean supports(Class<?> clazz) {
+    public boolean supports(Class<?>  clazz) {
         return ProjectDTO.class.equals(clazz);
     }
 

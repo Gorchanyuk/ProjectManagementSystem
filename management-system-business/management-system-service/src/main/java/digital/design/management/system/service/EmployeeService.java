@@ -26,13 +26,6 @@ public class EmployeeService {
     private final ModelMapper modelMapper;
     private final ProjectTeamRepository projectTeamRepository;
 
-
-     Employee findEmployeeByUid(UUID uid){
-
-        return employeeRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
-    }
-
     Employee findByUid(UUID uid){
         return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIV)
                 .orElseThrow(EntityDoesNotExistException::new);
