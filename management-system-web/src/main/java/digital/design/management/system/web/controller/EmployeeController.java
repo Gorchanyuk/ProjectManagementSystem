@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import main.java.digital.design.management.system.common.exception.EmployeeDoesNotExistException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,28 +31,29 @@ public class EmployeeController {
     private final EmployeeValidator employeeValidator;
     private final ResourceBundle resourceBundle;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Находит всех сотрудников, но не более 100")
     public List<EmployeeOutDTO> getEmployees() {
 
         return employeeService.getEmployees();
     }
 
-    @GetMapping("/{uid}")
+    @GetMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Поиск сотрудника по uid и статусу 'Активный'")
     public EmployeeOutDTO getEmployeeByUid(@PathVariable("uid") UUID uid) {
 
         return employeeService.getEmployeeByUid(uid);
     }
 
-    @GetMapping("/search")
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Ищет сотрудников по ключевому слову. Поиск очуществляется в полях имя, фамилия, отчество, ник " +
             "и почта, со статусом 'Активный'")
     public List<EmployeeOutDTO> getEmployeeBySearch(@RequestParam(value = "key", defaultValue = "") String key) {
         return employeeService.getEmployeeByKeyWord(key);
     }
 
-    @PostMapping("")
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление нового сотрудника")
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
@@ -71,7 +73,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{uid}")
+    @DeleteMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Удаление сотрудника по его uid")
     public ResponseEntity<EmployeeOutDTO> deleteEmployee(@PathVariable("uid") UUID uid) {
 
@@ -79,7 +81,9 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/{uid}")
+    @PutMapping(value = "/{uid}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление данных сотрудника")
     public ResponseEntity<Object> updateEmployee(@PathVariable("uid") UUID uid,
                                                  @Valid @RequestBody EmployeeDTO employeeDTO,

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import main.java.digital.design.management.system.common.exception.EmployeeDoesNotExistException;
 import main.java.digital.design.management.system.common.exception.ProjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
@@ -31,13 +32,13 @@ public class ProjectTeamController {
     private final ProjectTeamService projectTeamService;
     private final ResourceBundle resourceBundle;
 
-    @GetMapping("/{project_uid}")
+    @GetMapping(value = "/{project_uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение всех сотрудников из заданного проекта по его uid")
     public List<ProjectTeamOutDTO> getAllParty(@PathVariable("project_uid") UUID projectUid) {
         return projectTeamService.getAllParty(projectUid);
     }
 
-    @PostMapping()
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление сотрудника в команду")
     public ResponseEntity<Object> addParticipant(@Valid @RequestBody ProjectTeamDTO team,
                                                  BindingResult bindingResult) {
@@ -56,7 +57,7 @@ public class ProjectTeamController {
         return new ResponseEntity<>(projectTeamOutDTO, HttpStatus.CREATED);
     }
 
-    @DeleteMapping()
+    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Удаление сотрудника из команды")
     public ResponseEntity<Object> deleteParticipant(@RequestBody ProjectTeamDeleteDTO projectTeamDeleteDTO) {
         projectTeamService.deleteParticipant(projectTeamDeleteDTO);

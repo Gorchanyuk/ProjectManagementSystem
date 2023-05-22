@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import main.java.digital.design.management.system.common.exception.ProjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,14 @@ public class ProjectController {
     private final ProjectValidator projectValidator;
     private final ResourceBundle resourceBundle;
 
-    @GetMapping()
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Находит все проекты, но не более 100")
     public List<ProjectOutDTO> getProjects() {
         return projectService.getProjects();
     }
 
-    @PostMapping()
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Создание нового проекта. Проекту присваивается статус 'Черновик'")
     public ResponseEntity<Object> createProject(@Valid @RequestBody ProjectDTO projectDTO,
                                                 BindingResult bindingResult) {
@@ -60,7 +62,8 @@ public class ProjectController {
         return new ResponseEntity<>(projectOutDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{uid}")
+    @PutMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление данных проекта")
     public ResponseEntity<Object> updateProject(@PathVariable("uid") UUID uid,
                                                 @Valid @RequestBody ProjectDTO projectDTO,
@@ -80,7 +83,7 @@ public class ProjectController {
         return new ResponseEntity<>(projectOutDTO, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/search")
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Поиск проекта по ключевому слову и статусу. Поиск осуществляется по полям код проекта и название проекта. " +
             "Если не указать статус поиск осуществляется по всем проектам")
     public List<ProjectOutDTO> getProjectsBySearch(@RequestParam(value = "key", defaultValue = "") String key,
@@ -90,7 +93,7 @@ public class ProjectController {
         return projectService.getProjectsBySearch(key, statuses);
     }
 
-    @PatchMapping("/{uid}")
+    @PatchMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Повышение стаутса проекта")
     public ProjectOutDTO updateStatusProject(@PathVariable("uid") UUID uid) {
         return projectService.updateStatusProject(uid);
