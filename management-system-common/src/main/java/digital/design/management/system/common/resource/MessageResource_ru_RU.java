@@ -2,7 +2,7 @@ package digital.design.management.system.common.resource;
 
 import java.util.ListResourceBundle;
 
-public class MessageResource extends ListResourceBundle {
+public class MessageResource_ru_RU extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
