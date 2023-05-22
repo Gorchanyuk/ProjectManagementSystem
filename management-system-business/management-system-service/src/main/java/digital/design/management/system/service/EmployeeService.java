@@ -1,7 +1,6 @@
 package digital.design.management.system.service;
 
 
-import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.exception.SuchUsernameAlreadyExistException;
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
@@ -10,6 +9,7 @@ import digital.design.management.system.enumerate.StatusEmployee;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import lombok.RequiredArgsConstructor;
+import main.java.digital.design.management.system.common.exception.EmployeeDoesNotExistException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +26,14 @@ public class EmployeeService {
     private final ModelMapper modelMapper;
     private final ProjectTeamRepository projectTeamRepository;
 
-    Employee findByUid(UUID uid){
+    Employee findByUid(UUID uid) {
         return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIV)
-                .orElseThrow(EntityDoesNotExistException::new);
+                .orElseThrow(EmployeeDoesNotExistException::new);
     }
 
     public List<EmployeeOutDTO> getEmployees() {
         List<Employee> employees =
-                employeeRepository.findAllByStatus(StatusEmployee.ACTIV).stream()
+                employeeRepository.findTop100ByStatus(StatusEmployee.ACTIV).stream()
                         .toList();
 
         return employees.stream()
@@ -89,6 +89,4 @@ public class EmployeeService {
 
         return modelMapper.map(employee, EmployeeOutDTO.class);
     }
-
-
 }

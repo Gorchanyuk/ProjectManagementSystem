@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,13 +19,12 @@ import java.util.Date;
 @Table(name = "task")
 public class Task {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private long id;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
+    @Column(name = "uid")
+    private UUID uid;
 
     @Column(name = "name", nullable = false)
     private String name;

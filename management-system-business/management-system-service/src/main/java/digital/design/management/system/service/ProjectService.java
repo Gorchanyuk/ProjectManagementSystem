@@ -1,6 +1,5 @@
 package digital.design.management.system.service;
 
-import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.exception.StatusProjectHasNotNextStatusException;
 import digital.design.management.system.common.exception.SuchCodeProjectAlreadyExistException;
 import digital.design.management.system.dto.project.ProjectDTO;
@@ -9,6 +8,7 @@ import digital.design.management.system.entity.Project;
 import digital.design.management.system.enumerate.StatusProject;
 import digital.design.management.system.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import main.java.digital.design.management.system.common.exception.ProjectDoesNotExistException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +25,11 @@ public class ProjectService {
     public Project findByUid(UUID uid) {
 
         return projectRepository.findByUid(uid)
-                .orElseThrow(EntityDoesNotExistException::new);
+                .orElseThrow(ProjectDoesNotExistException::new);
     }
 
     public List<ProjectOutDTO> getProjects() {
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectRepository.findTop100By();
 
         return projects.stream()
                 .map(project -> modelMapper.map(project, ProjectOutDTO.class))

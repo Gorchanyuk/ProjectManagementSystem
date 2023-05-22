@@ -3,14 +3,14 @@ VALUES ('project1', 'project1', 'В разработке'),
        ('project2', 'project2', 'Завершен'),
        ('project3', 'project3', 'В разработке');
 
-INSERT INTO employee (first_name, last_name, email, job_title, status)
-VALUES ('Tom', 'Wilson', 'wilson@mail.com', 'Developer', 'Активный'),
-       ('Jack', 'White', 'white@mail.com', 'Tester', 'Активный'),
-       ('Mike', 'Stivens', 'stiv@mail.com', 'Developer', 'Активный'),
-       ('Nikolas', 'Pain', 'pain@mail.com', 'Developer', 'Удаленный'),
-       ('Dan', 'Fokin', 'fokin@mail.com', 'Tester', 'Удаленный'),
-       ('Petr', 'Samoilov', 'petr@mail.com', 'Tester', 'Активный'),
-       ('Andrey', 'Astafev', 'astafev@mail.com', 'Developer', 'Активный');
+INSERT INTO employee (first_name, last_name, email, job_title, status, username, password)
+VALUES ('Tom', 'Wilson', 'wilson@mail.com', 'Developer', 'Активный', 'user1', 'password'),
+       ('Jack', 'White', 'white@mail.com', 'Tester', 'Активный', 'user2', 'password'),
+       ('Mike', 'Stivens', 'stiv@mail.com', 'Developer', 'Активный', 'user3', 'password'),
+       ('Nikolas', 'Pain', 'pain@mail.com', 'Developer', 'Удаленный', 'user4', 'password'),
+       ('Dan', 'Fokin', 'fokin@mail.com', 'Tester', 'Удаленный', 'user5', 'password'),
+       ('Petr', 'Samoilov', 'petr@mail.com', 'Tester', 'Активный', 'user6', 'password'),
+       ('Andrey', 'Astafev', 'astafev@mail.com', 'Developer', 'Активный', 'user7', 'password');
 
 INSERT INTO project_team(project_id, employee_id, role_employee)
 VALUES (1, 1, 'Руководитель проекта'),

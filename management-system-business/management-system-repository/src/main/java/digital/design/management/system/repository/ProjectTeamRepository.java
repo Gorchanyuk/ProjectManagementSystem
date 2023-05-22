@@ -16,7 +16,7 @@ public interface ProjectTeamRepository extends JpaRepository<ProjectTeam, Projec
 
 
     @EntityGraph(value = "project_employee", type = EntityGraph.EntityGraphType.LOAD)
-    List<ProjectTeam> findAllByProjectId_Uid( UUID uid);
+    List<ProjectTeam> findAllByProjectId_Uid(UUID uid);
 
     @EntityGraph(value = "project_employee", type = EntityGraph.EntityGraphType.LOAD)
     void deleteAllByEmployeeId(Employee employee);

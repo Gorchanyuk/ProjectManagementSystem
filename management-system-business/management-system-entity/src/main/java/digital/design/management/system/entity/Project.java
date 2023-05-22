@@ -18,7 +18,7 @@ import java.util.UUID;
 @Table(name = "project")
 public class Project {
 
-    public Project(){
+    public Project() {
         this.uid = UUID.randomUUID();
     }
 

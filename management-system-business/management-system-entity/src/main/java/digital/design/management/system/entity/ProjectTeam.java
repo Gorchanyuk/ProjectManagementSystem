@@ -38,7 +38,7 @@ public class ProjectTeam {
     @Convert(converter = RoleEmployeeConverter.class)
     private RoleEmployee roleEmployee;
 
-    public ProjectTeam(Project project, Employee employee){
+    public ProjectTeam(Project project, Employee employee) {
         projectId = project;
         employeeId = employee;
     }

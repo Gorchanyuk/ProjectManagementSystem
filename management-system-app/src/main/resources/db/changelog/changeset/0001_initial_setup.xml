@@ -37,6 +37,7 @@
             <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()">
                 <constraints  unique="true" primaryKey="true" primaryKeyName="employee_id_pkey"/>
             </column>
+            <column name="password" type="VARCHAR(255)" />
             <column name="email" type="VARCHAR(255)"/>
             <column name="first_name" type="VARCHAR(255)">
                 <constraints nullable="false"/>

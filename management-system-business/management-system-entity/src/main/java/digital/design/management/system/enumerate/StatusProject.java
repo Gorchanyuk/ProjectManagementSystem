@@ -5,7 +5,7 @@ public enum StatusProject {
     COMPLETE("Завершен", null),
     TEST("В тестировании", COMPLETE),
     DEVELOP("В разработке", TEST),
-    DRAFT("Черновик", DEVELOP );
+    DRAFT("Черновик", DEVELOP);
 
     private final String status;
     private final StatusProject nextSatatus;
@@ -19,8 +19,12 @@ public enum StatusProject {
         return status;
     }
 
-    public StatusProject getNextSatatus(){return nextSatatus;}
+    public StatusProject getNextSatatus() {
+        return nextSatatus;
+    }
 
-    public boolean hasNextStatus(){return nextSatatus != null;}
+    public boolean hasNextStatus() {
+        return nextSatatus != null;
+    }
 }
 

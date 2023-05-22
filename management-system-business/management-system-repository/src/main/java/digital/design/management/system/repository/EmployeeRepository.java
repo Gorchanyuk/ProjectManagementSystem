@@ -14,11 +14,11 @@ import java.util.UUID;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
-    Optional<Employee> findByUid(UUID uid);
+    Optional<Employee> findByUsername(String username);
 
     Optional<Employee> findByUidAndStatus(UUID uid, StatusEmployee status);
 
-    List<Employee> findAllByStatus(StatusEmployee statusEmployee);
+    List<Employee> findTop100ByStatus(StatusEmployee statusEmployee);
 
     Optional<Employee> findByUsernameAndStatus(String username, StatusEmployee statusEmployee);
 

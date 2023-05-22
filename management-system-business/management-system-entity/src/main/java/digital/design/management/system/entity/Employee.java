@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "employee")
 public class Employee {
 
-    public Employee(){
+    public Employee() {
         this.uid = UUID.randomUUID();
     }
 
@@ -25,7 +25,11 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "uid")
     private UUID uid;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -52,7 +56,7 @@ public class Employee {
     @ManyToMany
     @JoinTable(
             name = "project_team",
-            joinColumns =  @JoinColumn(name = "employee_id"),
+            joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private Set<Project> projects;

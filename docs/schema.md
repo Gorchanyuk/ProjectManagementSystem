@@ -1,4 +1,4 @@
-# ProjectManagementSystem
+# Management system
 
 ### Структура базы данных
 

@@ -1,14 +1,16 @@
 package digital.design.management.system.web.controller;
 
-import digital.design.management.system.common.exception.EntityDoesNotExistException;
 import digital.design.management.system.common.exception.SuchUsernameAlreadyExistException;
 import digital.design.management.system.validator.EmployeeValidator;
 import digital.design.management.system.common.util.InputDataErrorResponse;
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import main.java.digital.design.management.system.common.exception.EmployeeDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/employee")
+@Tag(name = "Сотрудники", description = "Контроллер для управления сотрудниками")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -28,23 +31,28 @@ public class EmployeeController {
     private final ResourceBundle resourceBundle;
 
     @GetMapping
+    @Operation(summary = "Находит всех сотрудников, но не более 100")
     public List<EmployeeOutDTO> getEmployees() {
 
         return employeeService.getEmployees();
     }
 
     @GetMapping("/{uid}")
+    @Operation(summary = "Поиск сотрудника по uid и статусу 'Активный'")
     public EmployeeOutDTO getEmployeeByUid(@PathVariable("uid") UUID uid) {
 
         return employeeService.getEmployeeByUid(uid);
     }
 
     @GetMapping("/search")
+    @Operation(summary = "Ищет сотрудников по ключевому слову. Поиск очуществляется в полях имя, фамилия, отчество, ник " +
+            "и почта, со статусом 'Активный'")
     public List<EmployeeOutDTO> getEmployeeBySearch(@RequestParam(value = "key", defaultValue = "") String key) {
         return employeeService.getEmployeeByKeyWord(key);
     }
 
     @PostMapping("")
+    @Operation(summary = "Добавление нового сотрудника")
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
 
@@ -64,7 +72,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{uid}")
-
+    @Operation(summary = "Удаление сотрудника по его uid")
     public ResponseEntity<EmployeeOutDTO> deleteEmployee(@PathVariable("uid") UUID uid) {
 
         EmployeeOutDTO employeeOutDTO = employeeService.deleteEmployee(uid);
@@ -72,6 +80,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{uid}")
+    @Operation(summary = "Обновление данных сотрудника")
     public ResponseEntity<Object> updateEmployee(@PathVariable("uid") UUID uid,
                                                  @Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
@@ -91,7 +100,7 @@ public class EmployeeController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(EntityDoesNotExistException e) {
+    private ResponseEntity<InputDataErrorResponse> handleException(EmployeeDoesNotExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "uid",
                 resourceBundle.getString("EMPLOYEE_DOES_NOT_EXIST")
