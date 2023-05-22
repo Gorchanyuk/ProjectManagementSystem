@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 @RestController
@@ -29,6 +30,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ProjectValidator projectValidator;
+    private final ResourceBundle resourceBundle;
 
     @GetMapping()
     public List<ProjectOutDTO> getProjects() {
@@ -95,8 +97,7 @@ public class ProjectController {
     private ResponseEntity<InputDataErrorResponse> handleException(MethodArgumentTypeMismatchException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "status",
-                "Статус должен быть представлен одним из следующих вариантов " +
-                        "DRAFT, DEVELOP, TEST или COMPLETE"
+                resourceBundle.getString("STATUS_PROJECT_EXCEPTION")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
@@ -105,7 +106,7 @@ public class ProjectController {
     private ResponseEntity<InputDataErrorResponse> handleException(SuchCodeProjectAlreadyExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "code",
-                "Проект с таким кодом уже существует"
+                resourceBundle.getString("SUCH_CODE_PROJECT_ALREADY_EXIST")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
@@ -114,7 +115,7 @@ public class ProjectController {
     private ResponseEntity<InputDataErrorResponse> handleException(EntityDoesNotExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "id",
-                "Проект с таким id не найден"
+                resourceBundle.getString("PROJECT_DOES_NOT_EXIST")
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
@@ -123,7 +124,7 @@ public class ProjectController {
     private ResponseEntity<InputDataErrorResponse> handleException(StatusProjectHasNotNextStatusException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "status",
-                "Нельзя повысить статус проекта"
+                resourceBundle.getString("STATUS_PROJECT_HAS_NOT_NEXT_STATUS")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }

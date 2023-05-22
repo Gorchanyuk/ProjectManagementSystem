@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 @RestController
@@ -24,6 +25,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final EmployeeValidator employeeValidator;
+    private final ResourceBundle resourceBundle;
 
     @GetMapping
     public List<EmployeeOutDTO> getEmployees() {
@@ -92,7 +94,7 @@ public class EmployeeController {
     private ResponseEntity<InputDataErrorResponse> handleException(EntityDoesNotExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "uid",
-                "Сотрудник с таким uid не найден"
+                resourceBundle.getString("EMPLOYEE_DOES_NOT_EXIST")
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
@@ -101,7 +103,7 @@ public class EmployeeController {
     private ResponseEntity<InputDataErrorResponse> handleException(SuchUsernameAlreadyExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "username",
-                "Сотрудник с такой учетной записью уже существует"
+                resourceBundle.getString("SUCH_USERNAME_ALREADY_EXIST")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }

@@ -62,8 +62,8 @@ public class EmployeeService {
         Employee employee = findByUid(uid);
         //Проверка на повотряющиеся username, в случаее если это поле изменили
         if (employee.getUsername() != null && employeeDTO.getUsername() != null &&
-                !employee.getUsername().equals(employeeDTO.getUsername())
-                && employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIV).isPresent()) {
+                !employee.getUsername().equals(employeeDTO.getUsername()) &&
+                employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIV).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
         }
         modelMapper.map(employeeDTO, employee);

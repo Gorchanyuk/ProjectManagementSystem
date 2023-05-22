@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 @RestController
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class ProjectTeamController {
 
     private final ProjectTeamService projectTeamService;
+    private final ResourceBundle resourceBundle;
 
     @GetMapping("/{project_uid}")
     public List<ProjectTeamOutDTO> getAllParty(@PathVariable("project_uid") UUID projectUid) {
@@ -58,7 +60,7 @@ public class ProjectTeamController {
     private ResponseEntity<InputDataErrorResponse> handleException(EmployeeAlreadyParticipatingInProjectException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "employeeUid",
-                "Сотрудник с таким uid уже учавствует в проекте"
+                resourceBundle.getString("EMPLOYEE_ALREADY_PARTICIPATING_IN_PROJECT")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
@@ -66,8 +68,8 @@ public class ProjectTeamController {
     @ExceptionHandler
     private ResponseEntity<InputDataErrorResponse> handleException(EntityDoesNotExistException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
-                "employeeUid или projectUid",
-                "Значение employeeUid или projectUid не найдено"
+                "unknownUid",
+                resourceBundle.getString("ENTITY_DOES_NOT_EXIST")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
@@ -77,7 +79,7 @@ public class ProjectTeamController {
     @ExceptionHandler
     private ResponseEntity<InputDataErrorResponse> handleException(HttpMessageNotReadableException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
-                "Ошибка возможна в любом поле",
+                "unknown",
                 e.getMessage()
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);

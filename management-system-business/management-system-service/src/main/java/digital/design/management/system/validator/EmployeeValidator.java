@@ -9,12 +9,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.ResourceBundle;
+
 
 @Component
 @RequiredArgsConstructor
 public class EmployeeValidator implements Validator {
 
     private final EmployeeRepository employeeRepository;
+    private final ResourceBundle resourceBundle;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -27,7 +30,7 @@ public class EmployeeValidator implements Validator {
         EmployeeDTO employee = (EmployeeDTO) target;
 
         if (employeeRepository.findByUsernameAndStatus(employee.getUsername(), StatusEmployee.ACTIV).isPresent()) {
-            errors.rejectValue("username", "", "Сотрудник с такой учетной записью уже существует");
+            errors.rejectValue("username", "", resourceBundle.getString("SUCH_USERNAME_ALREADY_EXIST"));
         }
     }
 }
