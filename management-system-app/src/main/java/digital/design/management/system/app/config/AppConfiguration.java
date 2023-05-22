@@ -17,9 +17,8 @@ public class AppConfiguration {
 
     @Bean
     public ResourceBundle getResourceBundle() {
-        Locale.Builder localBuilder = new Locale.Builder();
         Locale locale =
-                localBuilder
+                new Locale.Builder()
                         .setLanguage("ru")
                         .setRegion("RU")
                         .build();
