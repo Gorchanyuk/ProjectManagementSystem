@@ -1,28 +1,12 @@
 package digital.design.management.system.enumerate;
 
-
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-
 public enum RoleEmployee {
 
-    @JsonEnumDefaultValue
-    PROJECT_MANAGER("Руководитель проекта"),
+    PROJECT_MANAGER,
 
-    ANALYST("Аналитик"),
+    ANALYST,
 
-    DEVELOPER("Разработчик"),
+    DEVELOPER,
 
-    TESTER("Тестировщик");
-
-    private final String role;
-
-    RoleEmployee(String role) {
-        this.role = role;
-    }
-
-
-    public String getStatus() {
-        return role;
-    }
-
+    TESTER
 }

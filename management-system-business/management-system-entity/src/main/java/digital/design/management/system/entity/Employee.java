@@ -1,6 +1,5 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.converter.StatusEmployeeConverter;
 import digital.design.management.system.enumerate.StatusEmployee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,7 +51,7 @@ public class Employee {
     private String email;
 
     @Column(name = "status", nullable = false)
-    @Convert(converter = StatusEmployeeConverter.class)
+    @Enumerated(EnumType.STRING)
     private StatusEmployee status;
 
     @ManyToMany

@@ -1,6 +1,5 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.converter.RoleEmployeeConverter;
 import digital.design.management.system.enumerate.RoleEmployee;
 import digital.design.management.system.ProjectTeamId;
 import jakarta.persistence.*;
@@ -33,7 +32,7 @@ public class ProjectTeam {
     private Employee employeeId;
 
     @Column(name = "role_employee", nullable = false)
-    @Convert(converter = RoleEmployeeConverter.class)
+    @Enumerated(EnumType.STRING)
     private RoleEmployee roleEmployee;
 
     public ProjectTeam(Project project, Employee employee) {

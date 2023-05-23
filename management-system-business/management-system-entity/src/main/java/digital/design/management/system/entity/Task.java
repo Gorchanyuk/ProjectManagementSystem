@@ -1,6 +1,5 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.converter.StatusTaskConverter;
 import digital.design.management.system.enumerate.StatusTask;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,7 +41,7 @@ public class Task{
     private LocalDate deadline;
 
     @Column(name = "status", nullable = false)
-    @Convert(converter = StatusTaskConverter.class)
+    @Enumerated(EnumType.STRING)
     private StatusTask status;
 
     @ManyToOne

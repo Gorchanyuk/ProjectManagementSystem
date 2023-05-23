@@ -1,16 +1,7 @@
 package digital.design.management.system.enumerate;
 
 public enum StatusEmployee {
-    ACTIV("Активный"),
-    DELETED("Удаленный");
+    ACTIVE,
+    DELETED
 
-    private final String status;
-
-    StatusEmployee(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
 }

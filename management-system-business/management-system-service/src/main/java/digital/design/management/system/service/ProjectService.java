@@ -72,7 +72,7 @@ public class ProjectService {
         //Повышаем статус проекта если это возможно,
         //в противном случае выкидываем исключение
         if (project.getStatus().hasNextStatus())
-            project.setStatus(project.getStatus().getNextSatatus());
+            project.setStatus(project.getStatus().getNextStatus());
         else
             throw new StatusProjectHasNotNextStatusException();
 

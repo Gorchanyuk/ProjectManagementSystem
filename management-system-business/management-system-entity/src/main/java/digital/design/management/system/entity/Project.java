@@ -1,7 +1,5 @@
 package digital.design.management.system.entity;
 
-
-import digital.design.management.system.converter.StatusProjectConverter;
 import digital.design.management.system.enumerate.StatusProject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,7 +39,7 @@ public class Project {
     private String description;
 
     @Column(name = "status", nullable = false)
-    @Convert(converter = StatusProjectConverter.class)
+    @Enumerated(EnumType.STRING)
     private StatusProject status;
 
     @ManyToMany(mappedBy = "projects")

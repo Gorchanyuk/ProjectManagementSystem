@@ -2,29 +2,22 @@ package digital.design.management.system.enumerate;
 
 public enum StatusProject {
 
-    COMPLETE("Завершен", null),
-    TEST("В тестировании", COMPLETE),
-    DEVELOP("В разработке", TEST),
-    DRAFT("Черновик", DEVELOP);
+    COMPLETE( null),
+    TEST( COMPLETE),
+    DEVELOP( TEST),
+    DRAFT( DEVELOP);
+    private final StatusProject nextStatus;
 
-    private final String status;
-    private final StatusProject nextSatatus;
-
-    StatusProject(String status, StatusProject nextStatus) {
-        this.status = status;
-        this.nextSatatus = nextStatus;
+    StatusProject(StatusProject nextStatus) {
+        this.nextStatus = nextStatus;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public StatusProject getNextSatatus() {
-        return nextSatatus;
+    public StatusProject getNextStatus() {
+        return nextStatus;
     }
 
     public boolean hasNextStatus() {
-        return nextSatatus != null;
+        return nextStatus != null;
     }
 }
 
