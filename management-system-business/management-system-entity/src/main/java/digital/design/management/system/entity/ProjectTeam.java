@@ -4,12 +4,10 @@ import digital.design.management.system.converter.RoleEmployeeConverter;
 import digital.design.management.system.enumerate.RoleEmployee;
 import digital.design.management.system.ProjectTeamId;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor

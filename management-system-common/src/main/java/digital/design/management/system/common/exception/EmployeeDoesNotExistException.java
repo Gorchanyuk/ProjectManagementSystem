@@ -1,4 +1,4 @@
-package main.java.digital.design.management.system.common.exception;
+package digital.design.management.system.common.exception;
 
 import lombok.NoArgsConstructor;
 

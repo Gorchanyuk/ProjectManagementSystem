@@ -3,21 +3,20 @@ package digital.design.management.system.entity;
 import digital.design.management.system.converter.StatusTaskConverter;
 import digital.design.management.system.enumerate.StatusTask;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "task")
-public class Task {
+public class Task{
+
+    public Task(){this.uid = UUID.randomUUID();}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +36,10 @@ public class Task {
     private Employee taskPerformer;
 
     @Column(name = "execution_time", nullable = false)
-    private int executionTime;
+    private Integer executionTime;
 
     @Column(name = "deadline", nullable = false)
-    private Date deadline;
+    private LocalDate deadline;
 
     @Column(name = "status", nullable = false)
     @Convert(converter = StatusTaskConverter.class)
@@ -51,12 +50,12 @@ public class Task {
     private Employee author;
 
     @Column(name = "date_of_created", nullable = false)
-    private Date dateOfCreated;
+    private LocalDate dateOfCreated;
 
     @Column(name = "date_of_update", nullable = false)
-    private Date dateOfUpdate;
+    private LocalDate dateOfUpdate;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 }

@@ -6,11 +6,11 @@ import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.mapping.Mapper;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import lombok.RequiredArgsConstructor;
-import main.java.digital.design.management.system.common.exception.EmployeeDoesNotExistException;
-import org.modelmapper.ModelMapper;
+import digital.design.management.system.common.exception.EmployeeDoesNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ import java.util.UUID;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final ModelMapper modelMapper;
+    private final Mapper<Employee, EmployeeDTO, EmployeeOutDTO> mapper;
     private final ProjectTeamRepository projectTeamRepository;
 
     Employee findByUid(UUID uid) {
@@ -37,14 +37,14 @@ public class EmployeeService {
                         .toList();
 
         return employees.stream()
-                .map(employee -> modelMapper.map(employee, EmployeeOutDTO.class))
+                .map(mapper::entityToOutDto)
                 .toList();
     }
 
     public EmployeeOutDTO getEmployeeByUid(UUID uid) {
         Employee employee = findByUid(uid);
 
-        return modelMapper.map(employee, EmployeeOutDTO.class);
+        return mapper.entityToOutDto(employee);
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class EmployeeService {
         //Удаляем этого сотрудника из всех проектов
         projectTeamRepository.deleteAllByEmployeeId(employee);
 
-        return modelMapper.map(employee, EmployeeOutDTO.class);
+        return mapper.entityToOutDto(employee);
     }
 
     public EmployeeOutDTO updateEmployee(UUID uid, EmployeeDTO employeeDTO) {
@@ -66,10 +66,10 @@ public class EmployeeService {
                 employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIV).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
         }
-        modelMapper.map(employeeDTO, employee);
+        employee = mapper.dtoToEntity(employeeDTO, employee);
         employeeRepository.save(employee);
 
-        return modelMapper.map(employee, EmployeeOutDTO.class);
+        return mapper.entityToOutDto(employee);
     }
 
     public List<EmployeeOutDTO> getEmployeeByKeyWord(String key) {
@@ -77,16 +77,17 @@ public class EmployeeService {
                 employeeRepository.findByKeyword(key, StatusEmployee.ACTIV);
 
         return employees.stream()
-                .map(employee -> modelMapper.map(employee, EmployeeOutDTO.class))
+                .map(mapper::entityToOutDto)
                 .toList();
-
     }
 
     public EmployeeOutDTO createEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = modelMapper.map(employeeDTO, Employee.class);
+//        Employee employee = modelMapper.map(employeeDTO, Employee.class);
+        Employee employee = mapper.dtoToEntity(employeeDTO);
         employee.setStatus(StatusEmployee.ACTIV);
+        //TODO добавить генерацию пароля
         employeeRepository.save(employee);
 
-        return modelMapper.map(employee, EmployeeOutDTO.class);
+        return mapper.entityToOutDto(employee);
     }
 }

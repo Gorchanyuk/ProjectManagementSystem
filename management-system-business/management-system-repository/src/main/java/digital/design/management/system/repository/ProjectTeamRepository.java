@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -21,4 +22,6 @@ public interface ProjectTeamRepository extends JpaRepository<ProjectTeam, Projec
     @EntityGraph(value = "project_employee", type = EntityGraph.EntityGraphType.LOAD)
     void deleteAllByEmployeeId(Employee employee);
 
+    @EntityGraph(value = "project_employee", type = EntityGraph.EntityGraphType.LOAD)
+    Optional<ProjectTeam> findByProjectId_UidAndEmployeeId_Uid(UUID projectId, UUID employeeId);
 }

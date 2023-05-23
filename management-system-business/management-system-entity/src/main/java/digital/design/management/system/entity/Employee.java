@@ -4,6 +4,7 @@ import digital.design.management.system.converter.StatusEmployeeConverter;
 import digital.design.management.system.enumerate.StatusEmployee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -41,7 +43,7 @@ public class Employee {
     private String surname;
 
     @Column(name = "job_title")
-    private String jodTitle;
+    private String jobTitle;
 
     @Column(name = "username")
     private String username;

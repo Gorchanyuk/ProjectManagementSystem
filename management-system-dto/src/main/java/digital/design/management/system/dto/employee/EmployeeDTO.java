@@ -3,13 +3,11 @@ package digital.design.management.system.dto.employee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Модель сотрудника для передачи данных на сервер")
@@ -27,7 +25,7 @@ public class EmployeeDTO {
     private String surname;
 
     @Schema(description = "Должность", example = "Разработчик")
-    private String jodTitle;
+    private String jobTitle;
 
     @Schema(description = "Учетная запись", example = "ivan_123")
     private String username;

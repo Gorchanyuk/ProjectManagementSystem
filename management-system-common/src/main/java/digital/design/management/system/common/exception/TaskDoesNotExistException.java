@@ -3,9 +3,8 @@ package digital.design.management.system.common.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class ProjectDoesNotExistException extends RuntimeException {
-
-    public ProjectDoesNotExistException(String message) {
+public class TaskDoesNotExistException extends RuntimeException{
+    public TaskDoesNotExistException(String message) {
         super(message);
     }
 }

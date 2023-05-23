@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import main.java.digital.design.management.system.common.exception.ProjectDoesNotExistException;
+import digital.design.management.system.common.exception.ProjectDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +93,7 @@ public class ProjectController {
         return projectService.getProjectsBySearch(key, statuses);
     }
 
-    @PatchMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/raise_status/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Повышение стаутса проекта")
     public ProjectOutDTO updateStatusProject(@PathVariable("uid") UUID uid) {
         return projectService.updateStatusProject(uid);

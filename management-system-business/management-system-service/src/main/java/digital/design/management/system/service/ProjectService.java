@@ -6,10 +6,10 @@ import digital.design.management.system.dto.project.ProjectDTO;
 import digital.design.management.system.dto.project.ProjectOutDTO;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.enumerate.StatusProject;
+import digital.design.management.system.mapping.Mapper;
 import digital.design.management.system.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import main.java.digital.design.management.system.common.exception.ProjectDoesNotExistException;
-import org.modelmapper.ModelMapper;
+import digital.design.management.system.common.exception.ProjectDoesNotExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ModelMapper modelMapper;
+    private final Mapper<Project, ProjectDTO, ProjectOutDTO> mapper;
 
     public Project findByUid(UUID uid) {
 
@@ -32,16 +32,16 @@ public class ProjectService {
         List<Project> projects = projectRepository.findTop100By();
 
         return projects.stream()
-                .map(project -> modelMapper.map(project, ProjectOutDTO.class))
+                .map(mapper::entityToOutDto)
                 .toList();
     }
 
     public ProjectOutDTO createProject(ProjectDTO projectDTO) {
-        Project project = modelMapper.map(projectDTO, Project.class);
+        Project project = mapper.dtoToEntity(projectDTO);
         project.setStatus(StatusProject.DRAFT);
         projectRepository.save(project);
 
-        return modelMapper.map(project, ProjectOutDTO.class);
+        return mapper.entityToOutDto(project);
     }
 
     public ProjectOutDTO updateProject(UUID uid, ProjectDTO projectDTO) {
@@ -51,10 +51,10 @@ public class ProjectService {
                 && projectRepository.findByCode(projectDTO.getCode()).isPresent()) {
             throw new SuchCodeProjectAlreadyExistException();
         }
-        modelMapper.map(projectDTO, project);
+        project = mapper.dtoToEntity(projectDTO, project);
         projectRepository.save(project);
 
-        return modelMapper.map(project, ProjectOutDTO.class);
+        return mapper.entityToOutDto(project);
     }
 
     public List<ProjectOutDTO> getProjectsBySearch(String key, List<StatusProject> statuses) {
@@ -62,7 +62,7 @@ public class ProjectService {
                 projectRepository.findByKeyWordAndStatus(key, statuses);
 
         return projects.stream()
-                .map(project -> modelMapper.map(project, ProjectOutDTO.class))
+                .map(mapper::entityToOutDto)
                 .toList();
     }
 
@@ -77,7 +77,7 @@ public class ProjectService {
             throw new StatusProjectHasNotNextStatusException();
 
         projectRepository.save(project);
-        return modelMapper.map(project, ProjectOutDTO.class);
+        return mapper.entityToOutDto(project);
     }
 
 

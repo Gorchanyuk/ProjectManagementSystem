@@ -5,6 +5,7 @@ import digital.design.management.system.converter.StatusProjectConverter;
 import digital.design.management.system.enumerate.StatusProject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor

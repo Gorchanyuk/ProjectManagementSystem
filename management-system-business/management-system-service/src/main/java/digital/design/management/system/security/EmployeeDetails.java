@@ -50,4 +50,8 @@ public class EmployeeDetails implements UserDetails {
     public boolean isEnabled() {
         return this.employee.getStatus().equals(StatusEmployee.ACTIV);
     }
+
+    public Employee getEmployee(){
+        return employee;
+    }
 }

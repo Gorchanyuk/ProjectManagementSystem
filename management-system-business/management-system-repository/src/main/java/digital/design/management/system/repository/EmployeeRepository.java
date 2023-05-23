@@ -5,6 +5,7 @@ import digital.design.management.system.enumerate.StatusEmployee;
 import digital.design.management.system.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
             "OR e.username ILIKE %:keyword% " +
             "OR e.email ILIKE %:keyword%) " +
             "AND e.status =:status")
-    List<Employee> findByKeyword(String keyword, StatusEmployee status);
+    List<Employee> findByKeyword(@Param("keyword") String keyword, @Param("status") StatusEmployee status);
 
 
 }

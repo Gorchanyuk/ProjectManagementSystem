@@ -3,9 +3,8 @@ package digital.design.management.system.common.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class ProjectDoesNotExistException extends RuntimeException {
-
-    public ProjectDoesNotExistException(String message) {
+public class AuthorIsNotInvolvedInProjectException extends RuntimeException {
+    public AuthorIsNotInvolvedInProjectException(String message) {
         super(message);
     }
 }

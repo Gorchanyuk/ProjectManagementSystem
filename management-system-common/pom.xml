@@ -26,10 +26,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-        </dependency>
-        <dependency>
             <groupId>digital.design</groupId>
             <artifactId>management-system-dto</artifactId>
             <version>0.1-SNAPSHOT</version>
