@@ -14,13 +14,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
@@ -79,17 +82,33 @@ public class TaskController {
         return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    @Operation(summary = "Получение списка задач по условиям фильтра")
-    public List<TaskOutDTO> getTasksWithFilter(@RequestBody TaskFilterDTO taskFilterDTO){
+//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+//            consumes = MediaType.APPLICATION_JSON_VALUE)
+//    @Operation(summary = "Получение списка задач по условиям фильтра")
+//    public List<TaskOutDTO> getTasksWithFilter(@RequestBody TaskFilterDTO taskFilterDTO){
+//
+//        return taskService.getTasksWithFilter(taskFilterDTO);
+//    }
 
-        return taskService.getTasksWithFilter(taskFilterDTO);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Получение списка задач по условиям фильтра")
+    public List<TaskOutDTO> getTasksWithFilter(@RequestParam(value = "name", required = false) String name,
+                                               @RequestParam(value = "status", required = false) List<StatusTask> status,
+                                               @RequestParam(value = "author", required = false) UUID author,
+                                               @RequestParam(value = "taskPerformer", required = false) UUID taskPerformer,
+                                               @RequestParam(value = "deadlineStart", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate deadlineStart,
+                                               @RequestParam(value = "deadlineEnd", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate deadlineEnd,
+                                               @RequestParam(value = "dateOfCreatedStart", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dateOfCreatedStart,
+                                               @RequestParam(value = "dateOfCreatedEnd", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dateOfCreatedEnd) {
+
+        TaskFilterDTO filter = new TaskFilterDTO(name, status, author, taskPerformer, deadlineStart, deadlineEnd, dateOfCreatedStart, dateOfCreatedEnd);
+        return taskService.getTasksWithFilter(filter);
     }
 
     @PutMapping(value = "/raise_status/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Повышение стаутса задачи")
     public TaskOutDTO updateStatusProject(@PathVariable("uid") UUID uid,
-                                             @RequestParam ("status")StatusTask statusTask) {
+                                          @RequestParam("status") StatusTask statusTask) {
         return taskService.updateStatusTask(uid, statusTask);
     }
 
@@ -98,6 +117,16 @@ public class TaskController {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "uid",
                 resourceBundle.getString("AUTHOR_IS_NOT_INVOLVED_IN_PROJECT")
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(HttpMessageNotReadableException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "unknown",
+                e.getMessage()
         );
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

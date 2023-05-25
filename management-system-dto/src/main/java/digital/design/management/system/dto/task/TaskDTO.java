@@ -36,7 +36,7 @@ public class TaskDTO {
     @NotNull(message = "Поле 'Крайний срок' не может быть пустым")
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Schema(description = "Дата, когда задача должна быть исполнена.Нельзя выбрать дату если дата меньше, чем  дата " +
-            "создания + трудозатраты.", example = "14/02/2023")
+            "создания + трудозатраты. Формат 14/02/2023", example = "14/02/2023")
     private LocalDate deadline;
 
 
