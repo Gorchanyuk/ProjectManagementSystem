@@ -1,10 +1,11 @@
 package digital.design.management.system.dto.task;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Valid
 @Schema(description = "Модель задачи для передачи данных на сервер")
 public class TaskDTO {
 
@@ -32,7 +34,7 @@ public class TaskDTO {
     private Integer executionTime;
 
     @NotNull(message = "Поле 'Крайний срок' не может быть пустым")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Schema(description = "Дата, когда задача должна быть исполнена.Нельзя выбрать дату если дата меньше, чем  дата " +
             "создания + трудозатраты.", example = "14/02/2023")
     private LocalDate deadline;

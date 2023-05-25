@@ -1,11 +1,10 @@
 package digital.design.management.system.service;
 
 import digital.design.management.system.ProjectTeamId;
-import digital.design.management.system.common.exception.AuthorIsNotInvolvedInProjectException;
-import digital.design.management.system.common.exception.EmployeeIsNotInvolvedInProjectException;
-import digital.design.management.system.common.exception.TaskDoesNotExistException;
+import digital.design.management.system.common.exception.*;
 import digital.design.management.system.dto.task.TaskCreateDTO;
 import digital.design.management.system.dto.task.TaskDTO;
+import digital.design.management.system.dto.task.TaskFilterDTO;
 import digital.design.management.system.dto.task.TaskOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Project;
@@ -15,11 +14,14 @@ import digital.design.management.system.mapping.Mapper;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.repository.TaskRepository;
 import digital.design.management.system.security.EmployeeDetails;
+import digital.design.management.system.specification.TaskSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -68,11 +70,21 @@ public class TaskService {
             isProjectParticipant(project, taskPerformer, false);
             task.setTaskPerformer(taskPerformer);
         }
+        task.setAuthor(author.getEmployee());
+        task.setDateOfUpdate(LocalDate.now());
         task = mapper.dtoToEntity(taskDTO, task);
         taskRepository.save(task);
 
         return mapper.entityToOutDto(task);
 
+    }
+
+    public List<TaskOutDTO> getTasksWithFilter(TaskFilterDTO taskFilterDTO) {
+        List<Task> tasks = taskRepository.findAll(
+                TaskSpecification.getSpecification(taskFilterDTO),
+                Sort.by("dateOfCreated").descending());
+
+        return tasks.stream().map(mapper::entityToOutDto).toList();
     }
 
     private void isProjectParticipant(Project project, Employee employee, Boolean isAuthor) {
@@ -83,5 +95,17 @@ public class TaskService {
             else
                 throw new EmployeeIsNotInvolvedInProjectException();
         }
+    }
+
+    public TaskOutDTO updateStatusTask(UUID uid, StatusTask statusTask) {
+        Task task = taskRepository.findByUid(uid).orElseThrow(TaskDoesNotExistException::new);
+        if(!task.getStatus().hasNextStatus())
+            throw new MaximumTaskStatusException();
+        if(!task.getStatus().getNextStatus().equals(statusTask)) {
+            throw new CanNotAssignGivenTaskStatusException();
+        }
+        task.setStatus(statusTask);
+        taskRepository.save(task);
+        return mapper.entityToOutDto(task);
     }
 }

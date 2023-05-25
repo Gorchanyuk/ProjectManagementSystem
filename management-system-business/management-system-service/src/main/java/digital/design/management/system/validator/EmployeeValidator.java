@@ -29,7 +29,7 @@ public class EmployeeValidator implements Validator {
     public void validate(Object target, Errors errors) {
         EmployeeDTO employee = (EmployeeDTO) target;
 
-        if (employeeRepository.findByUsernameAndStatus(employee.getUsername(), StatusEmployee.ACTIV).isPresent()) {
+        if (employeeRepository.findByUsernameAndStatus(employee.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             errors.rejectValue("username", "", resourceBundle.getString("SUCH_USERNAME_ALREADY_EXIST"));
         }
     }

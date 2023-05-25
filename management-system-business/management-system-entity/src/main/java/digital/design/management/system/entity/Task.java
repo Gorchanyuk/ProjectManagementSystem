@@ -13,6 +13,13 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @Table(name = "task")
+@NamedEntityGraph(
+        name = "task",
+        attributeNodes = {
+                @NamedAttributeNode("taskPerformer"),
+                @NamedAttributeNode("author"),
+                @NamedAttributeNode("project")
+        })
 public class Task{
 
     public Task(){this.uid = UUID.randomUUID();}

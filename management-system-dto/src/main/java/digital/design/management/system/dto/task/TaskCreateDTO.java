@@ -1,6 +1,7 @@
 package digital.design.management.system.dto.task;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Valid
 @Schema(description = "Модель задачи для создания задачи и передачи на сервер")
 public class TaskCreateDTO extends TaskDTO{
 

@@ -1,6 +1,7 @@
 package digital.design.management.system.web.controller;
 
 import digital.design.management.system.common.exception.EmployeeAlreadyParticipatingInProjectException;
+import digital.design.management.system.common.exception.EmployeeIsNotInvolvedInProjectException;
 import digital.design.management.system.common.util.InputDataErrorResponse;
 import digital.design.management.system.dto.project_team.ProjectTeamDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamDeleteDTO;
@@ -69,6 +70,15 @@ public class ProjectTeamController {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "employeeUid",
                 resourceBundle.getString("EMPLOYEE_ALREADY_PARTICIPATING_IN_PROJECT")
+        );
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(EmployeeIsNotInvolvedInProjectException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "unknown",
+                resourceBundle.getString("EMPLOYEE_IS_NOT_INVOLVED_IN_PROJECT_2")
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }

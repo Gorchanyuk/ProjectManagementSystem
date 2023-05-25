@@ -3,6 +3,7 @@ package digital.design.management.system.service;
 
 import digital.design.management.system.ProjectTeamId;
 import digital.design.management.system.common.exception.EmployeeAlreadyParticipatingInProjectException;
+import digital.design.management.system.common.exception.EmployeeIsNotInvolvedInProjectException;
 import digital.design.management.system.dto.project_team.ProjectTeamDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamDeleteDTO;
 import digital.design.management.system.dto.project_team.ProjectTeamOutDTO;
@@ -54,10 +55,25 @@ public class ProjectTeamService {
     }
 
     public void deleteParticipant(ProjectTeamDeleteDTO deleteDTO) {
+
+        //Вариант 1
         Employee employee = employeeService.findByUid(deleteDTO.getEmployeeUid());
         Project project = projectService.findByUid(deleteDTO.getProjectUid());
-        ProjectTeam projectTeam = new ProjectTeam(project, employee);
+        ProjectTeamId id = new ProjectTeamId(project.getId(), employee.getId());
+        ProjectTeam projectTeam = projectTeamRepository.findById(id)
+                .orElseThrow(EmployeeIsNotInvolvedInProjectException::new);
         projectTeamRepository.delete(projectTeam);
+
+
+        //Варриант 2
+//        ProjectTeam projectTeam = projectTeamRepository
+//                .findByProjectId_UidAndEmployeeId_Uid(deleteDTO.getProjectUid(), deleteDTO.getEmployeeUid())
+//                .orElseThrow(EmployeeIsNotInvolvedInProjectException::new);
+//        projectTeamRepository.delete(projectTeam);
+
+
+        //Вариант 3
+//        projectTeamRepository.deleteByProjectId_UidAndEmployeeId_Uid(deleteDTO.getProjectUid(), deleteDTO.getEmployeeUid());
     }
 
 

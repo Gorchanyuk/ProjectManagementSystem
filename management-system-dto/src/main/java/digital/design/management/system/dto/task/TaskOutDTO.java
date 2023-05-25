@@ -44,9 +44,9 @@ public class TaskOutDTO{
     @Schema(description = "Статус задачи", example = "NEW", oneOf = StatusTask.class)
     private StatusTask status;
 
-    @Schema(description = "Дата создания зачачи", example = "14.02.2023")
+    @Schema(description = "Дата создания зачачи", example = "14/02/2023")
     private LocalDate dateOfCreated;
 
-    @Schema(description = "Дата редактировния зачачи", example = "14.02.2023")
+    @Schema(description = "Дата редактировния зачачи", example = "14/02/2023")
     private LocalDate dateOfUpdate;
 }

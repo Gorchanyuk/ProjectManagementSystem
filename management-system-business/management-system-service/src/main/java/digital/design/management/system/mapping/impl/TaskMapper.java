@@ -40,7 +40,7 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
         return TaskOutDTO.builder()
                 .name(task.getName())
                 .description(task.getDescription())
-                .taskPerformer(task.getTaskPerformer().getUid())
+                .taskPerformer(task.getTaskPerformer() == null ? null : task.getTaskPerformer().getUid())
                 .executionTime(task.getExecutionTime())
                 .deadline(task.getDeadline())
                 .project(task.getProject().getUid())

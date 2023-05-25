@@ -48,7 +48,7 @@ public class EmployeeDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.employee.getStatus().equals(StatusEmployee.ACTIV);
+        return this.employee.getStatus().equals(StatusEmployee.ACTIVE);
     }
 
     public Employee getEmployee(){

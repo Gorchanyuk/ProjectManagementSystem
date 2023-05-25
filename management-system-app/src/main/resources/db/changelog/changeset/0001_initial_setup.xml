@@ -107,7 +107,7 @@
             </column>
             <column name="performer" type="BIGINT">
                 <constraints foreignKeyName="fk_task_employee_2" referencedTableName="employee"
-                             referencedColumnNames="id" nullable="false"/>
+                             referencedColumnNames="id"/>
            </column>
         </createTable>
     </changeSet>

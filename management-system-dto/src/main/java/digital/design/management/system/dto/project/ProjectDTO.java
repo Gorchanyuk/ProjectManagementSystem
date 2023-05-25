@@ -1,6 +1,7 @@
 package digital.design.management.system.dto.project;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Valid
 @Schema(description = "Модель проекта для передачи данных на сервер")
 public class ProjectDTO {
 

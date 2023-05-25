@@ -27,13 +27,13 @@ public class EmployeeService {
     private final ProjectTeamRepository projectTeamRepository;
 
     Employee findByUid(UUID uid) {
-        return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIV)
+        return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIVE)
                 .orElseThrow(EmployeeDoesNotExistException::new);
     }
 
     public List<EmployeeOutDTO> getEmployees() {
         List<Employee> employees =
-                employeeRepository.findTop100ByStatus(StatusEmployee.ACTIV).stream()
+                employeeRepository.findTop100ByStatus(StatusEmployee.ACTIVE).stream()
                         .toList();
 
         return employees.stream()
@@ -63,7 +63,7 @@ public class EmployeeService {
         //Проверка на повотряющиеся username, в случаее если это поле изменили
         if (employee.getUsername() != null && employeeDTO.getUsername() != null &&
                 !employee.getUsername().equals(employeeDTO.getUsername()) &&
-                employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIV).isPresent()) {
+                employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
         }
         employee = mapper.dtoToEntity(employeeDTO, employee);
@@ -74,7 +74,7 @@ public class EmployeeService {
 
     public List<EmployeeOutDTO> getEmployeeByKeyWord(String key) {
         List<Employee> employees =
-                employeeRepository.findByKeyword(key, StatusEmployee.ACTIV);
+                employeeRepository.findByKeyword(key, StatusEmployee.ACTIVE);
 
         return employees.stream()
                 .map(mapper::entityToOutDto)
@@ -84,7 +84,7 @@ public class EmployeeService {
     public EmployeeOutDTO createEmployee(EmployeeDTO employeeDTO) {
 //        Employee employee = modelMapper.map(employeeDTO, Employee.class);
         Employee employee = mapper.dtoToEntity(employeeDTO);
-        employee.setStatus(StatusEmployee.ACTIV);
+        employee.setStatus(StatusEmployee.ACTIVE);
         //TODO добавить генерацию пароля
         employeeRepository.save(employee);
 
