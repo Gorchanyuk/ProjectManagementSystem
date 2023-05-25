@@ -25,7 +25,7 @@ public class AppConfiguration {
                         .build();
 
         return ResourceBundle.getBundle(
-                "digital.design.management.system.common.resource.MessageResource",
+                "MessageResource",
                 locale
         );
     }
