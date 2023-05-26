@@ -4,13 +4,13 @@ VALUES ('project1', 'project1', 'DEVELOP'),
        ('project3', 'project3', 'DEVELOP');
 
 INSERT INTO employee (first_name, last_name, email, job_title, status, username, password)
-VALUES ('Tom', 'Wilson', 'wilson@mail.com', 'Developer', 'ACTIVE', 'user1', 'password'),
-       ('Jack', 'White', 'white@mail.com', 'Tester', 'ACTIVE', 'user2', 'password'),
-       ('Mike', 'Stivens', 'stiv@mail.com', 'Developer', 'ACTIVE', 'user3', 'password'),
-       ('Nikolas', 'Pain', 'pain@mail.com', 'Developer', 'ACTIVE', 'user4', 'password'),
-       ('Dan', 'Fokin', 'fokin@mail.com', 'Tester', 'ACTIVE', 'user5', 'password'),
-       ('Petr', 'Samoilov', 'petr@mail.com', 'Tester', 'ACTIVE', 'user6', 'password'),
-       ('Andrey', 'Astafev', 'astafev@mail.com', 'Developer', 'ACTIVE', 'user7', 'password');
+VALUES ('Tom', 'Wilson', 'wilson@mail.com', 'Developer', 'ACTIVE', 'user1', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y'),
+       ('Jack', 'White', 'white@mail.com', 'Tester', 'ACTIVE', 'user2', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y'),
+       ('Mike', 'Stivens', 'stiv@mail.com', 'Developer', 'ACTIVE', 'user3', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y'),
+       ('Nikolas', 'Pain', 'pain@mail.com', 'Developer', 'ACTIVE', 'user4', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y'),
+       ('Dan', 'Fokin', 'fokin@mail.com', 'Tester', 'ACTIVE', 'user5', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y'),
+       ('Petr', 'Samoilov', 'petr@mail.com', 'Tester', 'ACTIVE', 'user6', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y'),
+       ('Andrey', 'Astafev', 'astafev@mail.com', 'Developer', 'ACTIVE', 'user7', '$2a$10$cO6U6l.pfm1VwUNfqZL19.UeqRk4VHuw2LiHvNUMJC.NGAA85NV0y');
 
 INSERT INTO project_team(project_id, employee_id, role_employee)
 VALUES (1, 1, 'PROJECT_MANAGER'),

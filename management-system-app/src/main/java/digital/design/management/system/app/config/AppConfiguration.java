@@ -2,7 +2,7 @@ package digital.design.management.system.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Locale;
@@ -13,7 +13,8 @@ public class AppConfiguration {
 
     @Bean
     public PasswordEncoder devPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -25,7 +26,7 @@ public class AppConfiguration {
                         .build();
 
         return ResourceBundle.getBundle(
-                "MessageResource",
+                "message_resource",
                 locale
         );
     }

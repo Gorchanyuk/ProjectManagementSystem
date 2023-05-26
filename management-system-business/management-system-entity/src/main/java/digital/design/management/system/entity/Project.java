@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -42,10 +41,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private StatusProject status;
 
-    @ManyToMany(mappedBy = "projects")
-    private Set<Employee> employees;
-
-    @OneToMany(mappedBy = "project")
-    @Transient
-    private Set<Task> tasks;
+//    @OneToMany(mappedBy = "project")
+//    @Transient
+//    private Set<Task> tasks;
 }

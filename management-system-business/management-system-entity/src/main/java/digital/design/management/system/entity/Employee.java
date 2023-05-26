@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -53,13 +52,5 @@ public class Employee {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusEmployee status;
-
-    @ManyToMany
-    @JoinTable(
-            name = "project_team",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private Set<Project> projects;
 
 }
