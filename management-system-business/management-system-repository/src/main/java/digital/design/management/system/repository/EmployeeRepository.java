@@ -15,13 +15,15 @@ import java.util.UUID;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
-    Optional<Employee> findByUsername(String username);
+    Optional<Employee> findByUsernameOrEmail(String username, String email);
 
     Optional<Employee> findByUidAndStatus(UUID uid, StatusEmployee status);
 
     List<Employee> findTop100ByStatus(StatusEmployee statusEmployee);
 
     Optional<Employee> findByUsernameAndStatus(String username, StatusEmployee statusEmployee);
+
+    Optional<Employee> findByEmail(String email);
 
     @Query("SELECT e FROM Employee e WHERE (e.lastName ILIKE %:keyword% " +
             "OR e.firstName ILIKE %:keyword% " +

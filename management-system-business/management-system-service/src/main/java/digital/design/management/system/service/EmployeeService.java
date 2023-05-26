@@ -11,8 +11,11 @@ import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import lombok.RequiredArgsConstructor;
 import digital.design.management.system.common.exception.EmployeeDoesNotExistException;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +28,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final Mapper<Employee, EmployeeDTO, EmployeeOutDTO> mapper;
     private final ProjectTeamRepository projectTeamRepository;
+    private final PasswordEncoder passwordEncoder;
 
     Employee findByUid(UUID uid) {
         return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIVE)
@@ -66,6 +70,11 @@ public class EmployeeService {
                 employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
         }
+        if (ObjectUtils.isEmpty(employee.getEmail()) && !ObjectUtils.isEmpty(employeeDTO.getEmail())){
+            //Если почты не было и сейчас добавили
+            employee.setPassword(passwordEncoder.encode(generatePassword()));
+            //TODO Добавить отправление по почте
+        }
         employee = mapper.dtoToEntity(employeeDTO, employee);
         employeeRepository.save(employee);
 
@@ -82,12 +91,20 @@ public class EmployeeService {
     }
 
     public EmployeeOutDTO createEmployee(EmployeeDTO employeeDTO) {
-//        Employee employee = modelMapper.map(employeeDTO, Employee.class);
         Employee employee = mapper.dtoToEntity(employeeDTO);
         employee.setStatus(StatusEmployee.ACTIVE);
-        //TODO добавить генерацию пароля
+
+        if (employee.getEmail() != null) {
+            employee.setPassword(generatePassword());
+            //TODO добавить отправку сообщения на почту
+        }
         employeeRepository.save(employee);
 
         return mapper.entityToOutDto(employee);
+    }
+
+    private String generatePassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;,./?";
+        return RandomStringUtils.random(8, chars);
     }
 }

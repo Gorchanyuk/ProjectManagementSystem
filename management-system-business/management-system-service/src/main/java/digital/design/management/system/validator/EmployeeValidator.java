@@ -6,6 +6,7 @@ import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -29,8 +30,13 @@ public class EmployeeValidator implements Validator {
     public void validate(Object target, Errors errors) {
         EmployeeDTO employee = (EmployeeDTO) target;
 
-        if (employeeRepository.findByUsernameAndStatus(employee.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
+        if (!ObjectUtils.isEmpty(employee.getUsername()) &&
+                employeeRepository.findByUsernameAndStatus(employee.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             errors.rejectValue("username", "", resourceBundle.getString("SUCH_USERNAME_ALREADY_EXIST"));
+        }
+        if (!ObjectUtils.isEmpty(employee.getEmail()) &&
+                employeeRepository.findByEmail(employee.getEmail()).isPresent()) {
+            errors.rejectValue("email", "", resourceBundle.getString("SUCH_EMAIL_ALREADY_EXIST"));
         }
     }
 }
