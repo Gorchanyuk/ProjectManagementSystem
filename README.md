@@ -1,6 +1,8 @@
 
 # ProjectManagementSystem
 
+### Swagger работает по адресу: http://localhost:8080/swagger-ui.html
+
 ### Каркас приложения **management_system**
 
 ![каркас приложения](https://user-images.githubusercontent.com/94937271/236784003-783596bf-cd83-41bd-8fc7-5d262a3c8264.jpg)
