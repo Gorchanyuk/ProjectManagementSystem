@@ -16,6 +16,7 @@ import digital.design.management.system.repository.TaskRepository;
 import digital.design.management.system.security.EmployeeDetails;
 import digital.design.management.system.specification.TaskSpecification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class TaskService {
 
     private final Mapper<Task, TaskDTO, TaskOutDTO> mapper;
@@ -37,8 +39,10 @@ public class TaskService {
 
     @Transactional
     public TaskOutDTO createTask(TaskCreateDTO taskDTO, EmployeeDetails author) {
+        log.debug("Create a task");
         Task task = mapper.dtoToEntity(taskDTO);
         Project project = projectService.findByUid(taskDTO.getProject());
+        log.debug("Project received");
         //Проверяем является ли автор участником проекта
         isProjectParticipant(project, author.getEmployee(), true);
         //Если исполнитель назначен проверяем является ли он участником проекта
@@ -53,13 +57,15 @@ public class TaskService {
         task.setDateOfUpdate(LocalDate.now());
         task.setStatus(StatusTask.NEW);
         taskRepository.save(task);
-
+        log.info("Task created successfully");
         return mapper.entityToOutDto(task);
     }
 
     public TaskOutDTO updateTask(UUID uid, TaskDTO taskDTO, EmployeeDetails author) {
+        log.debug("Update a task with uid:{}", uid);
         Task task = taskRepository.findByUid(uid)
                 .orElseThrow(TaskDoesNotExistException::new);
+        log.debug("Task received by uid: {}", uid);
         Project project = task.getProject();
         //Проверяем является ли автор участником проекта
         isProjectParticipant(project, author.getEmployee(), true);
@@ -75,19 +81,22 @@ public class TaskService {
         task = mapper.dtoToEntity(taskDTO, task);
         taskRepository.save(task);
 
+        log.info("Task with uid: {} updated", uid);
         return mapper.entityToOutDto(task);
 
     }
 
     public List<TaskOutDTO> getTasksWithFilter(TaskFilterDTO taskFilterDTO) {
+        log.debug("Search for a tasks by filter");
         List<Task> tasks = taskRepository.findAll(
                 TaskSpecification.getSpecification(taskFilterDTO),
                 Sort.by("dateOfCreated").descending());
-
+        log.info("Tasks found");
         return tasks.stream().map(mapper::entityToOutDto).toList();
     }
 
     private void isProjectParticipant(Project project, Employee employee, Boolean isAuthor) {
+        log.debug("Checking if an employee is a team member");
         ProjectTeamId projectTeamId = new ProjectTeamId(project.getId(), employee.getId());
         if (!projectTeamRepository.existsById(projectTeamId)) {
             if (isAuthor)
@@ -98,14 +107,17 @@ public class TaskService {
     }
 
     public TaskOutDTO updateStatusTask(UUID uid, StatusTask statusTask) {
+        log.debug("Update status task with uid: {}", uid);
         Task task = taskRepository.findByUid(uid).orElseThrow(TaskDoesNotExistException::new);
-        if(!task.getStatus().hasNextStatus())
+        log.debug("Task received");
+        if (!task.getStatus().hasNextStatus())
             throw new MaximumTaskStatusException();
-        if(!task.getStatus().getNextStatus().equals(statusTask)) {
+        if (!task.getStatus().getNextStatus().equals(statusTask)) {
             throw new CanNotAssignGivenTaskStatusException();
         }
         task.setStatus(statusTask);
         taskRepository.save(task);
+        log.info("Status task with uid: {} updated", uid);
         return mapper.entityToOutDto(task);
     }
 }

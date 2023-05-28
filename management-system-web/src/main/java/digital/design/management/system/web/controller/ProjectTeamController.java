@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import digital.design.management.system.common.exception.EmployeeDoesNotExistException;
 import digital.design.management.system.common.exception.ProjectDoesNotExistException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/project_team")
 @Tag(name = "Команды проектов", description = "Контроллер для управления командами проектов")
+@Log4j2
 public class ProjectTeamController {
 
     private final ProjectTeamService projectTeamService;
@@ -36,6 +38,7 @@ public class ProjectTeamController {
     @GetMapping(value = "/{project_uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение всех сотрудников из заданного проекта по его uid")
     public List<ProjectTeamOutDTO> getAllParty(@PathVariable("project_uid") UUID projectUid) {
+        log.debug("GET request on .../project_team/{}", projectUid);
         return projectTeamService.getAllParty(projectUid);
     }
 
@@ -43,7 +46,7 @@ public class ProjectTeamController {
     @Operation(summary = "Добавление сотрудника в команду")
     public ResponseEntity<Object> addParticipant(@Valid @RequestBody ProjectTeamDTO team,
                                                  BindingResult bindingResult) {
-
+        log.debug("Post request on .../project_team");
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
@@ -51,17 +54,20 @@ public class ProjectTeamController {
                             .field(e.getField()).build())
                     .toList();
 
+            log.warn("POST request on .../project_team contains errors: {}", infoErrors.stream().map(InputDataErrorResponse::getField).toList());
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         ProjectTeamOutDTO projectTeamOutDTO = projectTeamService.addParticipant(team);
-
+        log.debug("POST request on .../project_team is complete");
         return new ResponseEntity<>(projectTeamOutDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Удаление сотрудника из команды")
     public ResponseEntity<Object> deleteParticipant(@RequestBody ProjectTeamDeleteDTO projectTeamDeleteDTO) {
+        log.debug("DELETE request on .../project_team");
         projectTeamService.deleteParticipant(projectTeamDeleteDTO);
+        log.debug("DELETE request on .../project_team is complete");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -71,6 +77,7 @@ public class ProjectTeamController {
                 "employeeUid",
                 resourceBundle.getString("EMPLOYEE_ALREADY_PARTICIPATING_IN_PROJECT")
         );
+        log.warn(resourceBundle.getString("EMPLOYEE_ALREADY_PARTICIPATING_IN_PROJECT"));
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -80,6 +87,7 @@ public class ProjectTeamController {
                 "unknown",
                 resourceBundle.getString("EMPLOYEE_IS_NOT_INVOLVED_IN_PROJECT_2")
         );
+        log.warn(resourceBundle.getString("EMPLOYEE_IS_NOT_INVOLVED_IN_PROJECT_2"));
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -89,6 +97,7 @@ public class ProjectTeamController {
                 "employeeUid",
                 resourceBundle.getString("EMPLOYEE_DOES_NOT_EXIST")
         );
+        log.warn(resourceBundle.getString("EMPLOYEE_DOES_NOT_EXIST"));
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -98,6 +107,7 @@ public class ProjectTeamController {
                 "projectUid",
                 resourceBundle.getString("PROJECT_DOES_NOT_EXIST")
         );
+        log.warn(resourceBundle.getString("PROJECT_DOES_NOT_EXIST"));
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -109,6 +119,7 @@ public class ProjectTeamController {
                 "unknown",
                 e.getMessage()
         );
+        log.warn("Error in the format of the transmitted data");
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 }

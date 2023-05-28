@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +33,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/task")
 @Tag(name = "Задачи", description = "Контроллер для управления задачами")
+@Log4j2
 public class TaskController {
 
     private final TaskService taskService;
@@ -44,6 +46,7 @@ public class TaskController {
     public ResponseEntity<Object> createTask(@AuthenticationPrincipal EmployeeDetails author,
                                              @Valid @RequestBody TaskCreateDTO taskDTO,
                                              BindingResult bindingResult) {
+        log.debug("POST request on .../task, params: taskDTO={}", taskDTO);
         taskValidator.validate(taskDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -53,10 +56,12 @@ public class TaskController {
                             .build())
                     .toList();
 
+            log.warn("POST request on .../task contains errors: {}", infoErrors.stream().map(InputDataErrorResponse::getField).toList());
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
 
         TaskOutDTO taskOutDTO = taskService.createTask(taskDTO, author);
+        log.debug("POST request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.CREATED);
     }
 
@@ -67,6 +72,7 @@ public class TaskController {
                                              @AuthenticationPrincipal EmployeeDetails author,
                                              @Valid @RequestBody TaskDTO taskDTO,
                                              BindingResult bindingResult) {
+        log.debug("PUT request on .../task/{}", uid);
         taskValidator.validate(taskDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -76,9 +82,11 @@ public class TaskController {
                             .build())
                     .toList();
 
+            log.warn("PUT request on .../task/{} contains errors: {}", uid, infoErrors.stream().map(InputDataErrorResponse::getField).toList());
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         TaskOutDTO taskOutDTO = taskService.updateTask(uid, taskDTO, author);
+        log.debug("PUT request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
     }
 
@@ -102,6 +110,7 @@ public class TaskController {
                                                @RequestParam(value = "dateOfCreatedEnd", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dateOfCreatedEnd) {
 
         TaskFilterDTO filter = new TaskFilterDTO(name, status, author, taskPerformer, deadlineStart, deadlineEnd, dateOfCreatedStart, dateOfCreatedEnd);
+        log.debug("GET request on .../task, params: filter={}", filter);
         return taskService.getTasksWithFilter(filter);
     }
 
@@ -109,6 +118,7 @@ public class TaskController {
     @Operation(summary = "Повышение стаутса задачи")
     public TaskOutDTO updateStatusProject(@PathVariable("uid") UUID uid,
                                           @RequestParam("status") StatusTask statusTask) {
+        log.debug("PUT request on .../task/raise_status/{}", uid);
         return taskService.updateStatusTask(uid, statusTask);
     }
 
@@ -118,7 +128,7 @@ public class TaskController {
                 "uid",
                 resourceBundle.getString("AUTHOR_IS_NOT_INVOLVED_IN_PROJECT")
         );
-
+        log.warn(resourceBundle.getString("AUTHOR_IS_NOT_INVOLVED_IN_PROJECT"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -128,7 +138,7 @@ public class TaskController {
                 "unknown",
                 e.getMessage()
         );
-
+        log.warn("Error in the format of the transmitted data");
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -138,6 +148,7 @@ public class TaskController {
                 "uid",
                 resourceBundle.getString("EMPLOYEE_IS_NOT_INVOLVED_IN_PROJECT_1")
         );
+        log.warn(resourceBundle.getString("EMPLOYEE_IS_NOT_INVOLVED_IN_PROJECT_1"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -147,6 +158,7 @@ public class TaskController {
                 "uid",
                 resourceBundle.getString("EMPLOYEE_DOES_NOT_EXIST")
         );
+        log.warn(resourceBundle.getString("EMPLOYEE_DOES_NOT_EXIST"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -156,6 +168,7 @@ public class TaskController {
                 "uid",
                 resourceBundle.getString("PROJECT_DOES_NOT_EXIST")
         );
+        log.warn(resourceBundle.getString("PROJECT_DOES_NOT_EXIST"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -165,6 +178,7 @@ public class TaskController {
                 "uid",
                 resourceBundle.getString("TASK_DOES_NOT_EXIST")
         );
+        log.warn(resourceBundle.getString("TASK_DOES_NOT_EXIST"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -174,6 +188,7 @@ public class TaskController {
                 "status",
                 resourceBundle.getString("CANNOT_ASSIGN_GIVEN_TASK_STATUS")
         );
+        log.warn(resourceBundle.getString("CANNOT_ASSIGN_GIVEN_TASK_STATUS"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -183,6 +198,7 @@ public class TaskController {
                 "status",
                 resourceBundle.getString("MAXIMUM_TASK_STATUS_EXCEPTION")
         );
+        log.warn(resourceBundle.getString("MAXIMUM_TASK_STATUS_EXCEPTION"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
