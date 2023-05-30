@@ -1,4 +1,4 @@
-package digital.design.management.system.common.util;
+package digital.design.management.system.dto.util;
 
 import lombok.*;
 

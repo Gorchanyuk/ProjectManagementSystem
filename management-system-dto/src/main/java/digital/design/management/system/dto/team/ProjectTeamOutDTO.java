@@ -1,7 +1,7 @@
-package digital.design.management.system.dto.project_team;
+package digital.design.management.system.dto.team;
 
+import digital.design.management.system.common.enumerate.RoleEmployee;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
-import digital.design.management.system.enumerate.RoleEmployee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

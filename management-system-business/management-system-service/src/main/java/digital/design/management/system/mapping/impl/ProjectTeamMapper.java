@@ -1,7 +1,7 @@
 package digital.design.management.system.mapping.impl;
 
-import digital.design.management.system.dto.project_team.ProjectTeamDTO;
-import digital.design.management.system.dto.project_team.ProjectTeamOutDTO;
+import digital.design.management.system.dto.team.ProjectTeamDTO;
+import digital.design.management.system.dto.team.ProjectTeamOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.ProjectTeam;

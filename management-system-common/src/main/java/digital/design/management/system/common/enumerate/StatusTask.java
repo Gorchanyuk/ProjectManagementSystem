@@ -1,4 +1,4 @@
-package digital.design.management.system.enumerate;
+package digital.design.management.system.common.enumerate;
 
 public enum StatusTask {
     CLOSE (null),

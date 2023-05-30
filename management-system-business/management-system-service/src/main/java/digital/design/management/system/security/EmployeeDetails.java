@@ -2,7 +2,7 @@ package digital.design.management.system.security;
 
 
 import digital.design.management.system.entity.Employee;
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,7 +1,7 @@
 package digital.design.management.system.dto.task;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import digital.design.management.system.enumerate.StatusTask;
+import digital.design.management.system.common.enumerate.StatusTask;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -21,7 +21,7 @@ public class TaskFilterDTO {
     @Schema(description = "Часть текстового значения в поле 'Наименование задачи'", example = "проктирование")
     private String name;
 
-    @Schema(description = "Статус задачи", example = "NEW", oneOf = StatusTask.class)
+    @Schema(description = "Статус задачи", example = "[\"NEW\", \"WORK\"]", oneOf = StatusTask.class)
     private List<StatusTask> status;
 
     @Schema(description = "uid автора задачи", example = "ccd90ae1-a3db-46be-83cb-ead8ed03f732")

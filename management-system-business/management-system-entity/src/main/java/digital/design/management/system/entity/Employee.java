@@ -1,6 +1,6 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import jakarta.persistence.*;
 import lombok.*;
 

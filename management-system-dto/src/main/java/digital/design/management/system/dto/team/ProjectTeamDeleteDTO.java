@@ -1,4 +1,4 @@
-package digital.design.management.system.dto.project_team;
+package digital.design.management.system.dto.team;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

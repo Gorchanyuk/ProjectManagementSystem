@@ -1,6 +1,6 @@
 package digital.design.management.system.dto.employee;
 
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

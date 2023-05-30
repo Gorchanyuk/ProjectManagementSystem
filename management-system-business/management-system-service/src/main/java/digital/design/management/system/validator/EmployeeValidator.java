@@ -1,7 +1,7 @@
 package digital.design.management.system.validator;
 
 
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;

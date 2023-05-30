@@ -1,27 +1,22 @@
 package digital.design.management.system.test.service.integrations.repository;
 
-import digital.design.management.system.app.ManagementSystem;
 import digital.design.management.system.entity.Employee;
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.test.service.integrations.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 import java.util.UUID;
 
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@SpringJUnitConfig(ManagementSystem.class)
-@TestPropertySource(locations="classpath:application-test.properties")
+@SpringBootTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@TestPropertySource(locations="classpath:application-test.properties")
 public class EmployeeRepositoryContainerIT extends BaseTest {
 
     @Autowired

@@ -1,7 +1,7 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.enumerate.RoleEmployee;
-import digital.design.management.system.ProjectTeamId;
+import digital.design.management.system.common.enumerate.RoleEmployee;
+import digital.design.management.system.dto.util.ProjectTeamId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,9 +35,9 @@ public class ProjectTeam {
     @Enumerated(EnumType.STRING)
     private RoleEmployee roleEmployee;
 
-    public ProjectTeam(Project project, Employee employee) {
-        projectId = project;
-        employeeId = employee;
-    }
+//    public ProjectTeam(Project project, Employee employee) {
+//        projectId = project;
+//        employeeId = employee;
+//    }
 
 }

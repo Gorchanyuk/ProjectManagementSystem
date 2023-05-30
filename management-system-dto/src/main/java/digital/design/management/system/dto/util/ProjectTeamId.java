@@ -1,4 +1,4 @@
-package digital.design.management.system;
+package digital.design.management.system.dto.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

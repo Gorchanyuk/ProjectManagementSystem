@@ -34,11 +34,8 @@ public class TaskSpecification {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("deadline"), dto.getDeadlineStart()));
             if (!ObjectUtils.isEmpty(dto.getDeadlineEnd()))
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("deadline"), dto.getDeadlineEnd()));
-            if (!ObjectUtils.isEmpty(dto.getStatus())) {
-                List<Predicate> statusPredicate = new ArrayList<>();
-                dto.getStatus().forEach(status -> statusPredicate.add(criteriaBuilder.equal(root.get("status"), status)));
-                predicates.add(criteriaBuilder.or(statusPredicate.toArray(Predicate[]::new)));
-            }
+            if (!ObjectUtils.isEmpty(dto.getStatus()))
+                predicates.add(root.get("status").in(dto.getStatus()));
 
             if (CollectionUtils.isEmpty(predicates))
                 return query.where().getRestriction();

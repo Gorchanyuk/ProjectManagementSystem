@@ -6,7 +6,7 @@ import digital.design.management.system.common.exception.SuchUsernameAlreadyExis
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import digital.design.management.system.mapping.Mapper;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.service.EmployeeService;
@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.ObjectUtils;
 

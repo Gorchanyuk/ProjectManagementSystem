@@ -1,29 +1,23 @@
 package digital.design.management.system.web.controller;
 
-import digital.design.management.system.common.exception.StatusProjectHasNotNextStatusException;
-import digital.design.management.system.common.exception.SuchCodeProjectAlreadyExistException;
-import digital.design.management.system.common.util.InputDataErrorResponse;
+import digital.design.management.system.dto.util.InputDataErrorResponse;
 import digital.design.management.system.validator.ProjectValidator;
 import digital.design.management.system.dto.project.ProjectDTO;
 import digital.design.management.system.dto.project.ProjectOutDTO;
-import digital.design.management.system.enumerate.StatusProject;
+import digital.design.management.system.common.enumerate.StatusProject;
 import digital.design.management.system.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import digital.design.management.system.common.exception.ProjectDoesNotExistException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +29,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ProjectValidator projectValidator;
-    private final ResourceBundle resourceBundle;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Находит все проекты, но не более 100")
@@ -108,56 +101,4 @@ public class ProjectController {
         return projectService.updateStatusProject(uid);
     }
 
-
-    /* MethodArgumentTypeMismatchException - это исключение в данном случае сообщает что в качестве аргумента
-    поступил несовместимый тип, поэтому возвращаем сообщение с перечислением допустимых значений */
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(MethodArgumentTypeMismatchException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "status",
-                resourceBundle.getString("STATUS_PROJECT_EXCEPTION")
-        );
-        log.warn("Invalid input with MethodArgumentTypeMismatchException - {}", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(SuchCodeProjectAlreadyExistException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "code",
-                resourceBundle.getString("SUCH_CODE_PROJECT_ALREADY_EXIST")
-        );
-        log.warn(resourceBundle.getString("SUCH_CODE_PROJECT_ALREADY_EXIST"));
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(ProjectDoesNotExistException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "id",
-                resourceBundle.getString("PROJECT_DOES_NOT_EXIST")
-        );
-        log.warn(resourceBundle.getString("PROJECT_DOES_NOT_EXIST"));
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(StatusProjectHasNotNextStatusException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "status",
-                resourceBundle.getString("STATUS_PROJECT_HAS_NOT_NEXT_STATUS")
-        );
-        log.warn(resourceBundle.getString("STATUS_PROJECT_HAS_NOT_NEXT_STATUS"));
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(HttpMessageNotReadableException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "unknown",
-                e.getMessage()
-        );
-        log.warn("Error in the format of the transmitted data");
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
 }

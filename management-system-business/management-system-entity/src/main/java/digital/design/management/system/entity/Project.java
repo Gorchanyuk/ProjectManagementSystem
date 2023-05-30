@@ -1,6 +1,6 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.enumerate.StatusProject;
+import digital.design.management.system.common.enumerate.StatusProject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +41,4 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private StatusProject status;
 
-//    @OneToMany(mappedBy = "project")
-//    @Transient
-//    private Set<Task> tasks;
 }
