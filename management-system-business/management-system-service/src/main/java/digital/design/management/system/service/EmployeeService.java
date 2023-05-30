@@ -114,4 +114,5 @@ public class EmployeeService {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;,./?";
         return RandomStringUtils.random(8, chars);
     }
+
 }

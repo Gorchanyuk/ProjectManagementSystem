@@ -2,10 +2,7 @@ package digital.design.management.system.entity;
 
 import digital.design.management.system.enumerate.StatusEmployee;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -13,6 +10,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @Table(name = "employee")
 public class Employee {

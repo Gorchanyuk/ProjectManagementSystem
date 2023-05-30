@@ -44,4 +44,13 @@ public class ProjectMapper implements Mapper<Project, ProjectDTO, ProjectOutDTO>
                 .description(project.getDescription())
                 .build();
     }
+
+    @Override
+    public ProjectDTO entityToDto(Project entity) {
+        return ProjectDTO.builder()
+                .code(entity.getCode())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .build();
+    }
 }

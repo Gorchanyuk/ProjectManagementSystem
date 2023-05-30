@@ -54,4 +54,17 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
                 .status(employee.getStatus())
                 .build();
     }
+
+    @Override
+    public EmployeeDTO entityToDto(Employee employee){
+        log.debug("Mapping Employee to EmployeeDTO");
+        return EmployeeDTO.builder()
+                .lastName(employee.getLastName())
+                .firstName(employee.getFirstName())
+                .surname(employee.getSurname())
+                .jobTitle(employee.getJobTitle())
+                .username(employee.getUsername())
+                .email(employee.getEmail())
+                .build();
+    }
 }

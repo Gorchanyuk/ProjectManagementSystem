@@ -54,6 +54,15 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
                 .build();
     }
 
+    @Override
+    public TaskDTO entityToDto(Task entity) {
+        return TaskDTO.builder()
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .executionTime(entity.getExecutionTime())
+                .deadline(entity.getDeadline())
+                .build();
+    }
 
 
 }

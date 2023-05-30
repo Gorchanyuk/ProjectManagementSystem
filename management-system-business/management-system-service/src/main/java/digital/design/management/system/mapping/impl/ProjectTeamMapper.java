@@ -42,4 +42,13 @@ public class ProjectTeamMapper implements Mapper<ProjectTeam, ProjectTeamDTO, Pr
                 .roleEmployee(team.getRoleEmployee())
                 .build();
     }
+
+    @Override
+    public ProjectTeamDTO entityToDto(ProjectTeam entity) {
+        return ProjectTeamDTO.builder()
+                .projectUid(entity.getProjectId().getUid())
+                .employeeUid(entity.getEmployeeId().getUid())
+                .roleEmployee(entity.getRoleEmployee())
+                .build();
+    }
 }
