@@ -62,7 +62,9 @@ public class EmployeeServiceContainersIT extends BaseTest {
     @Test
     public void shouldGetEmployeeByUid() {
         Employee employee = employeeRepository.findTop100ByStatus(StatusEmployee.ACTIVE).stream().findAny().get();
+        EmployeeOutDTO dto = employeeService.getEmployeeByUid(employee.getUid());
 
+        Assertions.assertFalse(ObjectUtils.isEmpty(dto));
         Assertions.assertEquals(employee.getUid(), employeeService.getEmployeeByUid(employee.getUid()).getUid());
     }
 
