@@ -1,6 +1,6 @@
 package digital.design.management.system.service.impl;
 
-import digital.design.management.system.common.exception.StatusProjectHasNotNextStatusException;
+import digital.design.management.system.common.exception.CanNotAssignGivenStatusException;
 import digital.design.management.system.common.exception.SuchCodeProjectAlreadyExistException;
 import digital.design.management.system.dto.project.ProjectDTO;
 import digital.design.management.system.dto.project.ProjectOutDTO;
@@ -45,6 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectOutDTO createProject(ProjectDTO projectDTO) {
         log.debug("Create new Project");
         Project project = mapper.dtoToEntity(projectDTO);
+        project.setUid(UUID.randomUUID());
         project.setStatus(StatusProject.DRAFT);
         projectRepository.save(project);
         log.info("New Project created");
@@ -77,16 +78,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectOutDTO updateStatusProject(UUID uid) {
+    public ProjectOutDTO updateStatusProject(UUID uid, StatusProject statusProject) {
         log.debug("Update 'statusProject' for Project with uid:{}", uid);
         Project project = findByUid(uid);
 
         //Повышаем статус проекта если это возможно,
         //в противном случае выкидываем исключение
-        if (project.getStatus().hasNextStatus())
-            project.setStatus(project.getStatus().getNextStatus());
-        else
-            throw new StatusProjectHasNotNextStatusException();
+        if (!project.getStatus().hasNextStatus() ||
+                !project.getStatus().getNextStatus().equals(statusProject))
+            throw new CanNotAssignGivenStatusException();
+
+        project.setStatus(statusProject);
         projectRepository.save(project);
         log.info("Status for Project with uid: {} update", uid);
         return mapper.entityToOutDto(project);

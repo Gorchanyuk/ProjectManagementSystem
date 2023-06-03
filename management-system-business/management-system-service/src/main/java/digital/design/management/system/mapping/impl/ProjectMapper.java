@@ -7,7 +7,6 @@ import digital.design.management.system.mapping.Mapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
 @Log4j2
@@ -17,7 +16,6 @@ public class ProjectMapper implements Mapper<Project, ProjectDTO, ProjectOutDTO>
     public Project dtoToEntity(ProjectDTO dto){
         log.debug("Mapping ProjectDTO to Project");
         return Project.builder()
-                .uid(UUID.randomUUID())
                 .code(dto.getCode())
                 .name(dto.getName())
                 .description(dto.getDescription())

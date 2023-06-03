@@ -1,6 +1,7 @@
 package digital.design.management.system.app.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +10,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Configuration
+@ComponentScan("digital.design.management.system")
 public class AppConfiguration {
 
     @Bean
@@ -30,4 +32,6 @@ public class AppConfiguration {
                 locale
         );
     }
+
+
 }

@@ -2,12 +2,12 @@ package digital.design.management.system.mapping.impl;
 
 import digital.design.management.system.dto.task.TaskDTO;
 import digital.design.management.system.dto.task.TaskOutDTO;
+import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Task;
 import digital.design.management.system.mapping.Mapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
 @Log4j2
@@ -17,9 +17,11 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
     public Task dtoToEntity(TaskDTO dto) {
         log.debug("Mapping TaskDTO to Task");
         return Task.builder()
-                .uid(UUID.randomUUID())
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .taskPerformer(dto.getTaskPerformer() != null
+                        ? Employee.builder().uid(dto.getTaskPerformer()).build()
+                        : null)
                 .executionTime(dto.getExecutionTime())
                 .deadline(dto.getDeadline())
                 .build();
@@ -30,6 +32,9 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
         log.debug("Mapping an TaskDTO to an Task in a given task");
         task.setName(dto.getName());
         task.setDescription(dto.getDescription());
+        task.setTaskPerformer(dto.getTaskPerformer() != null
+                ? Employee.builder().uid(dto.getTaskPerformer()).build()
+                : null);
         task.setExecutionTime(dto.getExecutionTime());
         task.setDeadline(dto.getDeadline());
 
@@ -59,6 +64,7 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
         return TaskDTO.builder()
                 .name(entity.getName())
                 .description(entity.getDescription())
+                .taskPerformer(entity.getTaskPerformer().getUid())
                 .executionTime(entity.getExecutionTime())
                 .deadline(entity.getDeadline())
                 .build();

@@ -12,12 +12,9 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "employee")
 public class Employee {
-
-    public Employee() {
-        this.uid = UUID.randomUUID();
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

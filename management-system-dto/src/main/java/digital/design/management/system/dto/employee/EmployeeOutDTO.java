@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Модель сотрудника для передачи данных на внешний интерфейс")

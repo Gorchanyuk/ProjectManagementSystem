@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "project_team")
@@ -34,10 +35,4 @@ public class ProjectTeam {
     @Column(name = "role_employee", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleEmployee roleEmployee;
-
-//    public ProjectTeam(Project project, Employee employee) {
-//        projectId = project;
-//        employeeId = employee;
-//    }
-
 }

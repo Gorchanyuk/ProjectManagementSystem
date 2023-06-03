@@ -11,6 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Модель задачи для передачи данных на внешний интерфейс")

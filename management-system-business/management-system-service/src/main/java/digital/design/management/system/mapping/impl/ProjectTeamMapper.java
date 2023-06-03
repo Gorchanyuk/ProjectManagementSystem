@@ -38,7 +38,7 @@ public class ProjectTeamMapper implements Mapper<ProjectTeam, ProjectTeamDTO, Pr
     public ProjectTeamOutDTO entityToOutDto(ProjectTeam team){
         log.debug("Mapping ProjectTeam to ProjectTeamOutDTO");
         return ProjectTeamOutDTO.builder()
-                .employeeId(employeeMapper.entityToOutDto(team.getEmployeeId()))
+                .employee(employeeMapper.entityToOutDto(team.getEmployeeId()))
                 .roleEmployee(team.getRoleEmployee())
                 .build();
     }

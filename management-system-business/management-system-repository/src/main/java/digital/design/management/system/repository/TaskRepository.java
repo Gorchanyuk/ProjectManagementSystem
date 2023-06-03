@@ -13,6 +13,7 @@ import java.util.UUID;
 
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
+    @EntityGraph(value = "task", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Task> findByUid(UUID uid);
 
 

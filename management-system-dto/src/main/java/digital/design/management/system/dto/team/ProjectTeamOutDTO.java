@@ -14,7 +14,7 @@ import lombok.*;
 public class ProjectTeamOutDTO {
 
     @Schema(description = "Модель сотрудника для передачи данных на внешний интерфейс")
-    private EmployeeOutDTO employeeId;
+    private EmployeeOutDTO employee;
 
     @Schema(description = "Роль сотрудника", example = "DEVELOPER", oneOf = RoleEmployee.class)
     private RoleEmployee roleEmployee;

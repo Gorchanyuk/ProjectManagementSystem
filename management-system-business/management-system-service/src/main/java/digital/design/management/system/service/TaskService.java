@@ -5,16 +5,16 @@ import digital.design.management.system.dto.task.TaskCreateDTO;
 import digital.design.management.system.dto.task.TaskDTO;
 import digital.design.management.system.dto.task.TaskFilterDTO;
 import digital.design.management.system.dto.task.TaskOutDTO;
-import digital.design.management.system.security.EmployeeDetails;
+import digital.design.management.system.entity.Employee;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface TaskService {
 
-    TaskOutDTO createTask(TaskCreateDTO taskDTO, EmployeeDetails author);
+    TaskOutDTO createTask(TaskCreateDTO taskDTO, Employee author);
 
-    TaskOutDTO updateTask(UUID uid, TaskDTO taskDTO, EmployeeDetails author);
+    TaskOutDTO updateTask(UUID uid, TaskDTO taskDTO, Employee author);
 
     List<TaskOutDTO> getTasksWithFilter(TaskFilterDTO taskFilterDTO);
 

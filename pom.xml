@@ -21,11 +21,11 @@
         <revision>0.1</revision>
         <changelist>-SNAPSHOT</changelist>
         <spring.version>3.1.0</spring.version>
-        <testcontainers.version>1.18.1</testcontainers.version>
-        <liquibase.version>4.22.0</liquibase.version>
         <lombok.version>1.18.26</lombok.version>
-        <postgresql.version>42.6.0</postgresql.version>
         <springdoc.version>2.1.0</springdoc.version>
+        <liquibase.version>4.22.0</liquibase.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <testcontainers.version>1.18.1</testcontainers.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
@@ -43,7 +43,6 @@
                 <artifactId>spring-boot-starter-log4j2</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
@@ -104,15 +103,14 @@
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc.version}</version>
-        </dependency>
-    </dependencies>
+
 
 </project>

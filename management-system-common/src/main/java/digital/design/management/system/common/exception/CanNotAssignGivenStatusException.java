@@ -3,9 +3,9 @@ package digital.design.management.system.common.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class MaximumTaskStatusException extends RuntimeException{
+public class CanNotAssignGivenStatusException extends RuntimeException{
 
-    public MaximumTaskStatusException(String message) {
+    public CanNotAssignGivenStatusException(String message) {
         super(message);
     }
 }

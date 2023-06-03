@@ -7,7 +7,6 @@ import digital.design.management.system.mapping.Mapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
 @Log4j2
@@ -17,7 +16,6 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
     public Employee dtoToEntity(EmployeeDTO dto) {
         log.debug("Mapping EmployeeDTO to Employee");
         return Employee.builder()
-                .uid(UUID.randomUUID())
                 .lastName(dto.getLastName())
                 .firstName(dto.getFirstName())
                 .surname(dto.getSurname())

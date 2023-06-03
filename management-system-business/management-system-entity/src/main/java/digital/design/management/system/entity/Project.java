@@ -2,10 +2,7 @@ package digital.design.management.system.entity;
 
 import digital.design.management.system.common.enumerate.StatusProject;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -13,13 +10,11 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "project")
 public class Project {
-
-    public Project() {
-        this.uid = UUID.randomUUID();
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

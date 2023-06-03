@@ -75,12 +75,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = findByUid(uid);
         log.debug("Employee with uid: {} found", uid);
         //Проверка на повотряющиеся username, в случаее если это поле изменили
-        if (employee.getUsername() != null && employeeDTO.getUsername() != null &&
-                !employee.getUsername().equals(employeeDTO.getUsername()) &&
+        if (employeeDTO.getUsername() != null &&
+                !ObjectUtils.nullSafeEquals(employee.getUsername(), employeeDTO.getUsername()) &&
                 employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
         }
-        if (ObjectUtils.isEmpty(employee.getEmail()) && !ObjectUtils.isEmpty(employeeDTO.getEmail())){
+        if (ObjectUtils.isEmpty(employee.getPassword()) && !ObjectUtils.isEmpty(employeeDTO.getEmail())) {
             //Если почты не было и сейчас добавили
             employee.setPassword(passwordEncoder.encode(passwordGenerator.generate()));
             log.debug("For Employee with uid: {} generated password", uid);
@@ -106,11 +106,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeOutDTO createEmployee(EmployeeDTO employeeDTO) {
         log.debug("Create new Employee");
         Employee employee = mapper.dtoToEntity(employeeDTO);
+        employee.setUid(UUID.randomUUID());
         employee.setStatus(StatusEmployee.ACTIVE);
 
         if (employee.getEmail() != null) {
             log.debug("For Employee generated password");
-            employee.setPassword(passwordGenerator.generate());
+            employee.setPassword(passwordEncoder.encode(passwordGenerator.generate()));
             //TODO добавить отправку сообщения на почту
         }
         employeeRepository.save(employee);

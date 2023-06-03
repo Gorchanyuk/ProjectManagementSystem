@@ -54,7 +54,7 @@ public class TaskController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
 
-        TaskOutDTO taskOutDTO = taskService.createTask(taskDTO, author);
+        TaskOutDTO taskOutDTO = taskService.createTask(taskDTO, author.getEmployee());
         log.debug("POST request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.CREATED);
     }
@@ -79,7 +79,7 @@ public class TaskController {
             log.warn("PUT request on .../task/{} contains errors: {}", uid, infoErrors.stream().map(InputDataErrorResponse::getField).toList());
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
-        TaskOutDTO taskOutDTO = taskService.updateTask(uid, taskDTO, author);
+        TaskOutDTO taskOutDTO = taskService.updateTask(uid, taskDTO, author.getEmployee());
         log.debug("PUT request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
     }

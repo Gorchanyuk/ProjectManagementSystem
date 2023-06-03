@@ -1,4 +1,4 @@
-package digital.design.management.system.test.service.integrations;
+package digital.design.management.system.test.integrations;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

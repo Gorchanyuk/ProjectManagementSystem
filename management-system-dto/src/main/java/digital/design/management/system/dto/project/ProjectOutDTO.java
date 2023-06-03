@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Модель проекта для передачи данных на внешний интерфейс")

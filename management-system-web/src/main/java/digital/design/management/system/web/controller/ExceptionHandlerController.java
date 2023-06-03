@@ -83,16 +83,6 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(StatusProjectHasNotNextStatusException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "status",
-                resourceBundle.getString("STATUS_PROJECT_HAS_NOT_NEXT_STATUS")
-        );
-        log.warn(resourceBundle.getString("STATUS_PROJECT_HAS_NOT_NEXT_STATUS"));
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler
     private ResponseEntity<InputDataErrorResponse> handleException(EmployeeAlreadyParticipatingInProjectException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "employeeUid",
@@ -133,22 +123,12 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(CanNotAssignGivenTaskStatusException e) {
+    private ResponseEntity<InputDataErrorResponse> handleException(CanNotAssignGivenStatusException e) {
         InputDataErrorResponse response = new InputDataErrorResponse(
                 "status",
-                resourceBundle.getString("CANNOT_ASSIGN_GIVEN_TASK_STATUS")
+                resourceBundle.getString("CANNOT_ASSIGN_GIVEN_STATUS")
         );
-        log.warn(resourceBundle.getString("CANNOT_ASSIGN_GIVEN_TASK_STATUS"));
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<InputDataErrorResponse> handleException(MaximumTaskStatusException e) {
-        InputDataErrorResponse response = new InputDataErrorResponse(
-                "status",
-                resourceBundle.getString("MAXIMUM_TASK_STATUS_EXCEPTION")
-        );
-        log.warn(resourceBundle.getString("MAXIMUM_TASK_STATUS_EXCEPTION"));
+        log.warn(resourceBundle.getString("CANNOT_ASSIGN_GIVEN_STATUS"));
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 

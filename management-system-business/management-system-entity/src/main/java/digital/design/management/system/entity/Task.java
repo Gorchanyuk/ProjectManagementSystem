@@ -12,6 +12,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 @Table(name = "task")
 @NamedEntityGraph(
         name = "task",
@@ -21,8 +23,6 @@ import java.util.UUID;
                 @NamedAttributeNode("project")
         })
 public class Task{
-
-    public Task(){this.uid = UUID.randomUUID();}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

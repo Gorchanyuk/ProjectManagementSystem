@@ -96,9 +96,10 @@ public class ProjectController {
 
     @PutMapping(value = "/raise_status/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Повышение стаутса проекта")
-    public ProjectOutDTO updateStatusProject(@PathVariable("uid") UUID uid) {
+    public ProjectOutDTO updateStatusProject(@PathVariable("uid") UUID uid,
+                                             @RequestParam("status") StatusProject statusProject) {
         log.debug("PUT request on .../raise_status/{}}",  uid);
-        return projectService.updateStatusProject(uid);
+        return projectService.updateStatusProject(uid, statusProject);
     }
 
 }

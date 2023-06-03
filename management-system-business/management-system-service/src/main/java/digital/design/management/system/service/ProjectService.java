@@ -20,7 +20,7 @@ public interface ProjectService {
 
     List<ProjectOutDTO> getProjectsBySearch(String key, List<StatusProject> statuses);
 
-    ProjectOutDTO updateStatusProject(UUID uid);
+    ProjectOutDTO updateStatusProject(UUID uid, StatusProject statusProject);
 
 
 }
