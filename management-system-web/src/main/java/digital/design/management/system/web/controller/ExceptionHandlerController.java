@@ -3,7 +3,7 @@ package digital.design.management.system.web.controller;
 import digital.design.management.system.common.exception.*;
 import digital.design.management.system.dto.util.InputDataErrorResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,7 +13,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.ResourceBundle;
 
-@Log4j2
+@Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionHandlerController {

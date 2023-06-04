@@ -4,12 +4,12 @@ import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.mapping.Mapper;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@Log4j2
+@Slf4j
 public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOutDTO> {
 
     @Override

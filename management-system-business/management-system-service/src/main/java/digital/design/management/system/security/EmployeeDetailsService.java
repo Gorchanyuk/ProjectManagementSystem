@@ -3,7 +3,7 @@ package digital.design.management.system.security;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 @Component
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class EmployeeDetailsService implements UserDetailsService {
 
     private final EmployeeRepository employeeRepository;

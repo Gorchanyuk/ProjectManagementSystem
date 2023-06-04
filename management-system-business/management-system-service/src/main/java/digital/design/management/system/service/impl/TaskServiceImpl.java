@@ -18,7 +18,7 @@ import digital.design.management.system.service.ProjectService;
 import digital.design.management.system.service.TaskService;
 import digital.design.management.system.specification.TaskSpecification;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     private final Mapper<Task, TaskDTO, TaskOutDTO> mapper;

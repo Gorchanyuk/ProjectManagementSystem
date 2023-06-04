@@ -13,7 +13,7 @@ import digital.design.management.system.service.EmployeeService;
 import digital.design.management.system.util.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import digital.design.management.system.common.exception.EmployeeDoesNotExistException;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;

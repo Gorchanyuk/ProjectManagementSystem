@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/project")
 @Tag(name = "Проекты", description = "Контроллер для управления проектами")
-@Log4j2
+@Slf4j
 public class ProjectController {
 
     private final ProjectService projectService;

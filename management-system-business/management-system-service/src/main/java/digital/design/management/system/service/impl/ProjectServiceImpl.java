@@ -11,7 +11,7 @@ import digital.design.management.system.repository.ProjectRepository;
 import digital.design.management.system.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import digital.design.management.system.common.exception.ProjectDoesNotExistException;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;

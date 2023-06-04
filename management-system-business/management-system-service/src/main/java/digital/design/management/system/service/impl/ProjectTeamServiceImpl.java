@@ -16,7 +16,7 @@ import digital.design.management.system.service.EmployeeService;
 import digital.design.management.system.service.ProjectService;
 import digital.design.management.system.service.ProjectTeamService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class ProjectTeamServiceImpl implements ProjectTeamService {
 
     private final ProjectTeamRepository projectTeamRepository;

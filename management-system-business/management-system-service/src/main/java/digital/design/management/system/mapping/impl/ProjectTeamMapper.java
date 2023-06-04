@@ -7,12 +7,12 @@ import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.ProjectTeam;
 import digital.design.management.system.mapping.Mapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class ProjectTeamMapper implements Mapper<ProjectTeam, ProjectTeamDTO, ProjectTeamOutDTO> {
 
     private final EmployeeMapper employeeMapper;
