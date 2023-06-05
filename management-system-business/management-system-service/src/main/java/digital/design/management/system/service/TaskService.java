@@ -6,6 +6,7 @@ import digital.design.management.system.dto.task.TaskDTO;
 import digital.design.management.system.dto.task.TaskFilterDTO;
 import digital.design.management.system.dto.task.TaskOutDTO;
 import digital.design.management.system.entity.Employee;
+import digital.design.management.system.entity.Task;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,5 +20,7 @@ public interface TaskService {
     List<TaskOutDTO> getTasksWithFilter(TaskFilterDTO taskFilterDTO);
 
     TaskOutDTO updateStatusTask(UUID uid, StatusTask statusTask);
+
+    Task findByUid(UUID uid);
 
 }

@@ -45,6 +45,7 @@ public class ProjectServiceIT extends BaseTest {
     public void findByUidShouldGetProject(){
         List<Project> projects = generateProject.addProjects(10);
         UUID uid = projects.get(0).getUid();
+
         Project project = projectService.findByUid(uid);
 
         Assertions.assertEquals(uid, project.getUid());

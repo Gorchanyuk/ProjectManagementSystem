@@ -40,3 +40,4 @@ build/
 ### My additions ###
 *.flattened-pom.xml
 *.log
+/uploads/

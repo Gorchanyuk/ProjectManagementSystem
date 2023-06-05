@@ -93,9 +93,16 @@ public class TaskServiceTest {
         UUID uid = UUID.randomUUID();
         when(taskRepository.findByUid(uid)).thenReturn(Optional.empty());
 
-        //Метод findByUid приватный, поэтому проверяем через метод taskService
         Assertions.assertThrows(TaskDoesNotExistException.class,
-                () -> taskService.updateTask(uid, new TaskDTO(), new Employee()));
+                () -> taskService.findByUid(uid));
+    }
+
+    @Test
+    public void findByUidShouldReturnTask(){
+        UUID uid = UUID.randomUUID();
+        when(taskRepository.findByUid(uid)).thenReturn(Optional.of(new Task()));
+
+        Assertions.assertNotNull(taskService.findByUid(uid));
     }
 
     /*Проверяем обновление задачи. в условиях задаем что жо этого исполнитель не был указан, а теперь добавлен*/

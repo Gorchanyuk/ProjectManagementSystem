@@ -14,6 +14,7 @@ import digital.design.management.system.mapping.Mapper;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.repository.TaskRepository;
 import digital.design.management.system.service.TaskService;
+import digital.design.management.system.test.integrations.BaseTest;
 import digital.design.management.system.test.util.GenerateEmployee;
 import digital.design.management.system.test.util.GenerateProject;
 import digital.design.management.system.test.util.GenerateTask;
@@ -30,7 +31,7 @@ import java.util.UUID;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class TaskServiceIT {
+public class TaskServiceIT extends BaseTest {
 
     @Autowired
     private TaskService taskService;
@@ -114,5 +115,15 @@ public class TaskServiceIT {
         Task taskUpdate = taskRepository.findByUid(uid).get();
 
         Assertions.assertEquals(statusUpdate, taskUpdate.getStatus());
+    }
+
+    @Test
+    public void findByUidShouldGetTask(){
+        List<Task> tasks = generateTask.addTasks(10);
+        UUID uid = tasks.get(0).getUid();
+
+        Task task = taskService.findByUid(uid);
+
+        Assertions.assertEquals(uid, task.getUid());
     }
 }

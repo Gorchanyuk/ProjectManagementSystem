@@ -132,5 +132,25 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(StorageFileNotFoundException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "file",
+                resourceBundle.getString("STORAGE_FILE_NOT_FOUND")
+        );
+        log.warn(resourceBundle.getString("STORAGE_FILE_NOT_FOUND"));
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(StorageSaveFileException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "file",
+                resourceBundle.getString("STORAGE_SAVE_FILE")
+        );
+        log.warn(resourceBundle.getString("STORAGE_SAVE_FILE"));
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
 
 }

@@ -9,6 +9,7 @@ import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.ProjectTeam;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.service.ProjectTeamService;
+import digital.design.management.system.test.integrations.BaseTest;
 import digital.design.management.system.test.util.GenerateEmployee;
 import digital.design.management.system.test.util.GenerateProject;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ProjectTeamServiceIT {
+public class ProjectTeamServiceIT extends BaseTest {
 
     @Autowired
     private GenerateEmployee generateEmployee;

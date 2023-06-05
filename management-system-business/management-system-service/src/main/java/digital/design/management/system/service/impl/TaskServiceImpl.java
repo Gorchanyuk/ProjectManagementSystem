@@ -131,7 +131,7 @@ public class TaskServiceImpl implements TaskService {
         return mapper.entityToOutDto(task);
     }
 
-    private Task findByUid(UUID uid){
+    public Task findByUid(UUID uid){
         return taskRepository.findByUid(uid).orElseThrow(TaskDoesNotExistException::new);
     }
 }
