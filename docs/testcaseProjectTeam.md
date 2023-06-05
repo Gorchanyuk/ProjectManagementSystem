@@ -1,76 +1,71 @@
-<style type="text/css">
-.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
-.tg .tg-9wq8{border-color:inherit;text-align:center;vertical-align:middle}
-.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-</style>
-<table class="tg" style="table-layout: fixed; width: 1482px">
+
+<table style="table-layout: fixed; width: 1482px">
 <thead>
   <tr>
-    <th class="tg-9wq8">id</th>
-    <th class="tg-9wq8">Название</th>
-    <th class="tg-9wq8">Описание</th>
-    <th class="tg-9wq8">Окружающая среда</th>
-    <th class="tg-9wq8">Шаги</th>
-    <th class="tg-9wq8">Ожидаемый результат</th>
-    <th class="tg-9wq8">Фактический результат</th>
-    <th class="tg-9wq8">Статус</th>
+    <th>id</th>
+    <th>Название</th>
+    <th>Описание</th>
+    <th>Окружающая среда</th>
+    <th>Шаги</th>
+    <th>Ожидаемый результат</th>
+    <th>Фактический результат</th>
+    <th>Статус</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-9wq8" rowspan="3">1</td>
-    <td class="tg-9wq8" rowspan="3">getAllPartyShouldGetAllParty</td>
-    <td class="tg-9wq8" rowspan="3">Получение всех сотрудников участвующих в заданном проекте</td>
-    <td class="tg-9wq8" rowspan="3">IntelliJ IDEA 2023.1<br>JUnit 5</td>
-    <td class="tg-0pky">1. Сгенерировать и записать начальные данные в БД</td>
-    <td class="tg-9wq8" rowspan="3">Получим команду сотрудников заданного проекта</td>
-    <td class="tg-9wq8" rowspan="3">Команда сотрудников была получена</td>
-    <td class="tg-9wq8" rowspan="3">Успешно</td>
+    <td rowspan="3">1</td>
+    <td rowspan="3">getAllPartyShouldGetAllParty</td>
+    <td rowspan="3">Получение всех сотрудников участвующих в заданном проекте</td>
+    <td rowspan="3">IntelliJ IDEA 2023.1<br>JUnit 5</td>
+    <td>1. Сгенерировать и записать начальные данные в БД</td>
+    <td rowspan="3">Получим команду сотрудников заданного проекта</td>
+    <td rowspan="3">Команда сотрудников была получена</td>
+    <td rowspan="3">Успешно</td>
   </tr>
   <tr>
-    <td class="tg-lboi">2. Получить команду сотрудников</td>
+    <td>2. Получить команду сотрудников</td>
   </tr>
   <tr>
-    <td class="tg-0pky">3. Проверить результат</td>
+    <td>3. Проверить результат</td>
   </tr>
   <tr>
-    <td class="tg-9wq8" rowspan="4">2</td>
-    <td class="tg-9wq8" rowspan="4">addParticipantShouldAddNewParticipant</td>
-    <td class="tg-9wq8" rowspan="4">Добавление сотрудника в команду проекта</td>
-    <td class="tg-9wq8" rowspan="4">IntelliJ IDEA 2023.1<br>JUnit 5<br></td>
-    <td class="tg-0pky">1. Сгенерировать и записать начальные данные в БД</td>
-    <td class="tg-9wq8" rowspan="4">Сотрудник будет добавлен в команду</td>
-    <td class="tg-9wq8" rowspan="4">Сотрудник был добавлен в команду</td>
-    <td class="tg-9wq8" rowspan="4">Успешно</td>
+    <td rowspan="4">2</td>
+    <td rowspan="4">addParticipantShouldAddNewParticipant</td>
+    <td rowspan="4">Добавление сотрудника в команду проекта</td>
+    <td rowspan="4">IntelliJ IDEA 2023.1<br>JUnit 5<br></td>
+    <td>1. Сгенерировать и записать начальные данные в БД</td>
+    <td rowspan="4">Сотрудник будет добавлен в команду</td>
+    <td rowspan="4">Сотрудник был добавлен в команду</td>
+    <td rowspan="4">Успешно</td>
   </tr>
   <tr>
-    <td class="tg-0lax">2. Создать модель добавляемого сотрудника</td>
+    <td>2. Создать модель добавляемого сотрудника</td>
   </tr>
   <tr>
-    <td class="tg-lboi">3. Добавить сотрудника в команду</td>
+    <td>3. Добавить сотрудника в команду</td>
   </tr>
   <tr>
-    <td class="tg-0pky">4. Проверить результат</td>
+    <td>4. Проверить результат</td>
   </tr>
   <tr>
-    <td class="tg-9wq8" rowspan="4">3</td>
-    <td class="tg-9wq8" rowspan="4">deleteParticipantShouldDeleteParticipant</td>
-    <td class="tg-9wq8" rowspan="4">Удаление сотрудника из команды проекта</td>
-    <td class="tg-9wq8" rowspan="4">IntelliJ IDEA 2023.1<br>JUnit 5 </td>
-    <td class="tg-0pky">1. Сгенерировать и записать начальные данные в БД</td>
-    <td class="tg-9wq8" rowspan="4">Сотрудник будет удален из команды проекта</td>
-    <td class="tg-9wq8" rowspan="4">Сотрудник был удален из команды проекта</td>
-    <td class="tg-9wq8" rowspan="4">Успешно</td>
+    <td rowspan="4">3</td>
+    <td rowspan="4">deleteParticipantShouldDeleteParticipant</td>
+    <td rowspan="4">Удаление сотрудника из команды проекта</td>
+    <td rowspan="4">IntelliJ IDEA 2023.1<br>JUnit 5 </td>
+    <td>1. Сгенерировать и записать начальные данные в БД</td>
+    <td rowspan="4">Сотрудник будет удален из команды проекта</td>
+    <td rowspan="4">Сотрудник был удален из команды проекта</td>
+    <td rowspan="4">Успешно</td>
   </tr>
   <tr>
-    <td class="tg-lboi">2. Создать модель удаляемого сотрудника</td>
+    <td>2. Создать модель удаляемого сотрудника</td>
   </tr>
   <tr>
-    <td class="tg-lboi">3. Удалить сотрудника из команды</td>
+    <td>3. Удалить сотрудника из команды</td>
   </tr>
   <tr>
-    <td class="tg-0lax">4. Проверить результат</td>
+    <td>4. Проверить результат</td>
   </tr>
 </tbody>
 </table>
