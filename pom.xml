@@ -6,7 +6,6 @@
     <version>${revision}${changelist}</version>
     <packaging>pom</packaging>
     <artifactId>management-system</artifactId>
-
     <modules>
         <module>management-system-dto</module>
         <module>management-system-business</module>
@@ -22,6 +21,7 @@
         <changelist>-SNAPSHOT</changelist>
         <spring.version>3.1.0</spring.version>
         <lombok.version>1.18.26</lombok.version>
+        <jackson.version>2.15.0</jackson.version>
         <springdoc.version>2.1.0</springdoc.version>
         <liquibase.version>4.22.0</liquibase.version>
         <postgresql.version>42.6.0</postgresql.version>
@@ -102,6 +102,16 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <version>${liquibase.version}</version>
@@ -140,6 +150,11 @@
                 <artifactId>postgresql</artifactId>
                 <version>${testcontainers.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-thymeleaf</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
@@ -183,7 +198,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.15.0</version>
+                <version>${jackson.version}</version>
                 <scope>compile</scope>
             </dependency>
         </dependencies>

@@ -7,6 +7,7 @@ import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.mapping.impl.EmployeeMapper;
+import digital.design.management.system.rabbitmq.MessageProducer;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.service.impl.EmployeeServiceImpl;
@@ -35,6 +36,8 @@ public class EmployeeServiceTest {
     private EmployeeMapper mapper;
     @Mock
     private ProjectTeamRepository projectTeamRepository;
+    @Mock
+    private MessageProducer messageProducer;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock

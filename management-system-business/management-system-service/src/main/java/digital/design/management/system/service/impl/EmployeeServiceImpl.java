@@ -4,8 +4,11 @@ package digital.design.management.system.service.impl;
 import digital.design.management.system.common.exception.SuchUsernameAlreadyExistException;
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
+import digital.design.management.system.dto.mail.EmailDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.common.enumerate.StatusEmployee;
+import digital.design.management.system.util.CreatorMailDTO;
+import digital.design.management.system.rabbitmq.MessageProducer;
 import digital.design.management.system.mapping.Mapper;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.repository.ProjectTeamRepository;
@@ -33,6 +36,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final ProjectTeamRepository projectTeamRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordGenerator passwordGenerator;
+    private final MessageProducer messageProducer;
+    private final CreatorMailDTO creatorMailDTO;
 
     public Employee findByUid(UUID uid) {
         return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIVE)
@@ -82,9 +87,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         if (ObjectUtils.isEmpty(employee.getPassword()) && !ObjectUtils.isEmpty(employeeDTO.getEmail())) {
             //Если почты не было и сейчас добавили
-            employee.setPassword(passwordEncoder.encode(passwordGenerator.generate()));
+            setPasswordAndSendEmail(employee);
             log.debug("For Employee with uid: {} generated password", uid);
-            //TODO Добавить отправление по почте
         }
         employee = mapper.dtoToEntity(employeeDTO, employee);
         employeeRepository.save(employee);
@@ -111,12 +115,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (employee.getEmail() != null) {
             log.debug("For Employee generated password");
-            employee.setPassword(passwordEncoder.encode(passwordGenerator.generate()));
-            //TODO добавить отправку сообщения на почту
+            setPasswordAndSendEmail(employee);
         }
         employeeRepository.save(employee);
         log.info("New Employee created");
         return mapper.entityToOutDto(employee);
     }
 
+    private void setPasswordAndSendEmail(Employee employee) {
+        String password = passwordGenerator.generate();
+        employee.setPassword(passwordEncoder.encode(password));
+        EmailDTO emailDTO = creatorMailDTO.getDtoForPassword(employee, password);
+        messageProducer.sendMessage(emailDTO);
+    }
 }

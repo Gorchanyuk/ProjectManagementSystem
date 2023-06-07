@@ -1,5 +1,6 @@
 package digital.design.management.system.service.impl;
 
+import digital.design.management.system.dto.mail.EmailDTO;
 import digital.design.management.system.dto.util.ProjectTeamId;
 import digital.design.management.system.common.exception.*;
 import digital.design.management.system.dto.task.TaskCreateDTO;
@@ -11,12 +12,14 @@ import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.Task;
 import digital.design.management.system.common.enumerate.StatusTask;
 import digital.design.management.system.mapping.Mapper;
+import digital.design.management.system.rabbitmq.MessageProducer;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.repository.TaskRepository;
 import digital.design.management.system.service.EmployeeService;
 import digital.design.management.system.service.ProjectService;
 import digital.design.management.system.service.TaskService;
 import digital.design.management.system.specification.TaskSpecification;
+import digital.design.management.system.util.CreatorMailDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -37,6 +40,8 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectService projectService;
     private final EmployeeService employeeService;
     private final TaskRepository taskRepository;
+    private final MessageProducer messageProducer;
+    private final CreatorMailDTO creatorMailDTO;
 
 
     @Override
@@ -53,6 +58,8 @@ public class TaskServiceImpl implements TaskService {
             Employee taskPerformer = employeeService.findByUid(task.getTaskPerformer().getUid());
             isProjectParticipant(project, taskPerformer, false);
             task.setTaskPerformer(taskPerformer);
+            EmailDTO emailDTO = creatorMailDTO.getDtoForTask(taskPerformer, task.getName(), project.getName());
+            messageProducer.sendMessage(emailDTO);
         }
         task.setAuthor(author);
         task.setProject(project);
