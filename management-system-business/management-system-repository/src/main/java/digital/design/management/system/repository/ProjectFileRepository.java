@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ProjectFileRepository extends JpaRepository<ProjectFile, Long> {
+
+    Optional<ProjectFile> findByUid(UUID uid);
 
     @EntityGraph(value = "project_file", type = EntityGraph.EntityGraphType.LOAD)
     List<ProjectFile> findAllByProjectId_Uid(UUID projectUid);

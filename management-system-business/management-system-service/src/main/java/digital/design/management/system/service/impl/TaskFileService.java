@@ -1,8 +1,10 @@
 package digital.design.management.system.service.impl;
 
+import digital.design.management.system.common.exception.StorageFileNotFoundException;
 import digital.design.management.system.dto.file.FileDTO;
 import digital.design.management.system.entity.Task;
 import digital.design.management.system.entity.TaskFile;
+import digital.design.management.system.mapping.impl.FileDtoMapper;
 import digital.design.management.system.repository.TaskFileRepository;
 import digital.design.management.system.service.FileService;
 import digital.design.management.system.service.StorageService;
@@ -28,46 +30,62 @@ public class TaskFileService implements StorageService {
     private final TaskFileRepository taskFileRepository;
     private final TaskService taskService;
     private final FileService fileService;
+    private final FileDtoMapper fileMapper;
+
+    public TaskFile findByUid(UUID uid){
+        return taskFileRepository.findByUid(uid)
+                .orElseThrow(StorageFileNotFoundException::new);
+    }
+
     @Override
-    public FileDTO fileUpload(MultipartFile file, UUID uid) {
-        String filename = fileService.saveNewFile(file, dir);
-        Task task = taskService.findByUid(uid);
+    public FileDTO fileUpload(MultipartFile file, UUID taskUid) {
+        UUID fileUid = UUID.randomUUID();
+        String filename = fileService.saveNewFile(file, dir, fileUid);
+        Task task = taskService.findByUid(taskUid);
         TaskFile taskFile = TaskFile.builder()
                 .taskId(task)
+                .uid(fileUid)
                 .filename(filename)
                 .build();
         taskFileRepository.save(taskFile);
         log.info("Task file: {} upload and save", filename);
-        return FileDTO.builder().fileName(filename).build();
+        return fileMapper.getDto(taskFile);
     }
 
     @Override
-    public List<FileDTO> getAllFiles(UUID uid) {
-        log.info("All files by task with uid:{} found", uid);
-        return taskFileRepository.findAllByTaskId_Uid(uid).stream()
+    public List<FileDTO> getAllFiles(UUID taskUid) {
+        log.info("All files by task with uid:{} found", taskUid);
+        return taskFileRepository.findAllByTaskId_Uid(taskUid).stream()
                 .map(file-> FileDTO.builder()
+                        .uid(file.getUid())
                         .fileName(file.getFilename())
                         .build())
                 .toList();
     }
 
     @Override
-    public FileDTO fileReplace(String filename, MultipartFile file) {
+    public FileDTO fileReplace(UUID uid, MultipartFile file) {
+        TaskFile taskFile = findByUid(uid);
+        String filename = taskFile.getFilename();
         fileService.save(file, dir, filename);
         log.info("Task file: {} replace", filename);
-        return FileDTO.builder().fileName(filename).build();
+        return fileMapper.getDto(taskFile);
     }
 
     @Override
-    public FileDTO deleteFile(String filename) {
+    public FileDTO deleteFile(UUID uid) {
+        TaskFile taskFile = findByUid(uid);
+        String filename = taskFile.getFilename();
         fileService.deleteFile(dir, filename);
         taskFileRepository.deleteByFilename(filename);
         log.info("Task file: {} delete", filename);
-        return FileDTO.builder().fileName(filename).build();
+        return fileMapper.getDto(taskFile);
     }
 
     @Override
-    public Resource downloadFile(String filename) {
+    public Resource downloadFile(UUID uid) {
+        TaskFile taskFile = findByUid(uid);
+        String filename = taskFile.getFilename();
         Resource resource = fileService.downloadFile(dir, filename);
         log.info("Task file: {} for download found", filename);
         return resource;

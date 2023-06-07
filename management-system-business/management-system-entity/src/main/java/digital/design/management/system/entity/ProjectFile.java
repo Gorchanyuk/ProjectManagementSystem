@@ -3,6 +3,8 @@ package digital.design.management.system.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Builder
 @Getter
@@ -20,6 +22,9 @@ public class ProjectFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "uid")
+    private UUID uid;
 
     @ManyToOne
     @JoinColumn(name = "project_id")

@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface TaskFileRepository extends JpaRepository<TaskFile, Long> {
+
+    Optional<TaskFile> findByUid(UUID uid);
 
     @EntityGraph(value = "task_file", type = EntityGraph.EntityGraphType.LOAD)
     List<TaskFile> findAllByTaskId_Uid(UUID taskUid);
