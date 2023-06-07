@@ -113,16 +113,33 @@
            </column>
         </createTable>
     </changeSet>
-<!--    <changeSet author="gorchanyuk" id="initial_0001_05">-->
-<!--        <addForeignKeyConstraint constraintName="FK_Task_Employee"-->
-<!--                                 baseTableName="task" baseColumnNames="author"-->
-<!--                                 referencedTableName="employee" referencedColumnNames="id"-->
-<!--                                 onDelete="SET NULL"/>-->
-<!--    </changeSet>-->
-<!--    <changeSet author="gorchanyuk" id="initial_0001_06">-->
-<!--        <addForeignKeyConstraint constraintName="FK_Task_Employee_2"-->
-<!--                                 baseTableName="task" baseColumnNames="performer"-->
-<!--                                 referencedTableName="employee" referencedColumnNames="id"-->
-<!--                                 onDelete="SET NULL"/>-->
-<!--    </changeSet>-->
+    <changeSet id="initial_0001_05" author="gorchanyuk">
+        <createTable tableName="project_file">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="project_file_id_pkey"/>
+            </column>
+            <column name="project_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_file_Project" referencedTableName="project"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="initial_0001_06" author="gorchanyuk">
+        <createTable tableName="task_file">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="task_file_id_pkey"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_File_Task" referencedTableName="task"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

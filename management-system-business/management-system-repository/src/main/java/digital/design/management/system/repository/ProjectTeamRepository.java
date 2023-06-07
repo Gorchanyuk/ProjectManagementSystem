@@ -1,7 +1,7 @@
 package digital.design.management.system.repository;
 
 
-import digital.design.management.system.ProjectTeamId;
+import digital.design.management.system.dto.util.ProjectTeamId;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.ProjectTeam;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -29,8 +29,4 @@ public interface ProjectTeamRepository extends JpaRepository<ProjectTeam, Projec
     @EntityGraph(value = "project_employee", type = EntityGraph.EntityGraphType.LOAD)
     Optional<ProjectTeam> findByProjectId_UidAndEmployeeId_Uid(UUID projectId, UUID employeeId);
 
-    @Modifying
-    @Transactional
-    @EntityGraph(value = "project_employee", type = EntityGraph.EntityGraphType.LOAD)
-    void deleteByProjectId_UidAndEmployeeId_Uid(UUID projectId, UUID employeeId);
 }

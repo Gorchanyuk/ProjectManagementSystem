@@ -1,6 +1,6 @@
 package digital.design.management.system.dto.employee;
 
-import digital.design.management.system.enumerate.StatusEmployee;
+import digital.design.management.system.common.enumerate.StatusEmployee;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Модель сотрудника для передачи данных на внешний интерфейс")

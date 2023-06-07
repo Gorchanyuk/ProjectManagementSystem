@@ -4,18 +4,18 @@ import digital.design.management.system.dto.project.ProjectDTO;
 import digital.design.management.system.dto.project.ProjectOutDTO;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.mapping.Mapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
+@Slf4j
 public class ProjectMapper implements Mapper<Project, ProjectDTO, ProjectOutDTO> {
 
     @Override
     public Project dtoToEntity(ProjectDTO dto){
-
+        log.debug("Mapping ProjectDTO to Project");
         return Project.builder()
-                .uid(UUID.randomUUID())
                 .code(dto.getCode())
                 .name(dto.getName())
                 .description(dto.getDescription())
@@ -24,7 +24,7 @@ public class ProjectMapper implements Mapper<Project, ProjectDTO, ProjectOutDTO>
 
     @Override
     public Project dtoToEntity(ProjectDTO dto, Project project) {
-
+        log.debug("Mapping an ProjectDTO to an Project in a given project");
         project.setCode(dto.getCode());
         project.setName(dto.getName());
         project.setDescription(dto.getDescription());
@@ -33,13 +33,22 @@ public class ProjectMapper implements Mapper<Project, ProjectDTO, ProjectOutDTO>
 
     @Override
     public ProjectOutDTO entityToOutDto(Project project){
-
+        log.debug("Mapping Project to ProjectOutDTO");
         return ProjectOutDTO.builder()
                 .uid(project.getUid())
                 .status(project.getStatus())
                 .code(project.getCode())
                 .name(project.getName())
                 .description(project.getDescription())
+                .build();
+    }
+
+    @Override
+    public ProjectDTO entityToDto(Project entity) {
+        return ProjectDTO.builder()
+                .code(entity.getCode())
+                .name(entity.getName())
+                .description(entity.getDescription())
                 .build();
     }
 }

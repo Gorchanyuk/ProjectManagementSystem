@@ -1,6 +1,6 @@
 package digital.design.management.system.entity;
 
-import digital.design.management.system.enumerate.StatusTask;
+import digital.design.management.system.common.enumerate.StatusTask;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +12,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 @Table(name = "task")
 @NamedEntityGraph(
         name = "task",
@@ -21,8 +23,6 @@ import java.util.UUID;
                 @NamedAttributeNode("project")
         })
 public class Task{
-
-    public Task(){this.uid = UUID.randomUUID();}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

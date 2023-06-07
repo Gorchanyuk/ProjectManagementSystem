@@ -7,4 +7,6 @@ public interface Mapper<T, R1, R2>{
     T dtoToEntity(R1 dto, T entity);
 
     R2 entityToOutDto(T entity);
+
+    R1 entityToDto(T entity);
 }

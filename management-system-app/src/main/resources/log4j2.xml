@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="INFO">
+<Configuration status="info">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %color{%-5level %logger{1.}} - %msg %n{TRACE=white, DEBUG=green, INFO=blue, WARN=purple, ERROR=red, FATAL=reverse, OFF=white}"/>
-           <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %color{%-5level %logger{1.}} - %msg %n{TRACE=white, DEBUG=green, INFO=blue, WARN=purple, ERROR=red, FATAL=reverse, OFF=white}"/>
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
 
         <RollingFile name="DEBUG" fileName="logs/debug.log" filePattern="logs/debug-%d{yyyy-MM-dd}.log.gz">
-            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %logger{1.} - %msg %n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
@@ -15,15 +16,15 @@
         </RollingFile>
 
         <RollingFile name="INFO" fileName="logs/info.log" filePattern="logs/info-%d{yyyy-MM-dd}.log.gz">
-            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %logger{1.} - %msg %n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
         </RollingFile>
 
-        <RollingFile name="ERROR" fileName="logs/error.log" filePattern="logs/error-%d{yyyy-MM-dd}.log.gz">
-            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        <RollingFile name="WARN" fileName="logs/warn.log" filePattern="logs/warn-%d{yyyy-MM-dd}.log.gz">
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %logger{1.} - %msg %n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
@@ -32,11 +33,13 @@
     </Appenders>
 
     <Loggers>
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="DEBUG"/>
             <AppenderRef ref="INFO"/>
-            <AppenderRef ref="ERROR"/>
+            <AppenderRef ref="WARN"/>
         </Root>
+        <Logger name="digital.design.management.system" level="debug">
+            <AppenderRef ref="DEBUG"/>
+        </Logger>
     </Loggers>
 </Configuration>

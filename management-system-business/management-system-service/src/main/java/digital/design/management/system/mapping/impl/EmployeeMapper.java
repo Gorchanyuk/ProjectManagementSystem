@@ -4,18 +4,18 @@ import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.mapping.Mapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
+@Slf4j
 public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOutDTO> {
 
     @Override
-    public Employee dtoToEntity(EmployeeDTO dto){
-
+    public Employee dtoToEntity(EmployeeDTO dto) {
+        log.debug("Mapping EmployeeDTO to Employee");
         return Employee.builder()
-                .uid(UUID.randomUUID())
                 .lastName(dto.getLastName())
                 .firstName(dto.getFirstName())
                 .surname(dto.getSurname())
@@ -27,7 +27,7 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
 
     @Override
     public Employee dtoToEntity(EmployeeDTO dto, Employee employee) {
-
+        log.debug("Mapping an EmployeeDTO to an Employee in a given employee");
         employee.setLastName(dto.getLastName());
         employee.setFirstName(dto.getFirstName());
         employee.setSurname(dto.getSurname());
@@ -39,8 +39,8 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
     }
 
     @Override
-    public EmployeeOutDTO entityToOutDto(Employee employee){
-
+    public EmployeeOutDTO entityToOutDto(Employee employee) {
+        log.debug("Mapping Employee to EmployeeOutDTO");
         return EmployeeOutDTO.builder()
                 .lastName(employee.getLastName())
                 .firstName(employee.getFirstName())
@@ -50,6 +50,19 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
                 .email(employee.getEmail())
                 .uid(employee.getUid())
                 .status(employee.getStatus())
+                .build();
+    }
+
+    @Override
+    public EmployeeDTO entityToDto(Employee employee){
+        log.debug("Mapping Employee to EmployeeDTO");
+        return EmployeeDTO.builder()
+                .lastName(employee.getLastName())
+                .firstName(employee.getFirstName())
+                .surname(employee.getSurname())
+                .jobTitle(employee.getJobTitle())
+                .username(employee.getUsername())
+                .email(employee.getEmail())
                 .build();
     }
 }

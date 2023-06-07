@@ -1,6 +1,6 @@
 package digital.design.management.system.dto.project;
 
-import digital.design.management.system.enumerate.StatusProject;
+import digital.design.management.system.common.enumerate.StatusProject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Модель проекта для передачи данных на внешний интерфейс")

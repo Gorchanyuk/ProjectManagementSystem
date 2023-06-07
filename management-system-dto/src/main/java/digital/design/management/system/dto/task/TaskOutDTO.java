@@ -1,6 +1,6 @@
 package digital.design.management.system.dto.task;
 
-import digital.design.management.system.enumerate.StatusTask;
+import digital.design.management.system.common.enumerate.StatusTask;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -11,6 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Модель задачи для передачи данных на внешний интерфейс")

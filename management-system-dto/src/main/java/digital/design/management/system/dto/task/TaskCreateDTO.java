@@ -18,4 +18,5 @@ public class TaskCreateDTO extends TaskDTO{
     @NotNull(message = "Задача должна быть связана с проектом")
     @Schema(description = "uid проекта, для которого назначена задача", example = "ccd90ae1-a3db-46be-83cb-ead8ed03f732")
     private UUID project;
+
 }
