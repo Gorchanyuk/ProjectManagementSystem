@@ -12,11 +12,11 @@ public interface StorageService {
 
     FileDTO fileUpload(MultipartFile file, UUID uid);
 
-    Resource downloadFile(String filename);
+    Resource downloadFile(UUID uid);
 
     List<FileDTO> getAllFiles(UUID uid);
 
-    FileDTO fileReplace(String filename, MultipartFile file);
+    FileDTO fileReplace(UUID uid, MultipartFile file);
 
-    FileDTO deleteFile(String filename);
+    FileDTO deleteFile(UUID uid);
 }

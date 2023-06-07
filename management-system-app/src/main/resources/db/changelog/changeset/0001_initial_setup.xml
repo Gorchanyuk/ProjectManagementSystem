@@ -118,6 +118,9 @@
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="project_file_id_pkey"/>
             </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
+                <constraints unique="true" primaryKey="true" primaryKeyName="task_file_id_pkey"/>
+            </column>
             <column name="project_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_file_Project" referencedTableName="project"
                              referencedColumnNames="id"/>
@@ -131,6 +134,9 @@
         <createTable tableName="task_file">
             <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="task_file_id_pkey"/>
+            </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
+                <constraints unique="true" primaryKey="true" primaryKeyName="task_file_id_pkey"/>
             </column>
             <column name="task_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_File_Task" referencedTableName="task"

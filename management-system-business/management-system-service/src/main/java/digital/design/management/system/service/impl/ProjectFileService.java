@@ -1,8 +1,10 @@
 package digital.design.management.system.service.impl;
 
+import digital.design.management.system.common.exception.StorageFileNotFoundException;
 import digital.design.management.system.dto.file.FileDTO;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.ProjectFile;
+import digital.design.management.system.mapping.impl.FileDtoMapper;
 import digital.design.management.system.repository.ProjectFileRepository;
 import digital.design.management.system.service.ProjectService;
 import digital.design.management.system.service.FileService;
@@ -28,49 +30,64 @@ public class ProjectFileService implements StorageService{
     private final ProjectFileRepository projectFileRepository;
     private final ProjectService projectService;
     private final FileService fileService;
+    private final FileDtoMapper fileMapper;
 
-    public FileDTO fileUpload(MultipartFile file, UUID uid) {
+    public ProjectFile findByUid(UUID uid){
+        return projectFileRepository.findByUid(uid)
+                .orElseThrow(StorageFileNotFoundException::new);
+    }
 
-        String filename = fileService.saveNewFile(file, dir);
-        Project project = projectService.findByUid(uid);
+    @Override
+    public FileDTO fileUpload(MultipartFile file, UUID projectUid) {
+        UUID fileUid = UUID.randomUUID();
+        String filename = fileService.saveNewFile(file, dir, fileUid);
+        Project project = projectService.findByUid(projectUid);
         ProjectFile projectFile = ProjectFile.builder()
                 .projectId(project)
+                .uid(fileUid)
                 .filename(filename)
                 .build();
         projectFileRepository.save(projectFile);
         log.info("Project file: {} upload and save", filename);
-        return FileDTO.builder().fileName(filename).build();
+        return fileMapper.getDto(projectFile);
     }
 
 
 
     @Override
-    public List<FileDTO> getAllFiles(UUID uid) {
-        log.info("All files by project with uid:{} found", uid);
-        return projectFileRepository.findAllByProjectId_Uid(uid).stream()
+    public List<FileDTO> getAllFiles(UUID projectUid) {
+        log.info("All files by project with uid:{} found", projectUid);
+        return projectFileRepository.findAllByProjectId_Uid(projectUid).stream()
                 .map(file-> FileDTO.builder()
+                        .uid(file.getUid())
                         .fileName(file.getFilename())
                         .build())
                 .toList();
     }
 
     @Override
-    public FileDTO fileReplace(String filename, MultipartFile file) {
+    public FileDTO fileReplace(UUID uid, MultipartFile file) {
+        ProjectFile projectFile = findByUid(uid);
+        String filename = projectFile.getFilename();
         fileService.save(file, dir, filename);
         log.info("Project file: {} replace", filename);
-        return FileDTO.builder().fileName(filename).build();
+        return fileMapper.getDto(projectFile);
     }
 
     @Override
-    public FileDTO deleteFile(String filename) {
+    public FileDTO deleteFile(UUID uid) {
+        ProjectFile projectFile = findByUid(uid);
+        String filename = projectFile.getFilename();
         fileService.deleteFile(dir, filename);
         projectFileRepository.deleteByFilename(filename);
         log.info("Project file: {} delete", filename);
-        return FileDTO.builder().fileName(filename).build();
+        return fileMapper.getDto(projectFile);
     }
 
     @Override
-    public Resource downloadFile(String filename) {
+    public Resource downloadFile(UUID uid) {
+        ProjectFile projectFile = findByUid(uid);
+        String filename = projectFile.getFilename();
         Resource resource = fileService.downloadFile(dir, filename);
         log.info("Project file: {} for download found", filename);
         return resource;

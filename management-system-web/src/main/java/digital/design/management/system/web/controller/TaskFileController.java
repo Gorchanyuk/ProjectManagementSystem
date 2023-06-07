@@ -30,12 +30,12 @@ public class TaskFileController {
         this.storageService = storageService;
     }
 
-    @GetMapping(value = "/task/download_file/{filename}",
+    @GetMapping(value = "/task/download_file/{fileUid}",
             produces = MediaType.ALL_VALUE)
     @Operation(summary = "Возвращает ссылку для скачивания файла")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("filename") String filename) {
-        log.debug("GET request on .../task/download_file/{}", filename);
-        Resource file = storageService.downloadFile(filename);
+    public ResponseEntity<Resource> downloadFile(@PathVariable("fileUid") UUID uid) {
+        log.debug("GET request on .../task/download_file/{}", uid);
+        Resource file = storageService.downloadFile(uid);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
@@ -60,24 +60,24 @@ public class TaskFileController {
         return storageService.getAllFiles(uid);
     }
 
-    @PutMapping(value = "/task/file/{filename}",
+    @PutMapping(value = "/task/file/{fileUid}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.ALL_VALUE)
     @Operation(summary = "Заменяет файл с указанным именем на новый файл, формат должен совпадать")
-    public ResponseEntity<FileDTO> replaceFile(@PathVariable("filename") String filename,
+    public ResponseEntity<FileDTO> replaceFile(@PathVariable("fileUid") UUID uid,
                                                     @RequestParam("file") MultipartFile file) {
-        log.debug("PUT request on .../task/file/{}", filename);
-        FileDTO fileDTO = storageService.fileReplace(filename, file);
+        log.debug("PUT request on .../task/file/{}", uid);
+        FileDTO fileDTO = storageService.fileReplace(uid, file);
         return ResponseEntity.ok().body(fileDTO);
     }
 
-    @DeleteMapping(value = "/task/file/{filename}",
+    @DeleteMapping(value = "/task/file/{fileUid}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Удаляет файл")
-    public ResponseEntity<FileDTO> deleteFile(@PathVariable("filename") String filename){
+    public ResponseEntity<FileDTO> deleteFile(@PathVariable("fileUid") UUID uid){
 
-        log.debug("DELETE request on .../task/file/{}", filename);
-        FileDTO fileDTO = storageService.deleteFile(filename);
+        log.debug("DELETE request on .../task/file/{}", uid);
+        FileDTO fileDTO = storageService.deleteFile(uid);
         return ResponseEntity.ok().body(fileDTO);
     }
 }

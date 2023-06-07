@@ -20,7 +20,7 @@ import java.util.UUID;
 @Slf4j
 public class FileService {
 
-    public String saveNewFile(MultipartFile file, String dir) {
+    public String saveNewFile(MultipartFile file, String dir, UUID uid) {
         try {
             Path directory = Path.of(dir);
             if (Files.notExists(directory)){
@@ -34,7 +34,7 @@ public class FileService {
 
             String name = Objects.requireNonNull(fileName).substring(0, fileName.lastIndexOf('.'));
             String extension = fileName.substring(fileName.lastIndexOf('.'));
-            String newFileName = name + "-" + UUID.randomUUID() + extension;
+            String newFileName = name + "-" + uid + extension;
 
             save(file, dir,  newFileName);
 
