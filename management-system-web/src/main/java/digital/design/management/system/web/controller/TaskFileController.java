@@ -5,7 +5,6 @@ import digital.design.management.system.service.StorageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @Tag(name = "Работа с файлами задач", description = "Контроллер для управления файлами для задач")
 public class TaskFileController {
@@ -37,7 +35,6 @@ public class TaskFileController {
             produces = MediaType.ALL_VALUE)
     public ResponseEntity<Resource> downloadFile(@Parameter(description = "uid файла который нужно скачать")
                                                  @PathVariable("fileUid") UUID uid) {
-        log.debug("GET request on .../task/download_file/{}", uid);
         Resource file = storageService.downloadFile(uid);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
@@ -52,7 +49,6 @@ public class TaskFileController {
                                               @PathVariable("taskUid") UUID uid,
                                               @Parameter(description = "Файл")
                                               @RequestParam("file") MultipartFile file) {
-        log.debug("POST request on .../task/{}/file", uid);
         FileDTO fileDTO = storageService.fileUpload(file, uid);
 
         return ResponseEntity.ok().body(fileDTO);
@@ -64,7 +60,6 @@ public class TaskFileController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FileDTO> getAllFiles(@Parameter(description = "uid задачи, файлы которой необходимо найти")
                                      @PathVariable("taskUid") UUID uid) {
-        log.debug("GET request on .../task/{}/file", uid);
         return storageService.getAllFiles(uid);
     }
 
@@ -77,7 +72,6 @@ public class TaskFileController {
                                                @PathVariable("fileUid") UUID uid,
                                                @Parameter(description = "Файл")
                                                @RequestParam("file") MultipartFile file) {
-        log.debug("PUT request on .../task/file/{}", uid);
         FileDTO fileDTO = storageService.fileReplace(uid, file);
         return ResponseEntity.ok().body(fileDTO);
     }
@@ -89,7 +83,6 @@ public class TaskFileController {
     public ResponseEntity<FileDTO> deleteFile(@Parameter(description = "uid файла, который нужно удалить")
                                               @PathVariable("fileUid") UUID uid) {
 
-        log.debug("DELETE request on .../task/file/{}", uid);
         FileDTO fileDTO = storageService.deleteFile(uid);
         return ResponseEntity.ok().body(fileDTO);
     }

@@ -33,8 +33,11 @@ public class TaskFileService implements StorageService {
     private final FileDtoMapper fileMapper;
 
     public TaskFile findByUid(UUID uid){
-        return taskFileRepository.findByUid(uid)
+        log.debug("Search for the task file with uid: {}", uid);
+        TaskFile file = taskFileRepository.findByUid(uid)
                 .orElseThrow(StorageFileNotFoundException::new);
+        log.info("Task file with uid: {} found", uid);
+        return file;
     }
 
     @Override

@@ -34,7 +34,6 @@ public class EmployeeController {
             description = "Находит всех сотрудников, но не более 100")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeOutDTO> getEmployees() {
-        log.debug("GET request on .../employee");
         return employeeService.getEmployees();
     }
 
@@ -43,7 +42,6 @@ public class EmployeeController {
     @GetMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeOutDTO getEmployeeByUid(@Parameter(description = "uid сотрудника, которого необходимо получить")
                                            @PathVariable("uid") UUID uid) {
-        log.debug("GET request on .../employee/{}", uid);
         return employeeService.getEmployeeByUid(uid);
     }
 
@@ -53,7 +51,6 @@ public class EmployeeController {
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeOutDTO> getEmployeeBySearch(@Parameter(description = "Ключевое слово или его часть")
                                                     @RequestParam(value = "key", defaultValue = "") String key) {
-        log.debug("GET request on .../employee/search, params: key={}", key);
         return employeeService.getEmployeeByKeyWord(key);
     }
 
@@ -63,7 +60,6 @@ public class EmployeeController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
-        log.debug("POST request on .../employee, params: employeeDTO={}", employeeDTO);
         employeeValidator.validate(employeeDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -77,7 +73,6 @@ public class EmployeeController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         EmployeeOutDTO employeeOutDTO = employeeService.createEmployee(employeeDTO);
-        log.debug("POST request on .../employee is complete");
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.CREATED);
     }
 
@@ -86,7 +81,6 @@ public class EmployeeController {
     @DeleteMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeOutDTO> deleteEmployee(@Parameter(description = "uid сотрудника, которого необходимо удалить")
                                                          @PathVariable("uid") UUID uid) {
-        log.debug("DELETE request on .../employee/{}", uid);
         EmployeeOutDTO employeeOutDTO = employeeService.deleteEmployee(uid);
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.OK);
     }
@@ -100,7 +94,6 @@ public class EmployeeController {
                                                  @PathVariable("uid") UUID uid,
                                                  @Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
-        log.debug("PUT request on .../employee/{}", uid);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
@@ -112,7 +105,6 @@ public class EmployeeController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         EmployeeOutDTO employeeOutDTO = employeeService.updateEmployee(uid, employeeDTO);
-        log.debug("PUT request on .../employee is complete");
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.ACCEPTED);
     }
 

@@ -34,7 +34,6 @@ public class ProjectTeamController {
     @GetMapping(value = "/{project_uid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ProjectTeamOutDTO> getAllParty(@Parameter(description = "uid проекта, команду которого необходимо получить")
                                                @PathVariable("project_uid") UUID projectUid) {
-        log.debug("GET request on .../project_team/{}", projectUid);
         return projectTeamService.getAllParty(projectUid);
     }
 
@@ -44,7 +43,6 @@ public class ProjectTeamController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addParticipant(@Valid @RequestBody ProjectTeamDTO team,
                                                  BindingResult bindingResult) {
-        log.debug("Post request on .../project_team");
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
@@ -56,7 +54,6 @@ public class ProjectTeamController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         ProjectTeamOutDTO projectTeamOutDTO = projectTeamService.addParticipant(team);
-        log.debug("POST request on .../project_team is complete");
         return new ResponseEntity<>(projectTeamOutDTO, HttpStatus.CREATED);
     }
 
@@ -64,9 +61,7 @@ public class ProjectTeamController {
             description = "Удаление сотрудника из команды")
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> deleteParticipant(@RequestBody ProjectTeamDeleteDTO projectTeamDeleteDTO) {
-        log.debug("DELETE request on .../project_team");
         projectTeamService.deleteParticipant(projectTeamDeleteDTO);
-        log.debug("DELETE request on .../project_team is complete");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -33,8 +33,11 @@ public class ProjectFileService implements StorageService{
     private final FileDtoMapper fileMapper;
 
     public ProjectFile findByUid(UUID uid){
-        return projectFileRepository.findByUid(uid)
+        log.debug("Search for the project file with uid: {}", uid);
+        ProjectFile file = projectFileRepository.findByUid(uid)
                 .orElseThrow(StorageFileNotFoundException::new);
+        log.info("Project file with uid: {} found", uid);
+        return file;
     }
 
     @Override

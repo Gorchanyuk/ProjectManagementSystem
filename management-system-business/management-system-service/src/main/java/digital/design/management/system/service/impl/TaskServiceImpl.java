@@ -45,13 +45,23 @@ public class TaskServiceImpl implements TaskService {
     private final ResourceBundle resourceBundle;
 
 
+
+    @Override
+    public Task findByUid(UUID uid) {
+        log.debug("Search for the task with uid: {}", uid);
+        Task task = taskRepository.findByUid(uid).orElseThrow(TaskDoesNotExistException::new);
+        log.info("Task with uid: {} found", uid);
+        return task;
+    }
+
     @Override
     @Transactional
     public TaskOutDTO createTask(TaskCreateDTO taskDTO, Employee author) {
-        log.debug("Create a task");
         Task task = mapper.dtoToEntity(taskDTO);
+        UUID uid = UUID.randomUUID();
+        task.setUid(UUID.randomUUID());
+        log.debug("Create a task with uid: {}", uid);
         Project project = projectService.findByUid(taskDTO.getProject());
-        log.debug("Project received");
         //Проверяем является ли автор участником проекта
         isProjectParticipant(project, author, true);
         //Если исполнитель назначен проверяем является ли он участником проекта
@@ -63,9 +73,8 @@ public class TaskServiceImpl implements TaskService {
         task.setDateOfCreated(LocalDate.now());
         task.setDateOfUpdate(LocalDate.now());
         task.setStatus(StatusTask.NEW);
-        task.setUid(UUID.randomUUID());
         taskRepository.save(task);
-        log.info("Task {} created successfully", task.getUid());
+        log.info("Task with uid: {} created successfully", task.getUid());
         return mapper.entityToOutDto(task);
     }
 
@@ -73,7 +82,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskOutDTO updateTask(UUID uid, TaskDTO taskDTO, Employee author) {
         log.debug("Update a task with uid:{}", uid);
         Task task = findByUid(uid);
-        log.debug("Task received by uid: {}", uid);
         Employee performerBeforeUpdate = task.getTaskPerformer();//сохраняем значения исполнителя который был до изменения задачи
         task = mapper.dtoToEntity(taskDTO, task);
         Project project = task.getProject();
@@ -97,11 +105,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskOutDTO> getTasksWithFilter(TaskFilterDTO taskFilterDTO) {
-        log.debug("Search for a tasks by filter");
+        log.debug("Search for a tasks by filter: {}", taskFilterDTO);
         List<Task> tasks = taskRepository.findAll(
                 TaskSpecification.getSpecification(taskFilterDTO),
                 Sort.by("dateOfCreated").descending());
-        log.info("Tasks found");
+        log.info("Tasks with filter found, filter: {}", taskFilterDTO);
         return tasks.stream().map(mapper::entityToOutDto).toList();
     }
 
@@ -109,7 +117,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskOutDTO updateStatusTask(UUID uid, StatusTask statusTask) {
         log.debug("Update status task with uid: {}", uid);
         Task task = findByUid(uid);
-        log.debug("Task received");
         if (!task.getStatus().hasNextStatus() ||
                 !task.getStatus().getNextStatus().equals(statusTask))
             throw new CanNotAssignGivenStatusException();
@@ -121,20 +128,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task findByUid(UUID uid) {
-        return taskRepository.findByUid(uid).orElseThrow(TaskDoesNotExistException::new);
-    }
-
-    @Override
     public List<TaskOutDTO> getTaskDependencies(UUID uid) {
         Task task = findByUid(uid);
         List<Task> tasks = taskRepository.findAllByTaskParent(task);
-
+        log.info("For task with id : {} the list of dependent tasks is received", uid);
         return tasks.stream().map(mapper::entityToOutDto).toList();
     }
 
     @Override
     public List<TaskOutDTO> setTaskParent(UUID taskParent, TaskChildDTO childDTO) {
+        log.debug("Specifying dependencies for a task with uid: {}", taskParent);
         Task parent = findByUid(taskParent);
         List<Task> temp = new ArrayList<>();
         for (UUID taskChild : childDTO.children) {
@@ -143,16 +146,23 @@ public class TaskServiceImpl implements TaskService {
                 child.setTaskParent(parent);
                 temp.add(child);
             } else {
-                throw new CyclicDependencyException(resourceBundle.getString("CYCLIC_DEPENDENCY_TASK") + taskChild.toString());
+                String message = resourceBundle.getString("CYCLIC_DEPENDENCY_TASK") +
+                        "task parent: " +
+                        taskParent +
+                        "task child: " +
+                        taskChild;
+                throw new CyclicDependencyException(message);
             }
         }
         taskRepository.saveAll(temp);
+        log.info("All dependencies for task with id: {} added", taskParent);
         List<Task> children = taskRepository.findAllByTaskParent(parent);
         return children.stream().map(mapper::entityToOutDto).toList();
     }
 
     @Override
     public List<TaskOutDTO> deleteTaskParent(UUID taskParent, TaskChildDTO childDTO) {
+        log.debug("Removing dependencies for task with uid: {}", taskParent);
         Task parent = findByUid(taskParent);
         List<Task> temp = new ArrayList<>();
         for (UUID taskChild : childDTO.children) {
@@ -165,6 +175,7 @@ public class TaskServiceImpl implements TaskService {
             }
         }
         taskRepository.saveAll(temp);
+        log.info("All specified dependencies for task with uid: {} have been removed", taskParent);
         List<Task> children = taskRepository.findAllByTaskParent(parent);
         return children.stream().map(mapper::entityToOutDto).toList();
     }

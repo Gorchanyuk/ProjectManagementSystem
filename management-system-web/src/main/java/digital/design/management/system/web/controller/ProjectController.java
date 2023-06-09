@@ -35,7 +35,6 @@ public class ProjectController {
             description = "Находит все проекты, но не более 100")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ProjectOutDTO> getProjects() {
-        log.debug("GET request on .../project");
         return projectService.getProjects();
     }
 
@@ -45,7 +44,6 @@ public class ProjectController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createProject(@Valid @RequestBody ProjectDTO projectDTO,
                                                 BindingResult bindingResult) {
-        log.debug("POST request on .../project, params: projectDTO={}", projectDTO);
         projectValidator.validate(projectDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -60,7 +58,6 @@ public class ProjectController {
         }
         ProjectOutDTO projectOutDTO = projectService.createProject(projectDTO);
 
-        log.debug("POST request on .../project is complete");
         return new ResponseEntity<>(projectOutDTO, HttpStatus.CREATED);
     }
 
@@ -72,7 +69,6 @@ public class ProjectController {
                                                 @PathVariable("uid") UUID uid,
                                                 @Valid @RequestBody ProjectDTO projectDTO,
                                                 BindingResult bindingResult) {
-        log.debug("PUT request on .../project/{}", uid);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
@@ -85,7 +81,6 @@ public class ProjectController {
         }
 
         ProjectOutDTO projectOutDTO = projectService.updateProject(uid, projectDTO);
-        log.debug("PUT request on .../project is complete");
         return new ResponseEntity<>(projectOutDTO, HttpStatus.ACCEPTED);
     }
 
@@ -98,7 +93,6 @@ public class ProjectController {
                                                    @Parameter(description = "Список статусов")
                                                    @RequestParam(value = "status", defaultValue = "DRAFT,DEVELOP,TEST,COMPLETE")
                                                    List<StatusProject> statuses) {
-        log.debug("GET request on .../project/search, params: key={}, status={}", key, statuses);
         return projectService.getProjectsBySearch(key, statuses);
     }
 
@@ -110,7 +104,6 @@ public class ProjectController {
                                              @PathVariable("uid") UUID uid,
                                              @Parameter(description = "Новый статус проекта")
                                              @RequestParam("status") StatusProject statusProject) {
-        log.debug("PUT request on .../raise_status/{}}", uid);
         return projectService.updateStatusProject(uid, statusProject);
     }
 

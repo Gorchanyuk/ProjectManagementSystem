@@ -37,7 +37,7 @@ public class ProjectTeamServiceImpl implements ProjectTeamService {
     @Override
     public List<ProjectTeamOutDTO> getAllParty(UUID projectUid) {
         List<ProjectTeam> projectTeam = projectTeamRepository.findAllByProjectId_Uid(projectUid);
-        log.info("All ProjectTeam found");
+        log.info("All Team for Project with uid: {} pro found", projectUid);
         return projectTeam.stream()
                 .map(mapper::entityToOutDto)
                 .toList();
@@ -45,12 +45,10 @@ public class ProjectTeamServiceImpl implements ProjectTeamService {
 
     @Override
     public ProjectTeamOutDTO addParticipant(ProjectTeamDTO projectTeamDTO) {
-        log.debug("Adding an employee to a team");
+        log.debug("Adding an employee with uid: {} to the project team with uid: {}}", projectTeamDTO.getEmployeeUid(), projectTeamDTO.getProjectUid());
         //Получаем сотрудника и проект по их uid
         Employee employee = employeeService.findByUid(projectTeamDTO.getEmployeeUid());
-        log.debug("Employee received");
         Project project = projectService.findByUid(projectTeamDTO.getProjectUid());
-        log.debug("Project received");
         ProjectTeamId id = new ProjectTeamId(project.getId(), employee.getId());
 
         //Проверяем чтобы такой записи не было в БД;
@@ -60,17 +58,17 @@ public class ProjectTeamServiceImpl implements ProjectTeamService {
 
         ProjectTeam projectTeam = new ProjectTeam(project, employee, projectTeamDTO.getRoleEmployee());
         projectTeamRepository.save(projectTeam);
-        log.info("The employee was successfully added to the team");
+        log.info("The employee with uid: {} was successfully added to the project team with uid: {}", employee.getUid(), project.getUid());
         return mapper.entityToOutDto(projectTeam);
     }
 
     @Override
     public void deleteParticipant(ProjectTeamDeleteDTO deleteDTO) {
-        log.debug("Removing an employee from a team");
+        log.debug("Removing an employee with uid: {} from the project team with uid: {}", deleteDTO.getEmployeeUid(), deleteDTO.getProjectUid());
         ProjectTeam projectTeam = projectTeamRepository
                 .findByProjectId_UidAndEmployeeId_Uid(deleteDTO.getProjectUid(), deleteDTO.getEmployeeUid())
                 .orElseThrow(EmployeeIsNotInvolvedInProjectException::new);
         projectTeamRepository.delete(projectTeam);
-        log.info("Employee removed from team");
+        log.info("Employee with uid: {} removed from the project team with uid: {}", deleteDTO.getEmployeeUid(), deleteDTO.getProjectUid());
     }
 }

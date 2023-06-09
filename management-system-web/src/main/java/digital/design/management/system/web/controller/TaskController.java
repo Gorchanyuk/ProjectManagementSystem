@@ -39,7 +39,6 @@ public class TaskController {
     public ResponseEntity<Object> createTask(@AuthenticationPrincipal EmployeeDetails author,
                                              @Valid @RequestBody TaskCreateDTO taskDTO,
                                              BindingResult bindingResult) {
-        log.debug("POST request on .../task, params: taskDTO={}", taskDTO);
         taskValidator.validate(taskDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -54,7 +53,6 @@ public class TaskController {
         }
 
         TaskOutDTO taskOutDTO = taskService.createTask(taskDTO, author.getEmployee());
-        log.debug("POST request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.CREATED);
     }
 
@@ -67,7 +65,6 @@ public class TaskController {
                                              @AuthenticationPrincipal EmployeeDetails author,
                                              @Valid @RequestBody TaskDTO taskDTO,
                                              BindingResult bindingResult) {
-        log.debug("PUT request on .../task/{}", uid);
         taskValidator.validate(taskDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -81,7 +78,6 @@ public class TaskController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         TaskOutDTO taskOutDTO = taskService.updateTask(uid, taskDTO, author.getEmployee());
-        log.debug("PUT request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
     }
 
@@ -90,7 +86,6 @@ public class TaskController {
     @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<TaskOutDTO> getTasksWithFilter(@RequestBody TaskFilterDTO taskFilterDTO) {
-        log.debug("GET request on .../task, params: filter={}", taskFilterDTO);
         return taskService.getTasksWithFilter(taskFilterDTO);
     }
 
@@ -101,7 +96,6 @@ public class TaskController {
     public ResponseEntity<TaskOutDTO> updateStatusProject(@Parameter(description = "uid задачи, которой нужно изменить статус")
                                                           @PathVariable("uid") UUID uid,
                                                           @RequestParam("status") StatusTask statusTask) {
-        log.debug("PUT request on .../task/raise_status/{}", uid);
         TaskOutDTO taskOutDTO = taskService.updateStatusTask(uid, statusTask);
         return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
     }

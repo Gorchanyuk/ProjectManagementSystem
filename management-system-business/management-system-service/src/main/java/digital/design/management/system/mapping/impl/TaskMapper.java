@@ -5,18 +5,15 @@ import digital.design.management.system.dto.task.TaskOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Task;
 import digital.design.management.system.mapping.Mapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 
 @Component
-@Slf4j
 public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
 
     @Override
     public Task dtoToEntity(TaskDTO dto) {
-        log.debug("Mapping TaskDTO to Task");
         return Task.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
@@ -30,7 +27,6 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
 
     @Override
     public Task dtoToEntity(TaskDTO dto, Task task){
-        log.debug("Mapping an TaskDTO to an Task in a given task");
         task.setName(dto.getName());
         task.setDescription(dto.getDescription());
         task.setTaskPerformer(ObjectUtils.isEmpty(dto.getTaskPerformer())
@@ -44,7 +40,6 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
 
     @Override
     public TaskOutDTO entityToOutDto(Task task) {
-        log.debug("Mapping Task to TaskOutDTO");
         return TaskOutDTO.builder()
                 .name(task.getName())
                 .description(task.getDescription())

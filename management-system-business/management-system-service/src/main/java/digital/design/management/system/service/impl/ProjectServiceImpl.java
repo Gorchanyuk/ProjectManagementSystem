@@ -27,15 +27,17 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project findByUid(UUID uid) {
-
-        return projectRepository.findByUid(uid)
+        log.debug("Search for the project with uid: {}", uid);
+        Project project = projectRepository.findByUid(uid)
                 .orElseThrow(ProjectDoesNotExistException::new);
+        log.info("Project with uid: {} found", uid);
+        return project;
     }
 
     @Override
     public List<ProjectOutDTO> getProjects() {
         List<Project> projects = projectRepository.findTop100By();
-        log.info("All Project found");
+        log.info("All projects found");
         return projects.stream()
                 .map(mapper::entityToOutDto)
                 .toList();
@@ -43,12 +45,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectOutDTO createProject(ProjectDTO projectDTO) {
-        log.debug("Create new Project");
         Project project = mapper.dtoToEntity(projectDTO);
-        project.setUid(UUID.randomUUID());
+        UUID uid = UUID.randomUUID();
+        project.setUid(uid);
+        log.debug("Create new Project, with uid: {}", uid);
         project.setStatus(StatusProject.DRAFT);
         projectRepository.save(project);
-        log.info("New Project created");
+        log.info("New Project created, uid: {}", uid);
         return mapper.entityToOutDto(project);
     }
 
@@ -71,7 +74,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectOutDTO> getProjectsBySearch(String key, List<StatusProject> statuses) {
         List<Project> projects =
                 projectRepository.findByKeyWordAndStatus(key, statuses);
-        log.info("All Projects with keyword and statuses found");
+        log.info("All Projects with keyword: {}, and statuses: {} found ", key, statuses);
         return projects.stream()
                 .map(mapper::entityToOutDto)
                 .toList();

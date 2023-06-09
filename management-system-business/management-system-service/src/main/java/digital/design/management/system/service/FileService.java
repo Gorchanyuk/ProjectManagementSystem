@@ -21,31 +21,25 @@ import java.util.UUID;
 public class FileService {
 
     public String saveNewFile(MultipartFile file, String dir, UUID uid) {
-        try {
-            Path directory = Path.of(dir);
-            if (Files.notExists(directory)){
-                Files.createDirectories(directory);
-                log.info("Directory {} is created", dir);
+        checkAndCreateDirectory(dir);
+        String fileName = file.getOriginalFilename();
+            if(Objects.requireNonNull(fileName).contains(".")) {
+                String name = Objects.requireNonNull(fileName).substring(0, fileName.lastIndexOf('.'));
+                String extension = fileName.substring(fileName.lastIndexOf('.'));
+                fileName = name + "-" + uid + extension;
+            }else{
+                fileName = fileName + "-" + uid;
             }
-        } catch (IOException e) {
-            throw new StorageSaveFileException();
-        }
-            String fileName = file.getOriginalFilename();
 
-            String name = Objects.requireNonNull(fileName).substring(0, fileName.lastIndexOf('.'));
-            String extension = fileName.substring(fileName.lastIndexOf('.'));
-            String newFileName = name + "-" + uid + extension;
+            save(file, dir,  fileName);
 
-            save(file, dir,  newFileName);
-
-            return newFileName;
+            return fileName;
     }
 
     public void save(MultipartFile file, String dir, String filename) {
         try {
             Path path = Paths.get(dir, filename);
             Files.write(path, file.getBytes());
-            log.debug("File {} saved", filename);
         } catch (IOException e) {
             throw new StorageSaveFileException();
         }
@@ -54,6 +48,7 @@ public class FileService {
     public Resource downloadFile(String dir, String filename) {
         Path path = Paths.get(dir, filename);
         try {
+
             return new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             throw new StorageFileNotFoundException();
@@ -66,6 +61,18 @@ public class FileService {
             Files.delete(path);
         } catch (IOException e) {
             throw new StorageFileNotFoundException();
+        }
+    }
+
+    private static void checkAndCreateDirectory(String dir) {
+        try {
+            Path directory = Path.of(dir);
+            if (Files.notExists(directory)){
+                Files.createDirectories(directory);
+                log.info("Directory {} created", dir);
+            }
+        } catch (IOException e) {
+            throw new StorageSaveFileException();
         }
     }
 }

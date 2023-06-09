@@ -40,8 +40,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final CreatorMailDTO creatorMailDTO;
 
     public Employee findByUid(UUID uid) {
-        return employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIVE)
+        log.debug("Search for the employee with uid: {}", uid);
+        Employee employee = employeeRepository.findByUidAndStatus(uid, StatusEmployee.ACTIVE)
                 .orElseThrow(EmployeeDoesNotExistException::new);
+        log.info("Employee with uid: {} found", uid);
+        return employee;
     }
 
     @Override
@@ -58,7 +61,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeOutDTO getEmployeeByUid(UUID uid) {
         Employee employee = findByUid(uid);
-        log.info("Employee with uid: {} found", uid);
         return mapper.entityToOutDto(employee);
     }
 
@@ -78,7 +80,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeOutDTO updateEmployee(UUID uid, EmployeeDTO employeeDTO) {
         log.debug("Update Employee with uid: {}", uid);
         Employee employee = findByUid(uid);
-        log.debug("Employee with uid: {} found", uid);
         //Проверка на повотряющиеся username, в случаее если это поле изменили
         if (!ObjectUtils.isEmpty(employeeDTO.getUsername()) &&
                 !ObjectUtils.nullSafeEquals(employee.getUsername(), employeeDTO.getUsername()) &&
@@ -88,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (ObjectUtils.isEmpty(employee.getPassword()) && !ObjectUtils.isEmpty(employeeDTO.getEmail())) {
             //Если почты не было и сейчас добавили
             setPasswordAndSendEmail(employee);
-            log.debug("For Employee with uid: {} generated password", uid);
+            log.debug("For Employee with uid: {} has been generated password", uid);
         }
         employee = mapper.dtoToEntity(employeeDTO, employee);
         employeeRepository.save(employee);
@@ -100,7 +101,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeOutDTO> getEmployeeByKeyWord(String key) {
         List<Employee> employees =
                 employeeRepository.findByKeyword(key, StatusEmployee.ACTIVE);
-        log.info("All Employee with keyword found");
+        log.info("All Employee with keyword {} found", key);
         return employees.stream()
                 .map(mapper::entityToOutDto)
                 .toList();
@@ -108,17 +109,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeOutDTO createEmployee(EmployeeDTO employeeDTO) {
-        log.debug("Create new Employee");
         Employee employee = mapper.dtoToEntity(employeeDTO);
-        employee.setUid(UUID.randomUUID());
+        UUID uid = UUID.randomUUID();
+        employee.setUid(uid);
+        log.debug("Create new Employee with uid: {}", uid);
         employee.setStatus(StatusEmployee.ACTIVE);
 
         if (!ObjectUtils.isEmpty(employee.getEmail())) {
-            log.debug("For Employee generated password");
+            log.debug("For Employee {} generated password", uid);
             setPasswordAndSendEmail(employee);
         }
         employeeRepository.save(employee);
-        log.info("New Employee created");
+        log.info("New Employee created, uid: {}", uid);
         return mapper.entityToOutDto(employee);
     }
 
