@@ -28,8 +28,8 @@ public class ProjectFile {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private Project projectId;
+    private Project projectId;  //Проект к которому прикреплен файл
 
     @Column(name = "filename")
-    private String filename;
+    private String filename;    //Название файла
 }

@@ -28,8 +28,8 @@ public class TaskFile {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
-    private Task taskId;
+    private Task taskId;        //Задача к которой прикреплен файл
 
     @Column(name = "filename")
-    private String filename;
+    private String filename;    //Название файла
 }

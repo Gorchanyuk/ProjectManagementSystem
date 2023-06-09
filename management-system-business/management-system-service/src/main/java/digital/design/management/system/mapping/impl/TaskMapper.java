@@ -7,6 +7,7 @@ import digital.design.management.system.entity.Task;
 import digital.design.management.system.mapping.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 
 @Component
@@ -19,9 +20,9 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
         return Task.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
-                .taskPerformer(dto.getTaskPerformer() != null
-                        ? Employee.builder().uid(dto.getTaskPerformer()).build()
-                        : null)
+                .taskPerformer(ObjectUtils.isEmpty(dto.getTaskPerformer())
+                        ? null
+                        : Employee.builder().uid(dto.getTaskPerformer()).build())
                 .executionTime(dto.getExecutionTime())
                 .deadline(dto.getDeadline())
                 .build();
@@ -32,9 +33,9 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
         log.debug("Mapping an TaskDTO to an Task in a given task");
         task.setName(dto.getName());
         task.setDescription(dto.getDescription());
-        task.setTaskPerformer(dto.getTaskPerformer() != null
-                ? Employee.builder().uid(dto.getTaskPerformer()).build()
-                : null);
+        task.setTaskPerformer(ObjectUtils.isEmpty(dto.getTaskPerformer())
+                ? null
+                : Employee.builder().uid(dto.getTaskPerformer()).build());
         task.setExecutionTime(dto.getExecutionTime());
         task.setDeadline(dto.getDeadline());
 
@@ -47,7 +48,7 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
         return TaskOutDTO.builder()
                 .name(task.getName())
                 .description(task.getDescription())
-                .taskPerformer(task.getTaskPerformer() == null ? null : task.getTaskPerformer().getUid())
+                .taskPerformer(ObjectUtils.isEmpty(task.getTaskPerformer()) ? null : task.getTaskPerformer().getUid())
                 .executionTime(task.getExecutionTime())
                 .deadline(task.getDeadline())
                 .project(task.getProject().getUid())
@@ -56,6 +57,7 @@ public class TaskMapper implements Mapper<Task, TaskDTO, TaskOutDTO> {
                 .status(task.getStatus())
                 .dateOfCreated(task.getDateOfCreated())
                 .dateOfUpdate(task.getDateOfUpdate())
+                .taskParent(ObjectUtils.isEmpty(task.getTaskParent()) ? null : task.getTaskParent().getUid())
                 .build();
     }
 

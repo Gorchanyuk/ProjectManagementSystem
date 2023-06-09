@@ -25,14 +25,14 @@ public class ProjectTeam {
     @Id
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private Project projectId;
+    private Project projectId;          //Проект
 
     @Id
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    private Employee employeeId;        //Участник проекта
 
     @Column(name = "role_employee", nullable = false)
     @Enumerated(EnumType.STRING)
-    private RoleEmployee roleEmployee;
+    private RoleEmployee roleEmployee;  //Роль участника проекта
 }

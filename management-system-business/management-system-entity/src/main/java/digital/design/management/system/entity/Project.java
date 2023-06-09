@@ -24,16 +24,16 @@ public class Project {
     private UUID uid;
 
     @Column(name = "code", nullable = false, unique = true)
-    private String code;
+    private String code;        //Код проекта
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String name;        //Наименование проекта
 
     @Column(name = "description")
-    private String description;
+    private String description; //Описание проекта
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusProject status;
+    private StatusProject status;//Статус проекта
 
 }

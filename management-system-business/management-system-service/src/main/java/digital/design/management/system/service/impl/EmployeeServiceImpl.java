@@ -80,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = findByUid(uid);
         log.debug("Employee with uid: {} found", uid);
         //Проверка на повотряющиеся username, в случаее если это поле изменили
-        if (employeeDTO.getUsername() != null &&
+        if (!ObjectUtils.isEmpty(employeeDTO.getUsername()) &&
                 !ObjectUtils.nullSafeEquals(employee.getUsername(), employeeDTO.getUsername()) &&
                 employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
@@ -113,7 +113,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUid(UUID.randomUUID());
         employee.setStatus(StatusEmployee.ACTIVE);
 
-        if (employee.getEmail() != null) {
+        if (!ObjectUtils.isEmpty(employee.getEmail())) {
             log.debug("For Employee generated password");
             setPasswordAndSendEmail(employee);
         }

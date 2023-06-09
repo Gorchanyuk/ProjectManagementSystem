@@ -21,5 +21,7 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     @EntityGraph(value = "task", type = EntityGraph.EntityGraphType.LOAD)
     List<Task> findAll(Specification<Task> specification, Sort sort);
 
+    List<Task> findAllByTaskParent(Task task);
+
 
 }

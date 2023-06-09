@@ -1,10 +1,7 @@
 package digital.design.management.system.service;
 
 import digital.design.management.system.common.enumerate.StatusTask;
-import digital.design.management.system.dto.task.TaskCreateDTO;
-import digital.design.management.system.dto.task.TaskDTO;
-import digital.design.management.system.dto.task.TaskFilterDTO;
-import digital.design.management.system.dto.task.TaskOutDTO;
+import digital.design.management.system.dto.task.*;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Task;
 
@@ -23,4 +20,9 @@ public interface TaskService {
 
     Task findByUid(UUID uid);
 
+    List<TaskOutDTO> getTaskDependencies(UUID uid);
+
+    List<TaskOutDTO> setTaskParent(UUID taskParent, TaskChildDTO taskChildDTO);
+
+    List<TaskOutDTO> deleteTaskParent(UUID uid, TaskChildDTO childDto);
 }

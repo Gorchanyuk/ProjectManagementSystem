@@ -3,6 +3,7 @@ package digital.design.management.system.web.controller;
 import digital.design.management.system.dto.file.FileDTO;
 import digital.design.management.system.service.StorageService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,51 +31,63 @@ public class TaskFileController {
         this.storageService = storageService;
     }
 
+    @Operation(summary = "Скачать файл",
+            description = "Возвращает ссылку для скачивания файла")
     @GetMapping(value = "/task/download_file/{fileUid}",
             produces = MediaType.ALL_VALUE)
-    @Operation(summary = "Возвращает ссылку для скачивания файла")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("fileUid") UUID uid) {
+    public ResponseEntity<Resource> downloadFile(@Parameter(description = "uid файла который нужно скачать")
+                                                 @PathVariable("fileUid") UUID uid) {
         log.debug("GET request on .../task/download_file/{}", uid);
         Resource file = storageService.downloadFile(uid);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
+    @Operation(summary = "Загрузить файл",
+            description = "Загружает файл на сервер и добавляет запись в БД")
     @PostMapping(value = "/task/{taskUid}/file",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.ALL_VALUE)
-    @Operation(summary = "Сохраняет файл на сервер")
-    public ResponseEntity<FileDTO> fileUpload(@PathVariable("taskUid") UUID uid,
-                                                 @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<FileDTO> fileUpload(@Parameter(description = "uid задачи к которой нужно прикрепить файл")
+                                              @PathVariable("taskUid") UUID uid,
+                                              @Parameter(description = "Файл")
+                                              @RequestParam("file") MultipartFile file) {
         log.debug("POST request on .../task/{}/file", uid);
         FileDTO fileDTO = storageService.fileUpload(file, uid);
 
         return ResponseEntity.ok().body(fileDTO);
     }
 
+    @Operation(summary = "Получить все файлы задачи",
+            description = "Находит все файлы, прикрепленные к заданной задаче")
     @GetMapping(value = "/task/{taskUid}/file",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Находит все все файлы прикрепленные к заданной задаче")
-    public List<FileDTO> getAllFiles(@PathVariable("taskUid") UUID uid){
+    public List<FileDTO> getAllFiles(@Parameter(description = "uid задачи, файлы которой необходимо найти")
+                                     @PathVariable("taskUid") UUID uid) {
         log.debug("GET request on .../task/{}/file", uid);
         return storageService.getAllFiles(uid);
     }
 
+    @Operation(summary = "Заменить файл",
+            description = "Заменяет файл с указанным uid на новый файл, формат должен совпадать")
     @PutMapping(value = "/task/file/{fileUid}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.ALL_VALUE)
-    @Operation(summary = "Заменяет файл с указанным именем на новый файл, формат должен совпадать")
-    public ResponseEntity<FileDTO> replaceFile(@PathVariable("fileUid") UUID uid,
-                                                    @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<FileDTO> replaceFile(@Parameter(description = "uid файла который нужно заменить")
+                                               @PathVariable("fileUid") UUID uid,
+                                               @Parameter(description = "Файл")
+                                               @RequestParam("file") MultipartFile file) {
         log.debug("PUT request on .../task/file/{}", uid);
         FileDTO fileDTO = storageService.fileReplace(uid, file);
         return ResponseEntity.ok().body(fileDTO);
     }
 
+    @Operation(summary = "Удалить файл",
+            description = "Удаляет файл, по uid")
     @DeleteMapping(value = "/task/file/{fileUid}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Удаляет файл")
-    public ResponseEntity<FileDTO> deleteFile(@PathVariable("fileUid") UUID uid){
+    public ResponseEntity<FileDTO> deleteFile(@Parameter(description = "uid файла, который нужно удалить")
+                                              @PathVariable("fileUid") UUID uid) {
 
         log.debug("DELETE request on .../task/file/{}", uid);
         FileDTO fileDTO = storageService.deleteFile(uid);

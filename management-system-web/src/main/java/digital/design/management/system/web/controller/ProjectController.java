@@ -7,6 +7,7 @@ import digital.design.management.system.dto.project.ProjectOutDTO;
 import digital.design.management.system.common.enumerate.StatusProject;
 import digital.design.management.system.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,19 +31,21 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProjectValidator projectValidator;
 
+    @Operation(summary = "Получить все проекты",
+            description = "Находит все проекты, но не более 100")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Находит все проекты, но не более 100")
     public List<ProjectOutDTO> getProjects() {
         log.debug("GET request on .../project");
         return projectService.getProjects();
     }
 
+    @Operation(summary = "Создание проекта",
+            description = "Создание нового проекта. Проекту присваивается статус 'Черновик'")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Создание нового проекта. Проекту присваивается статус 'Черновик'")
     public ResponseEntity<Object> createProject(@Valid @RequestBody ProjectDTO projectDTO,
                                                 BindingResult bindingResult) {
-        log.debug("POST request on .../project, params: projectDTO={}",  projectDTO);
+        log.debug("POST request on .../project, params: projectDTO={}", projectDTO);
         projectValidator.validate(projectDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -61,10 +64,12 @@ public class ProjectController {
         return new ResponseEntity<>(projectOutDTO, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Обновление проекта",
+            description = "Обновление данных проекта")
     @PutMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Обновление данных проекта")
-    public ResponseEntity<Object> updateProject(@PathVariable("uid") UUID uid,
+    public ResponseEntity<Object> updateProject(@Parameter(description = "uid проекта, который нужно обновить")
+                                                @PathVariable("uid") UUID uid,
                                                 @Valid @RequestBody ProjectDTO projectDTO,
                                                 BindingResult bindingResult) {
         log.debug("PUT request on .../project/{}", uid);
@@ -84,21 +89,28 @@ public class ProjectController {
         return new ResponseEntity<>(projectOutDTO, HttpStatus.ACCEPTED);
     }
 
+    @Operation(summary = "Поиск проектов",
+            description = "Поиск проектов по ключевому слову и статусу. Поиск осуществляется по полям код проекта и " +
+                    "название проекта. Если не указать статус поиск осуществляется по всем проектам")
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Поиск проекта по ключевому слову и статусу. Поиск осуществляется по полям код проекта и название проекта. " +
-            "Если не указать статус поиск осуществляется по всем проектам")
-    public List<ProjectOutDTO> getProjectsBySearch(@RequestParam(value = "key", defaultValue = "") String key,
+    public List<ProjectOutDTO> getProjectsBySearch(@Parameter(description = "Ключевое слово, или его часть")
+                                                   @RequestParam(value = "key", defaultValue = "") String key,
+                                                   @Parameter(description = "Список статусов")
                                                    @RequestParam(value = "status", defaultValue = "DRAFT,DEVELOP,TEST,COMPLETE")
                                                    List<StatusProject> statuses) {
-        log.debug("GET request on .../project/search, params: key={}, status={}",  key, statuses);
+        log.debug("GET request on .../project/search, params: key={}, status={}", key, statuses);
         return projectService.getProjectsBySearch(key, statuses);
     }
 
+    @Operation(summary = "Повышение статуса проекта",
+            description = "Статус проекта переводится в новый статус, который поступил на вход, если этот статус " +
+                    "является допустимым")
     @PutMapping(value = "/raise_status/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Повышение стаутса проекта")
-    public ProjectOutDTO updateStatusProject(@PathVariable("uid") UUID uid,
+    public ProjectOutDTO updateStatusProject(@Parameter(description = "uid проекта, которому нужно изменить статус")
+                                             @PathVariable("uid") UUID uid,
+                                             @Parameter(description = "Новый статус проекта")
                                              @RequestParam("status") StatusProject statusProject) {
-        log.debug("PUT request on .../raise_status/{}}",  uid);
+        log.debug("PUT request on .../raise_status/{}}", uid);
         return projectService.updateStatusProject(uid, statusProject);
     }
 

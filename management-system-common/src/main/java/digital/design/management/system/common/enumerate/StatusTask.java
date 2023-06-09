@@ -1,10 +1,10 @@
 package digital.design.management.system.common.enumerate;
 
 public enum StatusTask {
-    CLOSE (null),
-    COMPLETE (CLOSE),
-    WORK (COMPLETE),
-    NEW (WORK);
+    CLOSE (null),   //Закрыта
+    COMPLETE (CLOSE),       //Выполнена
+    WORK (COMPLETE),        //В работе
+    NEW (WORK);             //Новая
 
     private final StatusTask nextStatus;
 

@@ -111,6 +111,10 @@
                 <constraints foreignKeyName="fk_task_employee_2" referencedTableName="employee"
                              referencedColumnNames="id"/>
            </column>
+            <column name="task_parent" type="BIGINT">
+                <constraints foreignKeyName="fk_task_parent" referencedTableName="task"
+                             referencedColumnNames="id"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="initial_0001_05" author="gorchanyuk">

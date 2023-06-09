@@ -39,5 +39,4 @@ public class TaskDTO {
             "создания + трудозатраты. Формат 14/02/2023", example = "14/02/2023")
     private LocalDate deadline;
 
-
 }

@@ -79,6 +79,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.version}</version>
                 <configuration>
                     <mainClass>digital.design.management.system.app.ManagementSystem</mainClass>
                     <finalName>management-system-exec</finalName>

@@ -26,6 +26,8 @@ public class TaskSpecification {
                 predicates.add(criteriaBuilder.equal(root.get("author").get("uid"), dto.getAuthor()));
             if (!ObjectUtils.isEmpty(dto.getTaskPerformer()))
                 predicates.add(criteriaBuilder.equal(root.get("taskPerformer").get("uid"), dto.getTaskPerformer()));
+            if (!ObjectUtils.isEmpty(dto.getProject()))
+                predicates.add(criteriaBuilder.equal(root.get("project").get("uid"), dto.getProject()));
             if (!ObjectUtils.isEmpty(dto.getDateOfCreatedStart()))
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("dateOfCreated"), dto.getDateOfCreatedStart()));
             if (!ObjectUtils.isEmpty(dto.getDateOfCreatedEnd()))

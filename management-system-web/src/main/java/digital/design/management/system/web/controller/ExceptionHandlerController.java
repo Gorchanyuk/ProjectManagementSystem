@@ -152,5 +152,23 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(CyclicDependencyException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "children",
+                e.getMessage()
+        );
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(DependencyDoesNotExistException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "children",
+                e.getMessage()
+        );
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }
