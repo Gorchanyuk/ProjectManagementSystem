@@ -18,13 +18,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
+@Rollback
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 //@TestPropertySource(locations="classpath:application-test.properties")
 public class EmployeeServiceIT extends BaseTest {
@@ -48,7 +52,7 @@ public class EmployeeServiceIT extends BaseTest {
         generateEmployee.addEmployees(count);
         List<EmployeeOutDTO> employees = employeeService.getEmployees();
 
-        Assertions.assertEquals(count, employees.size());
+        Assertions.assertEquals(count + 1, employees.size());// +1 потому что при пустой БД создается суперпользователь
     }
 
     @Test
@@ -141,45 +145,4 @@ public class EmployeeServiceIT extends BaseTest {
 
         Assertions.assertTrue(employee.isPresent());
     }
-    
-
-
-//    @Test
-//    public void shouldGetEmptyListEmployee() {
-//        List<EmployeeOutDTO> employees = employeeService.getEmployees();
-//        Assertions.assertTrue(employees.isEmpty());
-//    }
-//
-//    @Test
-//    public void shouldThrowEmployeeDoesNotExistException() {
-//        generateEmployee.addEmployees(10);
-//        UUID uid = UUID.randomUUID();
-//
-//        Assertions.assertThrows(EmployeeDoesNotExistException.class, () -> employeeService.getEmployeeByUid(uid));
-//    }
-//
-//    @Test
-//    public void shouldThrowSuchUsernameAlreadyExistException() {
-//        Employee employee = generateEmployee.addEmployees(1).get(0);
-//        String username = "uniqueUsername";
-//        employee.setUsername(username);
-//        employeeRepository.save(employee);
-//
-//        Employee employeeUpdate = generateEmployee.addEmployees(1).get(0);
-//        EmployeeDTO dto = mapper.entityToDto(employeeUpdate);
-//        dto.setUsername(username);
-//        UUID uid = employeeUpdate.getUid();
-//
-//        Assertions.assertThrows(SuchUsernameAlreadyExistException.class,
-//                () -> employeeService.updateEmployee(uid, dto));
-//    }
-//
-//    @Test
-//    public void shouldFindAllEmployeeIfKeyWordNull() {
-//        generateEmployee.addEmployees(10);
-//        List<EmployeeOutDTO> employeeByKey = employeeService.getEmployeeByKeyWord("");
-//        List<EmployeeOutDTO> employeeAll = employeeService.getEmployees();
-//
-//        Assertions.assertEquals(employeeAll.size(), employeeByKey.size());
-//    }
 }

@@ -13,12 +13,14 @@ import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.Task;
 import digital.design.management.system.mapping.impl.TaskMapper;
+import digital.design.management.system.rabbitmq.MessageProducer;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.repository.TaskRepository;
 import digital.design.management.system.service.EmployeeService;
 import digital.design.management.system.service.ProjectService;
 import digital.design.management.system.service.impl.TaskServiceImpl;
 import digital.design.management.system.specification.TaskSpecification;
+import digital.design.management.system.util.CreatorMailDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,6 +31,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -47,6 +50,12 @@ public class TaskServiceTest {
     private EmployeeService employeeService;
     @Mock
     private TaskRepository taskRepository;
+    @Mock
+    private MessageProducer messageProducer;
+    @Spy
+    private CreatorMailDTO creatorMailDTO;
+    @Mock
+    private ResourceBundle resourceBundle;
     @InjectMocks
     private TaskServiceImpl taskService;
 

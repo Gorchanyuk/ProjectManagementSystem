@@ -29,7 +29,7 @@ public class MessageProducer {
         log.info("Message to user: {} has been submitted to rabbitMQ", dto.getTo());
     }
 
-    @Profile("test")
+    @Profile("develop")
     private void setEmailTo(EmailDTO dto) {
         dto.getContext().put("email", dto.getTo());
         dto.setTo(mailTo);

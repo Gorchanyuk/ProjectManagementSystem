@@ -13,13 +13,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@DataJpaTest
+@SpringBootTest
+@Transactional
+@Rollback
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProjectServiceIT extends BaseTest {
 
@@ -111,37 +115,5 @@ public class ProjectServiceIT extends BaseTest {
 
         Assertions.assertEquals(statusUpdate, projectUpdate.getStatus());
     }
-
-
-//    @Test
-//    public void shouldGetEmptyListProject(){
-//        List<ProjectOutDTO> projects = projectService.getProjects();
-//        Assertions.assertTrue(projects.isEmpty());
-//    }
-//
-//    @Test
-//    public void shouldThrowProjectDoesNotExistException(){
-//        generateProject.addProjects(10);
-//        UUID uid = UUID.randomUUID();
-//
-//        Assertions.assertThrows(ProjectDoesNotExistException.class, ()-> projectService.findByUid(uid));
-//    }
-//
-//    @Test
-//    public void shouldThrowSuchCodeProjectAlreadyExistException(){
-//        List<Project> projects = generateProject.addProjects(2);
-//        Project project = projects.get(0);
-//        String code = "code";
-//        project.setCode(code);
-//        projectRepository.save(project);
-//
-//        Project projectUpdate = projects.get(1);
-//        ProjectDTO dto = mapper.entityToDto(projectUpdate);
-//        dto.setCode(code);
-//        UUID uid = projectUpdate.getUid();
-//
-//        Assertions.assertThrows(SuchCodeProjectAlreadyExistException.class,
-//                ()->projectService.updateProject(uid, dto));
-//    }
 
 }

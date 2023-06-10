@@ -5,6 +5,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
+    @Value("${spring.mail.username}")
+    private String emailFrom;
 
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
@@ -27,6 +30,7 @@ public class EmailService {
         String emailContent = templateEngine.process(emailDTO.getTemplateLocation(), context);
         try {
             messageHelper = new MimeMessageHelper(mimeMessage, true);
+            messageHelper.setFrom(emailFrom);
             messageHelper.setTo(emailDTO.getTo());
             messageHelper.setSubject(emailDTO.getSubject());
             messageHelper.setText(emailContent, true);
