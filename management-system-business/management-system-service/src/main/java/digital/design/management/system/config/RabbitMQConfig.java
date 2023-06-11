@@ -1,4 +1,4 @@
-package digital.design.management.system.app.config;
+package digital.design.management.system.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.*;

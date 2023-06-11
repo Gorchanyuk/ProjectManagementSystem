@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -129,7 +131,7 @@ public class ExceptionHandlerController {
                 resourceBundle.getString("CANNOT_ASSIGN_GIVEN_STATUS")
         );
         log.warn(resourceBundle.getString("CANNOT_ASSIGN_GIVEN_STATUS"));
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
@@ -149,7 +151,7 @@ public class ExceptionHandlerController {
                 resourceBundle.getString("STORAGE_SAVE_FILE")
         );
         log.warn(resourceBundle.getString("STORAGE_SAVE_FILE"));
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
@@ -170,5 +172,24 @@ public class ExceptionHandlerController {
         );
         log.warn(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(BadCredentialsException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "message",
+                resourceBundle.getString("BAD_CREDENTIALS")
+        );
+        log.warn(resourceBundle.getString("BAD_CREDENTIALS"));
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(DisabledException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "message",
+                resourceBundle.getString("DISABLED_EMPLOYEE")
+        );
+        log.warn(resourceBundle.getString("DISABLED_EMPLOYEE"));
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 }

@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProjectFileService implements StorageService{
+public class ProjectFileService implements StorageService {
 
     @Value("${project.files.dir}")
     private String dir;
@@ -32,7 +32,7 @@ public class ProjectFileService implements StorageService{
     private final FileService fileService;
     private final FileDtoMapper fileMapper;
 
-    public ProjectFile findByUid(UUID uid){
+    public ProjectFile findByUid(UUID uid) {
         log.debug("Search for the project file with uid: {}", uid);
         ProjectFile file = projectFileRepository.findByUid(uid)
                 .orElseThrow(StorageFileNotFoundException::new);
@@ -56,12 +56,11 @@ public class ProjectFileService implements StorageService{
     }
 
 
-
     @Override
     public List<FileDTO> getAllFiles(UUID projectUid) {
         log.info("All files by project with uid:{} found", projectUid);
         return projectFileRepository.findAllByProjectId_Uid(projectUid).stream()
-                .map(file-> FileDTO.builder()
+                .map(file -> FileDTO.builder()
                         .uid(file.getUid())
                         .fileName(file.getFilename())
                         .build())

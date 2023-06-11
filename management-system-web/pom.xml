@@ -27,7 +27,6 @@
         <dependency>
             <groupId>digital.design</groupId>
             <artifactId>management-system-service</artifactId>
-            <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 

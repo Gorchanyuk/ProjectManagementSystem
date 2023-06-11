@@ -10,7 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
-
+/*
+При запуске программы проверяет, если уже в БД зарегестрированные пользователи,
+если записей нет, то создает нового пользователя и записывает его в БД.
+Это необходимо так как в системе может быть аутентифицирован только зарегестрированный пользователь
+*/
 @Configuration
 @ConditionalOnWebApplication
 public class AdminInitConfig implements CommandLineRunner {
@@ -29,12 +33,12 @@ public class AdminInitConfig implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if(employeeRepository.findAll().isEmpty()) {
             Employee superuser = Employee.builder()
                     .uid(UUID.randomUUID())
-                    .firstName("superuser")
-                    .lastName("superuser")
+                    .firstName(username)
+                    .lastName(username)
                     .status(StatusEmployee.ACTIVE)
                     .username(username)
                     .password(passwordEncoder.encode(password))

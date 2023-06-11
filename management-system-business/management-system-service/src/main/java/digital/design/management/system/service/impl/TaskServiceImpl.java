@@ -2,7 +2,7 @@ package digital.design.management.system.service.impl;
 
 import digital.design.management.system.dto.mail.EmailDTO;
 import digital.design.management.system.dto.task.*;
-import digital.design.management.system.dto.util.ProjectTeamId;
+import digital.design.management.system.util.ProjectTeamId;
 import digital.design.management.system.common.exception.*;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.Project;

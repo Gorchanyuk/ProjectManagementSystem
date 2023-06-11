@@ -1,4 +1,4 @@
-package digital.design.management.system.app.config;
+package digital.design.management.system.config;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;

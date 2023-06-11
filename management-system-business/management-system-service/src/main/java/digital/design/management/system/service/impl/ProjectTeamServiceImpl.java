@@ -1,7 +1,7 @@
 package digital.design.management.system.service.impl;
 
 
-import digital.design.management.system.dto.util.ProjectTeamId;
+import digital.design.management.system.util.ProjectTeamId;
 import digital.design.management.system.common.exception.EmployeeAlreadyParticipatingInProjectException;
 import digital.design.management.system.common.exception.EmployeeIsNotInvolvedInProjectException;
 import digital.design.management.system.dto.team.ProjectTeamDTO;

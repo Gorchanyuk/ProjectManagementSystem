@@ -53,20 +53,7 @@
         </dependency>
         <dependency>
             <groupId>digital.design</groupId>
-            <artifactId>management-system-repository</artifactId>
-            <version>0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>digital.design</groupId>
-            <artifactId>management-system-service</artifactId>
-            <version>0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>digital.design</groupId>
             <artifactId>management-system-app</artifactId>
-            <version>0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
