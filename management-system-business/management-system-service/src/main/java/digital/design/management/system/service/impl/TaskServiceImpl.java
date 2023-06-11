@@ -184,8 +184,10 @@ public class TaskServiceImpl implements TaskService {
         Employee taskPerformer = employeeService.findByUid(performer);
         isProjectParticipant(project, taskPerformer, false);
         task.setTaskPerformer(taskPerformer);
-        EmailDTO emailDTO = creatorMailDTO.getDtoForTask(taskPerformer, task.getName(), project.getName());
-        messageProducer.sendMessage(emailDTO);
+        if (!ObjectUtils.isEmpty(taskPerformer.getEmail())) {
+            EmailDTO emailDTO = creatorMailDTO.getDtoForTask(taskPerformer, task.getName(), project.getName());
+            messageProducer.sendMessage(emailDTO);
+        }
     }
 
     private void isProjectParticipant(Project project, Employee employee, Boolean isAuthor) {
