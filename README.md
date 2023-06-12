@@ -52,7 +52,8 @@
 
 ## Структура БД
 
-![Схема БД](https://github.com/Gorchanyuk/ProjectManagementSystem/assets/94937271/84f43042-ae6c-4c7f-a183-21e8e859bb85)
+![Схема БД](https://github.com/Gorchanyuk/ProjectManagementSystem/assets/94937271/a912ec41-47fd-4108-bc4b-5fea4dad9465)
+
 
 
 
