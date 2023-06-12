@@ -54,6 +54,5 @@
             <artifactId>management-system-common</artifactId>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 </project>

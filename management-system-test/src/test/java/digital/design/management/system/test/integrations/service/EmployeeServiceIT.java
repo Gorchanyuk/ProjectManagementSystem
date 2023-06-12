@@ -17,7 +17,6 @@ import digital.design.management.system.test.util.GenerateProject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ import java.util.UUID;
 @SpringBootTest
 @Transactional
 @Rollback
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 //@TestPropertySource(locations="classpath:application-test.properties")
 public class EmployeeServiceIT extends BaseTest {
 

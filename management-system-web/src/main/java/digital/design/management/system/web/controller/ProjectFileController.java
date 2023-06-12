@@ -1,7 +1,7 @@
 package digital.design.management.system.web.controller;
 
 import digital.design.management.system.dto.file.FileDTO;
-import digital.design.management.system.service.StorageService;
+import digital.design.management.system.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,11 +21,11 @@ import java.util.UUID;
 @Tag(name = "Работа с файлами проекта", description = "Контроллер для управления файлами для проекта")
 public class ProjectFileController {
 
-    private final StorageService storageService;
+    private final FileService fileService;
 
     @Autowired
-    public ProjectFileController(@Qualifier("projectFileService") StorageService storageService) {
-        this.storageService = storageService;
+    public ProjectFileController(@Qualifier("projectFileService") FileService fileService) {
+        this.fileService = fileService;
     }
 
     @Operation(summary = "Скачать файл",
@@ -34,7 +34,7 @@ public class ProjectFileController {
             produces = MediaType.ALL_VALUE)
     public ResponseEntity<Resource> downloadFile(@Parameter(description = "uid файла который нужно скачать")
                                                  @PathVariable("fileUid") UUID uid) {
-        Resource file = storageService.downloadFile(uid);
+        Resource file = fileService.downloadFile(uid);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
@@ -48,7 +48,7 @@ public class ProjectFileController {
                                               @PathVariable("projectUid") UUID uid,
                                               @Parameter(description = "Файл")
                                               @RequestParam("file") MultipartFile file) {
-        FileDTO fileDTO = storageService.fileUpload(file, uid);
+        FileDTO fileDTO = fileService.fileUpload(file, uid);
 
         return ResponseEntity.ok().body(fileDTO);
     }
@@ -59,7 +59,7 @@ public class ProjectFileController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FileDTO> getAllFiles(@Parameter(description = "uid проекта, файлы которого необходимо найти")
                                      @PathVariable("projectUid") UUID uid) {
-        return storageService.getAllFiles(uid);
+        return fileService.getAllFiles(uid);
     }
 
     @Operation(summary = "Заменить файл",
@@ -71,7 +71,7 @@ public class ProjectFileController {
                                                @PathVariable("fileUid") UUID uid,
                                                @Parameter(description = "Файл")
                                                @RequestParam("file") MultipartFile file) {
-        FileDTO fileDTO = storageService.fileReplace(uid, file);
+        FileDTO fileDTO = fileService.fileReplace(uid, file);
         return ResponseEntity.ok().body(fileDTO);
     }
 
@@ -81,7 +81,7 @@ public class ProjectFileController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FileDTO> deleteFile(@Parameter(description = "uid файла, который нужно удалить")
                                               @PathVariable("fileUid") UUID uid) {
-        FileDTO fileDTO = storageService.deleteFile(uid);
+        FileDTO fileDTO = fileService.deleteFile(uid);
         return ResponseEntity.ok().body(fileDTO);
     }
 }

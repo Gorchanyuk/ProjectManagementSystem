@@ -17,7 +17,7 @@ public class MessageConsumer {
     private final EmailService emailService;
     private final MessageConverter messageConverter;
 
-    @RabbitListener(queues = "${rabbitmq.queue.password}")
+    @RabbitListener(queues = "${props.rabbitmq.queue}")
     public void receiveMessagePassword(Message message){
         EmailDTO dto = (EmailDTO) messageConverter.fromMessage(message);
         emailService.sendEmail(dto);

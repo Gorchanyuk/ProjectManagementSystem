@@ -1,11 +1,11 @@
 package digital.design.management.system.rabbitmq;
 
+import digital.design.management.system.config.RabbitMQProperties;
 import digital.design.management.system.dto.mail.EmailDTO;
+import digital.design.management.system.util.EmailSubstitution;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,25 +13,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MessageProducer {
 
-    @Value("${spring.mail.username}")
-    private String mailTo;
-    @Value("${rabbitmq.routingkey.password}")
-    private String routingKeyPassword;
-    @Value("${rabbitmq.exchange}")
-    private String exchange;
     private final RabbitTemplate rabbitTemplate;
+    private final RabbitMQProperties rabbitMQProperties;
+    private final EmailSubstitution emailSubstitution;
 
 
     public void sendMessage(EmailDTO dto){
 
-        setEmailTo(dto);
-        rabbitTemplate.convertAndSend(exchange, routingKeyPassword, dto);
+        emailSubstitution.setEmailTo(dto);
+        rabbitTemplate.convertAndSend(rabbitMQProperties.getExchange(), rabbitMQProperties.getRoutingkey(), dto);
         log.info("Message to user: {} has been submitted to rabbitMQ", dto.getTo());
     }
 
-    @Profile("develop")
-    private void setEmailTo(EmailDTO dto) {
-        dto.getContext().put("email", dto.getTo());
-        dto.setTo(mailTo);
-    }
 }

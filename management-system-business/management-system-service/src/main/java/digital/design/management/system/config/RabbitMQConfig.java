@@ -1,52 +1,33 @@
 package digital.design.management.system.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
+@RequiredArgsConstructor
 public class RabbitMQConfig{
 
-    @Value("${rabbitmq.queue.password}")
-    private String queueNamePassword;
-    @Value("${rabbitmq.queue.task}")
-    private String queueNameTask;
-    @Value("${rabbitmq.exchange}")
-    private String exchange;
-    @Value("${rabbitmq.routingkey.password}")
-    private String routingKeyPassword;
-    @Value("${rabbitmq.routingkey.task}")
-    private String routingKeyTask;
+    private final RabbitMQProperties properties;
 
     @Bean
     public DirectExchange exchange() {
-        return new DirectExchange(exchange);
+        return new DirectExchange(properties.getExchange());
     }
 
     @Bean
-    public Queue queuePassword() {
-        return new Queue(queueNamePassword, false);
+    public Queue queue() {
+        return new Queue(properties.getQueue(), false);
     }
 
     @Bean
-    public Queue queueTask() {
-        return new Queue(queueNameTask, false);
-    }
-
-    @Bean
-    public Binding bindingPassword(@Qualifier("queuePassword") Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKeyPassword);
-    }
-
-    @Bean
-    public Binding bindingTask(@Qualifier("queueTask") Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKeyTask);
+    public Binding binding(Queue queue, DirectExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(properties.getRoutingkey());
     }
 
     @Bean
