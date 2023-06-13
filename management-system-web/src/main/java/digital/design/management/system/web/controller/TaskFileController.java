@@ -1,9 +1,14 @@
 package digital.design.management.system.web.controller;
 
 import digital.design.management.system.dto.file.FileDTO;
+import digital.design.management.system.dto.util.InputDataErrorResponse;
 import digital.design.management.system.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +24,11 @@ import java.util.UUID;
 
 @RestController
 @Tag(name = "Работа с файлами задач", description = "Контроллер для управления файлами для задач")
+@ApiResponses({
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "400",
+                content = @Content(schema = @Schema(implementation = InputDataErrorResponse.class)))
+})
 public class TaskFileController {
 
     private final FileService fileService;

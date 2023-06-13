@@ -54,6 +54,7 @@
 
 ![структура БД](https://github.com/Gorchanyuk/ProjectManagementSystem/assets/94937271/e94008a7-399a-46ef-aef3-a5a7ae31fca5)
 
+Описание и SQL скрипты для БД находится в папке docs, так же там находятся примеры тесткейсов для интеграционных тестов
 
 
 
