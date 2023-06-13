@@ -18,10 +18,10 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;            //Уникальный идентификатор, используется для связей внутри БД
 
     @Column(name = "uid")
-    private UUID uid;
+    private UUID uid;           //Уникальный идентификатор, используется для внешних систем
 
     @Column(name = "code", nullable = false, unique = true)
     private String code;        //Код проекта

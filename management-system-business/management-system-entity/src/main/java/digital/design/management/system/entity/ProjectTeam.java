@@ -32,7 +32,7 @@ public class ProjectTeam {
     @JoinColumn(name = "employee_id")
     private Employee employeeId;        //Участник проекта
 
-    @Column(name = "role_employee", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "role_employee", nullable = false)
     private RoleEmployee roleEmployee;  //Роль участника проекта
 }

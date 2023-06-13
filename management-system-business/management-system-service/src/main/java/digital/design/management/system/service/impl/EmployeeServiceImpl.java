@@ -86,12 +86,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeRepository.findByUsernameAndStatus(employeeDTO.getUsername(), StatusEmployee.ACTIVE).isPresent()) {
             throw new SuchUsernameAlreadyExistException();
         }
-        if (ObjectUtils.isEmpty(employee.getPassword()) && !ObjectUtils.isEmpty(employeeDTO.getEmail())) {
-            //Если почты не было и сейчас добавили
+        String oldEmail = employee.getEmail(); //Адрес почты. до обновления сотрудника
+        employee = mapper.dtoToEntity(employeeDTO, employee);
+        //Проверка изменился адрес почты
+        if (!ObjectUtils.isEmpty(employeeDTO.getEmail()) &&
+            !ObjectUtils.nullSafeEquals(oldEmail, employeeDTO.getEmail())) {
             setPasswordAndSendEmail(employee);
             log.debug("For Employee with uid: {} has been generated password", uid);
         }
-        employee = mapper.dtoToEntity(employeeDTO, employee);
         employeeRepository.save(employee);
         log.info("Employee with uid: {} updated", uid);
         return mapper.entityToOutDto(employee);

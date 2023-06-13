@@ -25,11 +25,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@SpringBootTest
-@Transactional
 @Rollback
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@TestPropertySource(locations="classpath:application-test.properties")
+@Transactional
+@SpringBootTest
 public class EmployeeServiceIT extends BaseTest {
 
     @Autowired

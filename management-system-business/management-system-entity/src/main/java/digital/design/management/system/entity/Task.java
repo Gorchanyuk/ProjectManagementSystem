@@ -26,10 +26,10 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;                //Уникальный идентификатор, используется для связей внутри БД
 
     @Column(name = "uid")
-    private UUID uid;
+    private UUID uid;               //Уникальный идентификатор, используется для внешних систем
 
     @Column(name = "name", nullable = false)
     private String name;            //Наименование задачи
@@ -45,6 +45,7 @@ public class Task {
     private Integer executionTime;  //Трудозатраты
 
     @Column(name = "deadline", nullable = false)
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate deadline;     //Крайний срок сдачи
 
     @Column(name = "status", nullable = false)
@@ -56,9 +57,11 @@ public class Task {
     private Employee author;        //Автор задачи
 
     @Column(name = "date_of_created", nullable = false)
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate dateOfCreated;//Дата создания задачи
 
     @Column(name = "date_of_update", nullable = false)
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate dateOfUpdate; //Дата последнего изменения задачи
 
     @ManyToOne

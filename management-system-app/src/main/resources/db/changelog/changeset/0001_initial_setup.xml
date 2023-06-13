@@ -80,13 +80,13 @@
             <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
                 <constraints unique="true" primaryKey="true" primaryKeyName="task_id_pkey"/>
             </column>
-            <column name="date_of_created" type="TIMESTAMP(6)">
+            <column name="date_of_created" type="DATE">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_of_update" type="TIMESTAMP(6)">
+            <column name="date_of_update" type="DATE">
                 <constraints nullable="false"/>
             </column>
-            <column name="deadline" type="TIMESTAMP(6)">
+            <column name="deadline" type="DATE">
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="TEXT"/>

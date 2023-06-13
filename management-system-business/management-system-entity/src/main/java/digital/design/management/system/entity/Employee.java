@@ -18,10 +18,10 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;                //Уникальный идентификатор, используется для связей внутри БД
 
     @Column(name = "uid")
-    private UUID uid;
+    private UUID uid;               //Уникальный идентификатор, используется для внешних систем
 
     @Column(name = "password")
     private String password;        //Пароль
@@ -41,7 +41,7 @@ public class Employee {
     @Column(name = "username")
     private String username;         //Учетная запись
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;           //Адрес электронной почты
 
     @Column(name = "status", nullable = false)
