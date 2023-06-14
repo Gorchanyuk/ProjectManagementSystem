@@ -21,4 +21,6 @@ public interface TaskFileRepository extends JpaRepository<TaskFile, Long> {
     @Transactional
     @EntityGraph(value = "task_file", type = EntityGraph.EntityGraphType.LOAD)
     void deleteByFilename(String filename);
+
+    Optional<TaskFile> findByHashcode (String hashcode);
 }

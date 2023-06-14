@@ -132,6 +132,9 @@
             <column name="filename" type="TEXT">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="hashcode" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="initial_0001_06" author="gorchanyuk">
@@ -148,6 +151,9 @@
             </column>
             <column name="filename" type="TEXT">
                 <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="hashcode" type="TEXT">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>

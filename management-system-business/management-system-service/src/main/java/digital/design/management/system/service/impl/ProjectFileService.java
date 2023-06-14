@@ -2,7 +2,9 @@ package digital.design.management.system.service.impl;
 
 import digital.design.management.system.common.exception.StorageFileNotFoundException;
 import digital.design.management.system.config.FilesDirProperty;
+import digital.design.management.system.dto.file.FileConfirmDTO;
 import digital.design.management.system.dto.file.FileDTO;
+import digital.design.management.system.dto.file.FileTokenDTO;
 import digital.design.management.system.entity.Project;
 import digital.design.management.system.entity.ProjectFile;
 import digital.design.management.system.mapping.impl.FileDtoMapper;
@@ -10,12 +12,14 @@ import digital.design.management.system.repository.ProjectFileRepository;
 import digital.design.management.system.service.ProjectService;
 import digital.design.management.system.service.StorageService;
 import digital.design.management.system.service.FileService;
+import digital.design.management.system.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +33,7 @@ public class ProjectFileService implements FileService {
     private final ProjectService projectService;
     private final StorageService storageService;
     private final FileDtoMapper fileMapper;
+    private final FileUtil fileUtil;
 
     public ProjectFile findByUid(UUID uid) {
         log.debug("Search for the project file with uid: {}", uid);
@@ -40,19 +45,30 @@ public class ProjectFileService implements FileService {
 
     @Override
     public FileDTO fileUpload(MultipartFile file, UUID projectUid) {
+
+        try {
+            hashCodeCheck(file, projectUid);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         UUID fileUid = UUID.randomUUID();
         String filename = storageService.saveNewFile(file, property.getProjectDir(), fileUid);
-        Project project = projectService.findByUid(projectUid);
-        ProjectFile projectFile = ProjectFile.builder()
-                .projectId(project)
-                .uid(fileUid)
-                .filename(filename)
-                .build();
-        projectFileRepository.save(projectFile);
-        log.info("Project file: {} upload and save", filename);
-        return fileMapper.getDto(projectFile);
+
+        String hashcode = fileUtil.getFileHash(file);
+        return createFileAndSave(projectUid, fileUid, filename, hashcode);
     }
 
+    @Override
+    public FileDTO confirmUploadFile(FileTokenDTO tokenDTO){
+
+        try {
+            FileConfirmDTO dto = storageService.moveFile(tokenDTO.getToken(), property.getProjectDir());
+            return createFileAndSave(dto.getProjectUid(), dto.getUid(), dto.getFileName(), dto.getHashcode());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        }
 
     @Override
     public List<FileDTO> getAllFiles(UUID projectUid) {
@@ -91,5 +107,25 @@ public class ProjectFileService implements FileService {
         Resource resource = storageService.downloadFile(property.getProjectDir(), filename);
         log.info("Project file: {} for download found", filename);
         return resource;
+    }
+
+    private FileDTO createFileAndSave(UUID projectUid, UUID fileUid, String filename, String hashcode) {
+        Project project = projectService.findByUid(projectUid);
+        ProjectFile projectFile = ProjectFile.builder()
+                .projectId(project)
+                .uid(fileUid)
+                .filename(filename)
+                .hashcode(hashcode)
+                .build();
+        projectFileRepository.save(projectFile);
+        log.info("Project file: {} upload and save", filename);
+        return fileMapper.getDto(projectFile);
+    }
+
+    private void hashCodeCheck(MultipartFile file, UUID entityUid) throws IOException {
+        String hashcode = fileUtil.getFileHash(file);
+        if (projectFileRepository.findByHashcode(hashcode).isPresent()) {
+            storageService.saveFileInTempDir(file, entityUid, hashcode);
+        }
     }
 }

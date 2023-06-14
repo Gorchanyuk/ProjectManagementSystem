@@ -1,7 +1,11 @@
 package digital.design.management.system.service;
 
+import digital.design.management.system.common.exception.FileWithThisHashcodeAlreadyExistsException;
 import digital.design.management.system.common.exception.StorageFileNotFoundException;
 import digital.design.management.system.common.exception.StorageSaveFileException;
+import digital.design.management.system.dto.file.FileConfirmDTO;
+import digital.design.management.system.util.TokenForConfirmUploadFile;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -18,22 +22,30 @@ import java.util.UUID;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class StorageService {
+
+    private final TokenForConfirmUploadFile tokenForConfirmUploadFile;
 
     public String saveNewFile(MultipartFile file, String dir, UUID uid) {
         checkAndCreateDirectory(dir);
         String fileName = file.getOriginalFilename();
-            if(Objects.requireNonNull(fileName).contains(".")) {
-                String name = Objects.requireNonNull(fileName).substring(0, fileName.lastIndexOf('.'));
-                String extension = fileName.substring(fileName.lastIndexOf('.'));
-                fileName = name + "-" + uid + extension;
-            }else{
-                fileName = fileName + "-" + uid;
-            }
+        fileName = getNewName(uid, fileName);
 
-            save(file, dir,  fileName);
+        save(file, dir,  fileName);
 
             return fileName;
+    }
+
+    private static String getNewName(UUID uid, String fileName) {
+        if(Objects.requireNonNull(fileName).contains(".")) {
+            String name = Objects.requireNonNull(fileName).substring(0, fileName.lastIndexOf('.'));
+            String extension = fileName.substring(fileName.lastIndexOf('.'));
+            fileName = name + "-" + uid + extension;
+        }else{
+            fileName = fileName + "-" + uid;
+        }
+        return fileName;
     }
 
     public void save(MultipartFile file, String dir, String filename) {
@@ -75,4 +87,25 @@ public class StorageService {
             throw new StorageSaveFileException();
         }
     }
+
+    public FileConfirmDTO moveFile(String token, String dir) throws IOException {
+        FileConfirmDTO dto = tokenForConfirmUploadFile.validateTokenAndRetrieveClaim(token);
+        String filename = dto.getFileName();
+        Path tempPath = Path.of(dto.getTempDir());
+        Path destinationPath = Path.of(dir, filename);
+        Files.move(tempPath, destinationPath);
+
+        return dto;
+    }
+
+    public void saveFileInTempDir(MultipartFile file, UUID entityUid, String hashcode) throws IOException {
+
+        UUID fileUid = UUID.randomUUID();
+        String newFileName = getNewName(fileUid,file.getOriginalFilename());
+        Path tempPath = Files.createTempFile(null, newFileName);
+        Files.write(tempPath, file.getBytes());
+        String token = tokenForConfirmUploadFile.generateToken(newFileName, fileUid, entityUid, tempPath.toString(), hashcode);
+        throw new FileWithThisHashcodeAlreadyExistsException(token);
+    }
+
 }
