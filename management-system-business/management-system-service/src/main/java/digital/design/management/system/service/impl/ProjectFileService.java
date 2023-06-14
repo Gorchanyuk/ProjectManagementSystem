@@ -124,7 +124,7 @@ public class ProjectFileService implements FileService {
 
     private void hashCodeCheck(MultipartFile file, UUID entityUid) throws IOException {
         String hashcode = fileUtil.getFileHash(file);
-        if (projectFileRepository.findByHashcode(hashcode).isPresent()) {
+        if (!projectFileRepository.findAllByHashcode(hashcode).isEmpty()) {
             storageService.saveFileInTempDir(file, entityUid, hashcode);
         }
     }
