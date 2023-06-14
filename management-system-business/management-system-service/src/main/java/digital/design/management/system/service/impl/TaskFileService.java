@@ -47,7 +47,10 @@ public class TaskFileService implements FileService {
     public FileDTO fileUpload(MultipartFile file, UUID taskUid) {
 
         try {
-            hashCodeCheck(file, taskUid);
+            String hashcode = fileUtil.getFileHash(file);
+            if (!taskFileRepository.findAllByHashcode(hashcode).isEmpty()) {
+                storageService.saveFileInTempDir(file, taskUid, hashcode);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,12 +95,8 @@ public class TaskFileService implements FileService {
     @Override
     public FileDTO confirmUploadFile(FileTokenDTO tokenDTO) {
 
-        try {
-            FileConfirmDTO dto = storageService.moveFile(tokenDTO.getToken(), property.getTaskDir());
-            return createFileAndSave(dto.getProjectUid(), dto.getUid(), dto.getFileName(), dto.getHashcode());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        FileConfirmDTO dto = storageService.moveFile(tokenDTO.getToken(), property.getTaskDir());
+        return createFileAndSave(dto.getProjectUid(), dto.getUid(), dto.getFileName(), dto.getHashcode());
     }
 
     @Override
@@ -120,12 +119,5 @@ public class TaskFileService implements FileService {
         taskFileRepository.save(taskFile);
         log.info("Project file: {} upload and save", filename);
         return fileMapper.getDto(taskFile);
-    }
-
-    private void hashCodeCheck(MultipartFile file, UUID entityUid) throws IOException {
-        String hashcode = fileUtil.getFileHash(file);
-        if (!taskFileRepository.findAllByHashcode(hashcode).isEmpty()) {
-            storageService.saveFileInTempDir(file, entityUid, hashcode);
-        }
     }
 }

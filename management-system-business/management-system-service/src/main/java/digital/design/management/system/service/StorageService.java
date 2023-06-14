@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -91,14 +90,14 @@ public class StorageService {
         }
     }
 
-    public FileConfirmDTO moveFile(String token, String dir) throws IOException {
+    public FileConfirmDTO moveFile(String token, String dir) {
         FileConfirmDTO dto = tokenForConfirmUploadFile.validateTokenAndRetrieveClaim(token);
         String filename = dto.getFileName();
         try {
             Path tempPath = Path.of(dto.getTempDir());
             Path destinationPath = Path.of(dir, filename);
             Files.move(tempPath, destinationPath);
-        }catch(NoSuchFileException e){
+        }catch(IOException e){
             log.debug("File {} not found in temp directory", filename);
             throw new StorageFileNotFoundException();
         }

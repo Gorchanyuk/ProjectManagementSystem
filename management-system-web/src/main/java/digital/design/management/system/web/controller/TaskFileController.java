@@ -2,6 +2,7 @@ package digital.design.management.system.web.controller;
 
 import digital.design.management.system.dto.file.FileDTO;
 import digital.design.management.system.dto.file.FileTokenDTO;
+import digital.design.management.system.dto.util.ConflictUploadFile;
 import digital.design.management.system.dto.util.InputDataErrorResponse;
 import digital.design.management.system.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,7 +53,11 @@ public class TaskFileController {
     }
 
     @Operation(summary = "Загрузить файл",
-            description = "Загружает файл на сервер и добавляет запись в БД")
+            description = "Загружает файл на сервер и добавляет запись в БД",
+            responses = {
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ConflictUploadFile.class)))
+            })
     @PostMapping(value = "/task/{taskUid}/file",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.ALL_VALUE)
@@ -69,7 +74,7 @@ public class TaskFileController {
             description = "Подтверждает сохранение файла, хешкод которого совпал с другим файлом")
     @PostMapping(value = "/task/file/confirm", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FileDTO> confirmUploadFile(@RequestBody FileTokenDTO tokenDTO){
+    public ResponseEntity<FileDTO> confirmUploadFile(@RequestBody FileTokenDTO tokenDTO) {
         FileDTO fileDTO = fileService.confirmUploadFile(tokenDTO);
         return ResponseEntity.ok().body(fileDTO);
     }

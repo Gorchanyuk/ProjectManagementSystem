@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class TempFileCleanup {
-    
+
+    //Удаляет файлы из временной дирректории через 30 минут после вызова метода
     public void cleanup(Path tempFilePath){
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         try{

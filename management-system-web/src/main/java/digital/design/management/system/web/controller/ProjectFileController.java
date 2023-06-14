@@ -2,6 +2,7 @@ package digital.design.management.system.web.controller;
 
 import digital.design.management.system.dto.file.FileDTO;
 import digital.design.management.system.dto.file.FileTokenDTO;
+import digital.design.management.system.dto.util.ConflictUploadFile;
 import digital.design.management.system.dto.util.InputDataErrorResponse;
 import digital.design.management.system.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,7 +52,11 @@ public class ProjectFileController {
     }
 
     @Operation(summary = "Загрузить файл",
-            description = "Загружает файл на сервер и добавляет запись в БД")
+            description = "Загружает файл на сервер и добавляет запись в БД",
+            responses = {
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ConflictUploadFile.class)))
+            })
     @PostMapping(value = "/project/{projectUid}/file",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.ALL_VALUE)
