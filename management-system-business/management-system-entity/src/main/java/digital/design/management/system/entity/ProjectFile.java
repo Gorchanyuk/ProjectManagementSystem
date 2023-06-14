@@ -32,4 +32,7 @@ public class ProjectFile {
 
     @Column(name = "filename", nullable = false)
     private String filename;    //Название файла
+
+    @Column(name = "hashcode", nullable = false)
+    private String hashcode;
 }

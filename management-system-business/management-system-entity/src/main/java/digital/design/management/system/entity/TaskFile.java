@@ -32,4 +32,7 @@ public class TaskFile {
 
     @Column(name = "filename", nullable = false)
     private String filename;    //Название файла
+
+    @Column(name = "hashcode", nullable = false)
+    private String hashcode;    //hashcode файла
 }

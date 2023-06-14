@@ -1,6 +1,7 @@
 package digital.design.management.system.web.controller;
 
 import digital.design.management.system.dto.file.FileDTO;
+import digital.design.management.system.dto.file.FileTokenDTO;
 import digital.design.management.system.dto.util.InputDataErrorResponse;
 import digital.design.management.system.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,6 +62,15 @@ public class TaskFileController {
                                               @RequestParam("file") MultipartFile file) {
         FileDTO fileDTO = fileService.fileUpload(file, uid);
 
+        return ResponseEntity.ok().body(fileDTO);
+    }
+
+    @Operation(summary = "Подтверждение сохранения файла",
+            description = "Подтверждает сохранение файла, хешкод которого совпал с другим файлом")
+    @PostMapping(value = "/task/file/confirm", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FileDTO> confirmUploadFile(@RequestBody FileTokenDTO tokenDTO){
+        FileDTO fileDTO = fileService.confirmUploadFile(tokenDTO);
         return ResponseEntity.ok().body(fileDTO);
     }
 
