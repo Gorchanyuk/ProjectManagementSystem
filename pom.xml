@@ -19,12 +19,14 @@
     <properties>
         <revision>0.1</revision>
         <changelist>-SNAPSHOT</changelist>
+        <java-jwt.version>4.4.0</java-jwt.version>
         <spring.version>3.1.0</spring.version>
         <lombok.version>1.18.26</lombok.version>
         <jackson.version>2.15.0</jackson.version>
         <springdoc.version>2.1.0</springdoc.version>
         <liquibase.version>4.22.0</liquibase.version>
         <postgresql.version>42.6.0</postgresql.version>
+        <spring-rabbit.version>3.0.4</spring-rabbit.version>
         <testcontainers.version>1.18.1</testcontainers.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>17</maven.compiler.target>
@@ -33,6 +35,46 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-app</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-entity</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-repository</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-service</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-common</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-dto</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-test</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+            <dependency>
+                <groupId>digital.design</groupId>
+                <artifactId>management-system-web</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
@@ -135,7 +177,7 @@
             <dependency>
                 <groupId>org.springframework.amqp</groupId>
                 <artifactId>spring-rabbit</artifactId>
-                <version>3.0.4</version>
+                <version>${spring-rabbit.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.springframework</groupId>
@@ -250,6 +292,18 @@
                 <version>${jackson.version}</version>
                 <scope>compile</scope>
             </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

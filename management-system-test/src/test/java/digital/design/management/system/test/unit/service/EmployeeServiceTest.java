@@ -11,6 +11,7 @@ import digital.design.management.system.rabbitmq.MessageProducer;
 import digital.design.management.system.repository.EmployeeRepository;
 import digital.design.management.system.repository.ProjectTeamRepository;
 import digital.design.management.system.service.impl.EmployeeServiceImpl;
+import digital.design.management.system.util.CreatorMailDTO;
 import digital.design.management.system.util.PasswordGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,8 @@ public class EmployeeServiceTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private PasswordGenerator passwordGenerator;
+    @Spy
+    private CreatorMailDTO creatorMailDTO;
     @InjectMocks
     private EmployeeServiceImpl employeeService;
 

@@ -6,6 +6,11 @@ import digital.design.management.system.dto.util.InputDataErrorResponse;
 import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,39 +29,46 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/employee")
 @Tag(name = "Сотрудники", description = "Контроллер для управления сотрудниками")
+@ApiResponses({
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "400",
+                content = @Content(schema = @Schema(implementation = InputDataErrorResponse.class)))
+})
 public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final EmployeeValidator employeeValidator;
 
+    @Operation(summary = "Получить всех сотрудников",
+            description = "Находит всех сотрудников, но не более 100")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Находит всех сотрудников, но не более 100")
     public List<EmployeeOutDTO> getEmployees() {
-        log.debug("GET request on .../employee");
         return employeeService.getEmployees();
     }
 
+    @Operation(summary = "Получение одного сотрудника",
+            description = "Получение сотрудника по uid и статусу 'Активный'")
     @GetMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Поиск сотрудника по uid и статусу 'Активный'")
-    public EmployeeOutDTO getEmployeeByUid(@PathVariable("uid") UUID uid) {
-        log.debug("GET request on .../employee/{}",  uid);
+    public EmployeeOutDTO getEmployeeByUid(@Parameter(description = "uid сотрудника, которого необходимо получить")
+                                           @PathVariable("uid") UUID uid) {
         return employeeService.getEmployeeByUid(uid);
     }
 
+    @Operation(summary = "Поиск сотрудников",
+            description = "Ищет сотрудников по ключевому слову. Поиск очуществляется в полях имя, фамилия, отчество, " +
+                    "ник и почта, со статусом 'Активный'")
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Ищет сотрудников по ключевому слову. Поиск очуществляется в полях имя, фамилия, отчество, ник " +
-            "и почта, со статусом 'Активный'")
-    public List<EmployeeOutDTO> getEmployeeBySearch(@RequestParam(value = "key", defaultValue = "") String key) {
-        log.debug("GET request on .../employee/search, params: key={}",  key);
+    public List<EmployeeOutDTO> getEmployeeBySearch(@Parameter(description = "Ключевое слово или его часть")
+                                                    @RequestParam(value = "key", defaultValue = "") String key) {
         return employeeService.getEmployeeByKeyWord(key);
     }
 
+    @Operation(summary = "Создание сотрудника",
+            description = "Создает сотрудника и добавляет в БД")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Добавление нового сотрудника")
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
-        log.debug("POST request on .../employee, params: employeeDTO={}",  employeeDTO);
         employeeValidator.validate(employeeDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -70,26 +82,27 @@ public class EmployeeController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         EmployeeOutDTO employeeOutDTO = employeeService.createEmployee(employeeDTO);
-        log.debug("POST request on .../employee is complete");
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Удаление сотрудника",
+            description = "Меняет статус сотрудника с указанным uid на 'Удаленный'")
     @DeleteMapping(value = "/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Удаление сотрудника по его uid")
-    public ResponseEntity<EmployeeOutDTO> deleteEmployee(@PathVariable("uid") UUID uid) {
-        log.debug("DELETE request on .../employee/{}",  uid);
+    public ResponseEntity<EmployeeOutDTO> deleteEmployee(@Parameter(description = "uid сотрудника, которого необходимо удалить")
+                                                         @PathVariable("uid") UUID uid) {
         EmployeeOutDTO employeeOutDTO = employeeService.deleteEmployee(uid);
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.OK);
     }
 
+    @Operation(summary = "Обновление сотрудника",
+            description = "Обновление информации о сотруднике")
     @PutMapping(value = "/{uid}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Обновление данных сотрудника")
-    public ResponseEntity<Object> updateEmployee(@PathVariable("uid") UUID uid,
+    public ResponseEntity<Object> updateEmployee(@Parameter(description = "uid сотрудника, которого нужно обновить")
+                                                 @PathVariable("uid") UUID uid,
                                                  @Valid @RequestBody EmployeeDTO employeeDTO,
                                                  BindingResult bindingResult) {
-        log.debug("PUT request on .../employee/{}", uid);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
                     .map(e -> InputDataErrorResponse.builder()
@@ -101,7 +114,6 @@ public class EmployeeController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         EmployeeOutDTO employeeOutDTO = employeeService.updateEmployee(uid, employeeDTO);
-        log.debug("PUT request on .../employee is complete");
         return new ResponseEntity<>(employeeOutDTO, HttpStatus.ACCEPTED);
     }
 

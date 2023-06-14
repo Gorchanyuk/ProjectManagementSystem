@@ -1,7 +1,7 @@
 package digital.design.management.system.entity;
 
 import digital.design.management.system.common.enumerate.RoleEmployee;
-import digital.design.management.system.dto.util.ProjectTeamId;
+import digital.design.management.system.util.ProjectTeamId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,14 +25,14 @@ public class ProjectTeam {
     @Id
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private Project projectId;
+    private Project projectId;          //Проект
 
     @Id
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    private Employee employeeId;        //Участник проекта
 
-    @Column(name = "role_employee", nullable = false)
     @Enumerated(EnumType.STRING)
-    private RoleEmployee roleEmployee;
+    @Column(name = "role_employee", nullable = false)
+    private RoleEmployee roleEmployee;  //Роль участника проекта
 }

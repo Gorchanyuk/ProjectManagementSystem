@@ -21,15 +21,15 @@ public class TaskFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;            //Уникальный идентификатор, используется для связей внутри БД
 
     @Column(name = "uid")
-    private UUID uid;
+    private UUID uid;           //Уникальный идентификатор, используется для внешних систем
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
-    private Task taskId;
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task taskId;        //Задача к которой прикреплен файл
 
-    @Column(name = "filename")
-    private String filename;
+    @Column(name = "filename", nullable = false)
+    private String filename;    //Название файла
 }

@@ -30,6 +30,9 @@ public class TaskFilterDTO {
     @Schema(description = "uid исполнителя задачи", example = "ccd90ae1-a3db-46be-83cb-ead8ed03f732")
     private UUID taskPerformer;
 
+    @Schema(description = "uid проекта к которому относится задача", example = "ccd90ae1-a3db-46be-83cb-ead8ed03f732")
+    private UUID project;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     @Schema(description = "Стартовая дата для поиска в категории 'Крайний срок'. Формат 14/02/2023", example = "14/02/2023")
     private LocalDate deadlineStart;

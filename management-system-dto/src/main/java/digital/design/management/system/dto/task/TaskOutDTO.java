@@ -50,4 +50,7 @@ public class TaskOutDTO{
 
     @Schema(description = "Дата редактировния зачачи", example = "14/02/2023")
     private LocalDate dateOfUpdate;
+
+    @Schema(description = "uid задачи которая зависит от выполнения данной задачи", example = "ccd90ae1-a3db-46be-83cb-ead8ed03f732")
+    private UUID taskParent;
 }

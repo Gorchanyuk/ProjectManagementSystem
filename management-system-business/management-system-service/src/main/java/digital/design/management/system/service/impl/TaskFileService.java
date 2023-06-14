@@ -1,17 +1,17 @@
 package digital.design.management.system.service.impl;
 
 import digital.design.management.system.common.exception.StorageFileNotFoundException;
+import digital.design.management.system.config.FilesDirProperty;
 import digital.design.management.system.dto.file.FileDTO;
 import digital.design.management.system.entity.Task;
 import digital.design.management.system.entity.TaskFile;
 import digital.design.management.system.mapping.impl.FileDtoMapper;
 import digital.design.management.system.repository.TaskFileRepository;
-import digital.design.management.system.service.FileService;
 import digital.design.management.system.service.StorageService;
+import digital.design.management.system.service.FileService;
 import digital.design.management.system.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,25 +22,26 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class TaskFileService implements StorageService {
+public class TaskFileService implements FileService {
 
-    @Value("${task.files.dir}")
-    private String dir;
-
+    private final FilesDirProperty property;
     private final TaskFileRepository taskFileRepository;
     private final TaskService taskService;
-    private final FileService fileService;
+    private final StorageService storageService;
     private final FileDtoMapper fileMapper;
 
     public TaskFile findByUid(UUID uid){
-        return taskFileRepository.findByUid(uid)
+        log.debug("Search for the task file with uid: {}", uid);
+        TaskFile file = taskFileRepository.findByUid(uid)
                 .orElseThrow(StorageFileNotFoundException::new);
+        log.info("Task file with uid: {} found", uid);
+        return file;
     }
 
     @Override
     public FileDTO fileUpload(MultipartFile file, UUID taskUid) {
         UUID fileUid = UUID.randomUUID();
-        String filename = fileService.saveNewFile(file, dir, fileUid);
+        String filename = storageService.saveNewFile(file, property.getTaskDir(), fileUid);
         Task task = taskService.findByUid(taskUid);
         TaskFile taskFile = TaskFile.builder()
                 .taskId(task)
@@ -67,7 +68,7 @@ public class TaskFileService implements StorageService {
     public FileDTO fileReplace(UUID uid, MultipartFile file) {
         TaskFile taskFile = findByUid(uid);
         String filename = taskFile.getFilename();
-        fileService.save(file, dir, filename);
+        storageService.save(file, property.getTaskDir(), filename);
         log.info("Task file: {} replace", filename);
         return fileMapper.getDto(taskFile);
     }
@@ -76,7 +77,7 @@ public class TaskFileService implements StorageService {
     public FileDTO deleteFile(UUID uid) {
         TaskFile taskFile = findByUid(uid);
         String filename = taskFile.getFilename();
-        fileService.deleteFile(dir, filename);
+        storageService.deleteFile(property.getTaskDir(), filename);
         taskFileRepository.deleteByFilename(filename);
         log.info("Task file: {} delete", filename);
         return fileMapper.getDto(taskFile);
@@ -86,7 +87,7 @@ public class TaskFileService implements StorageService {
     public Resource downloadFile(UUID uid) {
         TaskFile taskFile = findByUid(uid);
         String filename = taskFile.getFilename();
-        Resource resource = fileService.downloadFile(dir, filename);
+        Resource resource = storageService.downloadFile(property.getTaskDir(), filename);
         log.info("Task file: {} for download found", filename);
         return resource;
     }

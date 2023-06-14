@@ -1,4 +1,4 @@
-package digital.design.management.system.app.config;
+package digital.design.management.system.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

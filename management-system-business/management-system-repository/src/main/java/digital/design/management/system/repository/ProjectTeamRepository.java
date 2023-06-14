@@ -1,7 +1,7 @@
 package digital.design.management.system.repository;
 
 
-import digital.design.management.system.dto.util.ProjectTeamId;
+import digital.design.management.system.util.ProjectTeamId;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.entity.ProjectTeam;
 import org.springframework.data.jpa.repository.EntityGraph;

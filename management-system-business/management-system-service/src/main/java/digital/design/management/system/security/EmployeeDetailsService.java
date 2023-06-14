@@ -23,13 +23,13 @@ public class EmployeeDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.debug("Load user by username or Email for authentication");
+        log.debug("Load user '{}' by username or email for authentication", username);
         Optional<Employee> employee = employeeRepository.findByUsernameOrEmail(username, username);
         if (employee.isEmpty()) {
             log.warn(resourceBundle.getString("EMPLOYEE_BY_USERNAME_DOES_NOT_EXIST"));
             throw new UsernameNotFoundException(resourceBundle.getString("EMPLOYEE_BY_USERNAME_DOES_NOT_EXIST"));
         }
-        log.debug("Load user is successful");
+        log.debug("Load user {} is successful", username);
         return new EmployeeDetails(employee.get());
     }
 }

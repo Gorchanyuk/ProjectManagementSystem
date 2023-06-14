@@ -1,15 +1,17 @@
 package digital.design.management.system.web.controller;
 
+import digital.design.management.system.dto.task.*;
 import digital.design.management.system.dto.util.InputDataErrorResponse;
-import digital.design.management.system.dto.task.TaskCreateDTO;
-import digital.design.management.system.dto.task.TaskDTO;
-import digital.design.management.system.dto.task.TaskFilterDTO;
-import digital.design.management.system.dto.task.TaskOutDTO;
 import digital.design.management.system.common.enumerate.StatusTask;
 import digital.design.management.system.security.EmployeeDetails;
 import digital.design.management.system.service.TaskService;
 import digital.design.management.system.validator.TaskValidator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,23 +26,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/task")
 @Tag(name = "Задачи", description = "Контроллер для управления задачами")
-@Slf4j
+@ApiResponses({
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "400",
+                content = @Content(schema = @Schema(implementation = InputDataErrorResponse.class)))
+})
 public class TaskController {
 
     private final TaskService taskService;
     private final TaskValidator taskValidator;
 
+    @Operation(summary = "Создание задачи",
+            description = "Создает задачу и сохраняет в БД")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Создание новой задачи")
     public ResponseEntity<Object> createTask(@AuthenticationPrincipal EmployeeDetails author,
                                              @Valid @RequestBody TaskCreateDTO taskDTO,
                                              BindingResult bindingResult) {
-        log.debug("POST request on .../task, params: taskDTO={}", taskDTO);
         taskValidator.validate(taskDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -55,18 +62,18 @@ public class TaskController {
         }
 
         TaskOutDTO taskOutDTO = taskService.createTask(taskDTO, author.getEmployee());
-        log.debug("POST request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Обновление задачи",
+            description = "Обновление данных задачи")
     @PutMapping(value = "{uid}", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Изменение задачи")
-    public ResponseEntity<Object> updateTask(@PathVariable("uid") UUID uid,
+    public ResponseEntity<Object> updateTask(@Parameter(description = "uid задачи, которую нужно обновить")
+                                             @PathVariable("uid") UUID uid,
                                              @AuthenticationPrincipal EmployeeDetails author,
                                              @Valid @RequestBody TaskDTO taskDTO,
                                              BindingResult bindingResult) {
-        log.debug("PUT request on .../task/{}", uid);
         taskValidator.validate(taskDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             List<InputDataErrorResponse> infoErrors = bindingResult.getFieldErrors().stream()
@@ -80,24 +87,56 @@ public class TaskController {
             return new ResponseEntity<>(infoErrors, HttpStatus.FORBIDDEN);
         }
         TaskOutDTO taskOutDTO = taskService.updateTask(uid, taskDTO, author.getEmployee());
-        log.debug("PUT request on .../task is complete");
         return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
     }
 
+    @Operation(summary = "Поиск задач",
+            description = "Получение списка задач по условиям фильтра")
     @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Получение списка задач по условиям фильтра")
-    public List<TaskOutDTO> getTasksWithFilter(@RequestBody TaskFilterDTO taskFilterDTO){
-        log.debug("GET request on .../task, params: filter={}", taskFilterDTO);
+    public List<TaskOutDTO> getTasksWithFilter(@RequestBody TaskFilterDTO taskFilterDTO) {
         return taskService.getTasksWithFilter(taskFilterDTO);
     }
 
+    @Operation(summary = "Повышение стаутса задачи",
+            description = "Статус задачи переводится в новый статус, который поступил на вход, если этот статус " +
+                    "является допустимым")
     @PutMapping(value = "/raise_status/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Повышение стаутса задачи")
-    public TaskOutDTO updateStatusProject(@PathVariable("uid") UUID uid,
-                                          @RequestParam("status") StatusTask statusTask) {
-        log.debug("PUT request on .../task/raise_status/{}", uid);
-        return taskService.updateStatusTask(uid, statusTask);
+    public ResponseEntity<TaskOutDTO> updateStatusProject(@Parameter(description = "uid задачи, которой нужно изменить статус")
+                                                          @PathVariable("uid") UUID uid,
+                                                          @RequestParam("status") StatusTask statusTask) {
+        TaskOutDTO taskOutDTO = taskService.updateStatusTask(uid, statusTask);
+        return new ResponseEntity<>(taskOutDTO, HttpStatus.ACCEPTED);
+    }
+
+    @Operation(summary = "Получение связаных задач",
+            description = "Получение задач от которых зависит выполнение заданной задачи")
+    @GetMapping(value = "/dependencies/{uid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TaskOutDTO> getTaskDependencies(@Parameter(description = "uid задачи, зависимости которой нужно получить")
+                                                @PathVariable("uid") UUID uid) {
+        return taskService.getTaskDependencies(uid);
+    }
+
+    @Operation(summary = "Связывание задач",
+            description = "Устанавливает зависимости между заданной задачей и задачами от которых она будет зависеть")
+    @PostMapping(value = "/dependencies/{uid}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<TaskOutDTO> setTaskDependencies(@Parameter(description = "uid задачи, которая будет зависеть от других задач")
+                                                @PathVariable("uid") UUID uid,
+                                                @RequestBody TaskChildDTO childDto) {
+
+        return taskService.setTaskParent(uid, childDto);
+    }
+
+    @Operation(summary = "Удаление связей между задачами",
+            description = "Удаляет зависимости между заданной задачей и задачами от которых она зависит")
+    @DeleteMapping(value = "/dependencies/{uid}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<TaskOutDTO> deleteTaskDependencies(@Parameter(description = "uid задачи, которая зависит от других задач")
+                                                   @PathVariable("uid") UUID uid,
+                                                   @RequestBody TaskChildDTO childDto) {
+
+        return taskService.deleteTaskParent(uid, childDto);
     }
 
 }

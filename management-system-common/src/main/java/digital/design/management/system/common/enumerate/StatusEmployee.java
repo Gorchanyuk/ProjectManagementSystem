@@ -1,7 +1,7 @@
 package digital.design.management.system.common.enumerate;
 
 public enum StatusEmployee {
-    ACTIVE,
-    DELETED
+    ACTIVE,     //Активный
+    DELETED     //Удаленный
 
 }

@@ -18,22 +18,22 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;            //Уникальный идентификатор, используется для связей внутри БД
 
     @Column(name = "uid")
-    private UUID uid;
+    private UUID uid;           //Уникальный идентификатор, используется для внешних систем
 
     @Column(name = "code", nullable = false, unique = true)
-    private String code;
+    private String code;        //Код проекта
 
     @Column(name = "name", nullable = false)
-    private String name;
+    private String name;        //Наименование проекта
 
     @Column(name = "description")
-    private String description;
+    private String description; //Описание проекта
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusProject status;
+    private StatusProject status;//Статус проекта
 
 }

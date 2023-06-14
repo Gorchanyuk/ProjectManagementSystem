@@ -21,15 +21,15 @@ public class ProjectFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;            //Уникальный идентификатор, используется для связей внутри БД
 
     @Column(name = "uid")
-    private UUID uid;
+    private UUID uid;           //Уникальный идентификатор, используется для внешних систем
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project projectId;
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project projectId;  //Проект к которому прикреплен файл
 
-    @Column(name = "filename")
-    private String filename;
+    @Column(name = "filename", nullable = false)
+    private String filename;    //Название файла
 }

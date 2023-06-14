@@ -4,17 +4,14 @@ import digital.design.management.system.dto.employee.EmployeeDTO;
 import digital.design.management.system.dto.employee.EmployeeOutDTO;
 import digital.design.management.system.entity.Employee;
 import digital.design.management.system.mapping.Mapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 
 @Component
-@Slf4j
 public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOutDTO> {
 
     @Override
     public Employee dtoToEntity(EmployeeDTO dto) {
-        log.debug("Mapping EmployeeDTO to Employee");
         return Employee.builder()
                 .lastName(dto.getLastName())
                 .firstName(dto.getFirstName())
@@ -27,7 +24,6 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
 
     @Override
     public Employee dtoToEntity(EmployeeDTO dto, Employee employee) {
-        log.debug("Mapping an EmployeeDTO to an Employee in a given employee");
         employee.setLastName(dto.getLastName());
         employee.setFirstName(dto.getFirstName());
         employee.setSurname(dto.getSurname());
@@ -40,7 +36,6 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
 
     @Override
     public EmployeeOutDTO entityToOutDto(Employee employee) {
-        log.debug("Mapping Employee to EmployeeOutDTO");
         return EmployeeOutDTO.builder()
                 .lastName(employee.getLastName())
                 .firstName(employee.getFirstName())
@@ -55,7 +50,6 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDTO, EmployeeOut
 
     @Override
     public EmployeeDTO entityToDto(Employee employee){
-        log.debug("Mapping Employee to EmployeeDTO");
         return EmployeeDTO.builder()
                 .lastName(employee.getLastName())
                 .firstName(employee.getFirstName())

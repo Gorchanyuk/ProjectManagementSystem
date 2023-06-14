@@ -22,7 +22,6 @@
         <dependency>
             <groupId>digital.design</groupId>
             <artifactId>management-system-entity</artifactId>
-            <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -32,7 +31,6 @@
         <dependency>
             <groupId>digital.design</groupId>
             <artifactId>management-system-dto</artifactId>
-            <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
