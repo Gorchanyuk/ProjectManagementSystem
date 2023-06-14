@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import digital.design.management.system.dto.file.FileConfirmDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+
+@Slf4j
 @Component
 public class TokenForConfirmUploadFile {
 
@@ -22,6 +25,7 @@ public class TokenForConfirmUploadFile {
 
 
     public String generateToken(String filename,UUID fileUid,  UUID projectUid, String tempDir, String hashcode){
+        log.debug("Generate token for {}", filename);
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(30).toInstant());
 
         return JWT.create()
@@ -44,7 +48,7 @@ public class TokenForConfirmUploadFile {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-
+        log.debug("Successfully validate token for {}", jwt.getClaim("filename").asString());
         return FileConfirmDTO.builder()
                 .uid(UUID.fromString(jwt.getClaim("fileUid").asString()))
                 .projectUid(UUID.fromString(jwt.getClaim("projectUid").asString()))

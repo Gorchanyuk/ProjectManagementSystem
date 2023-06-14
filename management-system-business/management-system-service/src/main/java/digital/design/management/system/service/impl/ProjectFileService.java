@@ -47,7 +47,10 @@ public class ProjectFileService implements FileService {
     public FileDTO fileUpload(MultipartFile file, UUID projectUid) {
 
         try {
-            hashCodeCheck(file, projectUid);
+            String hashcode = fileUtil.getFileHash(file);
+            if (!projectFileRepository.findAllByHashcode(hashcode).isEmpty()) {
+                storageService.saveFileInTempDir(file, projectUid, hashcode);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -60,15 +63,11 @@ public class ProjectFileService implements FileService {
     }
 
     @Override
-    public FileDTO confirmUploadFile(FileTokenDTO tokenDTO){
+    public FileDTO confirmUploadFile(FileTokenDTO tokenDTO) {
 
-        try {
-            FileConfirmDTO dto = storageService.moveFile(tokenDTO.getToken(), property.getProjectDir());
-            return createFileAndSave(dto.getProjectUid(), dto.getUid(), dto.getFileName(), dto.getHashcode());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        }
+        FileConfirmDTO dto = storageService.moveFile(tokenDTO.getToken(), property.getProjectDir());
+        return createFileAndSave(dto.getProjectUid(), dto.getUid(), dto.getFileName(), dto.getHashcode());
+    }
 
     @Override
     public List<FileDTO> getAllFiles(UUID projectUid) {
@@ -120,12 +119,5 @@ public class ProjectFileService implements FileService {
         projectFileRepository.save(projectFile);
         log.info("Project file: {} upload and save", filename);
         return fileMapper.getDto(projectFile);
-    }
-
-    private void hashCodeCheck(MultipartFile file, UUID entityUid) throws IOException {
-        String hashcode = fileUtil.getFileHash(file);
-        if (projectFileRepository.findByHashcode(hashcode).isPresent()) {
-            storageService.saveFileInTempDir(file, entityUid, hashcode);
-        }
     }
 }
