@@ -1,6 +1,9 @@
 package digital.design.management.system.web.controller;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import digital.design.management.system.common.exception.*;
+import digital.design.management.system.dto.util.ConflictUploadFile;
 import digital.design.management.system.dto.util.InputDataErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -191,5 +194,33 @@ public class ExceptionHandlerController {
         );
         log.warn(resourceBundle.getString("DISABLED_EMPLOYEE"));
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ConflictUploadFile> handleException(FileWithThisHashcodeAlreadyExistsException e) {
+        ConflictUploadFile response = new ConflictUploadFile(
+                resourceBundle.getString("FILE_WITH_THIS_HASHCODE_EXISTS"),
+                ".../project/file/confirm",
+                e.getMessage()
+        );
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(TokenExpiredException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "message",
+                resourceBundle.getString("TOKEN_HAS_EXPIRED")
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<InputDataErrorResponse> handleException(JWTDecodeException e) {
+        InputDataErrorResponse response = new InputDataErrorResponse(
+                "message",
+                resourceBundle.getString("INVALID_TOKEN")
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

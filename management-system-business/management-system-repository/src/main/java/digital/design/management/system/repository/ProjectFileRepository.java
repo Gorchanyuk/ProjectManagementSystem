@@ -23,4 +23,6 @@ public interface ProjectFileRepository extends JpaRepository<ProjectFile, Long> 
     @Transactional
     @EntityGraph(value = "project_file", type = EntityGraph.EntityGraphType.LOAD)
     void deleteByFilename(String filename);
+
+    Optional<ProjectFile> findByHashcode (String hashcode);
 }

@@ -1,6 +1,7 @@
 package digital.design.management.system.service;
 
 import digital.design.management.system.dto.file.FileDTO;
+import digital.design.management.system.dto.file.FileTokenDTO;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,4 +20,6 @@ public interface FileService {
     FileDTO fileReplace(UUID uid, MultipartFile file);
 
     FileDTO deleteFile(UUID uid);
+
+    FileDTO confirmUploadFile(FileTokenDTO tokenDTO);
 }
