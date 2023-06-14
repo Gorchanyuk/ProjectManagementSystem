@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+<changeSet id="initial_0001_00" author="gorchanyuk">
+    <sql dbms="postgresql" endDelimiter=";">
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+    </sql>
+</changeSet>
+    <changeSet id="initial_0001_01" author="gorchanyuk">
+        <createTable tableName="project">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" unique="true" primaryKey="true" primaryKeyName="project_id_pkey"/>
+            </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
+                <constraints unique="true" primaryKey="true" primaryKeyName="project_id_pkey"/>
+            </column>
+            <column name="code" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="initial_0001_02" author="gorchanyuk">
+        <createTable tableName="employee">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" unique="true" primaryKey="true" primaryKeyName="employee_id_pkey"/>
+            </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()">
+                <constraints  unique="true" primaryKey="true" primaryKeyName="employee_id_pkey"/>
+            </column>
+            <column name="password" type="VARCHAR(255)" />
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_title" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="initial_0001_03" author="gorchanyuk">
+        <createTable tableName="project_team">
+            <column name="employee_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" foreignKeyName="Employee"
+                             primaryKeyName="project_team_id_pkey" referencedTableName="employee"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="project_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" foreignKeyName="Project"
+                             primaryKeyName="project_team_id_pkey" referencedTableName="project"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="role_employee" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="initial_0001_04" author="gorchanyuk">
+        <createTable tableName="task">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="task_id_pkey"/>
+            </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
+                <constraints unique="true" primaryKey="true" primaryKeyName="task_id_pkey"/>
+            </column>
+            <column name="date_of_created" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_update" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deadline" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="execution_time" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author" type="BIGINT">
+                <constraints foreignKeyName="fk_task_employee" referencedTableName="employee"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="project_id" type="BIGINT">
+                <constraints foreignKeyName="FK_Task_Project" referencedTableName="project"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="performer" type="BIGINT">
+                <constraints foreignKeyName="fk_task_employee_2" referencedTableName="employee"
+                             referencedColumnNames="id"/>
+           </column>
+            <column name="task_parent" type="BIGINT">
+                <constraints foreignKeyName="fk_task_parent" referencedTableName="task"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="initial_0001_05" author="gorchanyuk">
+        <createTable tableName="project_file">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="project_file_id_pkey"/>
+            </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
+                <constraints unique="true" primaryKey="true" primaryKeyName="task_file_id_pkey"/>
+            </column>
+            <column name="project_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_file_Project" referencedTableName="project"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="initial_0001_06" author="gorchanyuk">
+        <createTable tableName="task_file">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="task_file_id_pkey"/>
+            </column>
+            <column name="uid" type="UUID" defaultValueComputed="uuid_generate_v4()" >
+                <constraints unique="true" primaryKey="true" primaryKeyName="task_file_id_pkey"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_File_Task" referencedTableName="task"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="filename" type="TEXT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
