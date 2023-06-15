@@ -33,6 +33,7 @@ public class CreatorMailDTO {
                 .build();
     }
 
+    //Заполняет одинаковые, для разных писем, поля
     private Map<String, Object> getContext(Employee employee){
         Map<String, Object> context = new HashMap<>();
         context.put("firstName", employee.getFirstName());
