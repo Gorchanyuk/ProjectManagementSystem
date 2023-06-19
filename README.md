@@ -9,7 +9,7 @@
 
 ### Каркас приложения **management_system**
 
-![схема приложения](https://github.com/Gorchanyuk/ProjectManagementSystem/assets/94937271/1582521e-b471-4054-9669-a977bc5e02a4)
+![схема приложения](https://github.com/Gorchanyuk/ProjectManagementSystem/blob/master/docs/%D1%81%D1%85%D0%B5%D0%BC%D0%B0%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.jpg?raw=true)
 
 Приложение представленно в виде мультимодольного приложения. Базовое приложение **management_system** состоит из 6
 модулей:
@@ -70,7 +70,7 @@
 
 ## Структура БД
 
-![структура БД](https://github.com/Gorchanyuk/ProjectManagementSystem/assets/94937271/26ce303d-1812-424f-b336-a72747f68ecc)
+![Структура БД](https://github.com/Gorchanyuk/ProjectManagementSystem/blob/master/docs/%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%91%D0%94.jpg?raw=true).
 
 Описание и SQL скрипты для БД находится в папке docs, так же там находятся примеры тесткейсов для интеграционных тестов.
 
