@@ -2,7 +2,7 @@
 
 ### Структура базы данных
 
-![структура БД]([https://github.com/Gorchanyuk/ProjectManagementSystem/assets/94937271/a2cc29eb-fb67-44fe-a8ff-3584fd721422](https://github.com/Gorchanyuk/ProjectManagementSystem/blob/master/docs/%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%91%D0%94.jpg))
+[структура БД](https://github.com/Gorchanyuk/ProjectManagementSystem/blob/master/docs/%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%91%D0%94.jpg)
 
 База данных представленна в виде 6 таблиц:
 * **_project_**
